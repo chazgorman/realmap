@@ -1,0 +1,1 @@
+Trying to use Next.js with Leaflet
