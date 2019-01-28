@@ -6,42 +6,41 @@ const DynamicMap = dynamic(import('../src/map'),
 })
 
 export default class Index extends React.Component {
+  constructor(props) {
+    super(props);
 
+    this.state = {mapMarkers: []};
+
+    this.getMapMarkers = this.getMapMarkers.bind(this);
+    this.setMapMarkers = this.setMapMarkers.bind(this);
+  }
   static async getInitialProps({ req }) {
     return {}
   }
   componentDidMount(){
-    // var searchUrl = encodeURI("http://localhost:3002/near?lon=-2&lat=45&radius=400000");
-    // var setMapMarkers = this.setMapMarkers;
-    // var page = this;
 
-    // fetch(searchUrl, {
-    //   method: 'get',
-    //   mode: 'no-cors',
-    //   headers: {
-    //       'Accept': 'application/json',
-    //       'Content-Type': 'application/json'
-    //   }
-    // })
-    // .then(response => response.json())
-    // .then(setMapMarkers);
+  }
+  getMapMarkers(map){
+    var searchUrl = encodeURI("http://localhost:3002/near?lon=-2&lat=45&radius=400000");
 
-    // .then(json =>
-    //     // We can dispatch many times!
-    //     // Here, we update the app state with the results of the API call.
-    //     //console.log(json)
-    //     //page.mapMarkers = json.features
-    //     //console.log(page.mapMarkers)
-    //     {
-    //       setMapMarkers(json.features)
-    //     }
-    // )
+    fetch(searchUrl, {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(map.setMapMarkers);
   }
   setMapMarkers(markers){
-    console.log("In index setMapMarkers", markers);
+    console.log("In index setMapMarkers", this.state, markers);
+    return this.state.mapMarkers;
+    //this.map.setMapMarkers(markers);
   }
   render() {
-    this.map = (<DynamicMap />);
+    this.map = (<DynamicMap getMapMarkers={this.getMapMarkers} />);
     return (
       this.map
     );
