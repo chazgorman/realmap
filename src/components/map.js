@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 
-const DynamicMap = dynamic(import('../src/map'),
+const DynamicMap = dynamic(import('../map'),
 {
   ssr: false
 })
@@ -13,6 +13,9 @@ export default class Map extends React.Component {
 
     this.getMapMarkers = this.getMapMarkers.bind(this);
     this.setMapMarkers = this.setMapMarkers.bind(this);
+  }
+  componentDidMount(){
+
   }
   getMapMarkers(map){
     var searchUrl = encodeURI("http://localhost:3002/near?lon=-2&lat=45&radius=400000");
@@ -40,4 +43,3 @@ export default class Map extends React.Component {
     );
   }
 }
-

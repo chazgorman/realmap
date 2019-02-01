@@ -3,7 +3,7 @@ import Link from 'next/link'
 class FootNavbar extends React.Component {
     render(){
         return (
-            <nav className="navbar is-link is-fixed-bottom" role="navigation" style={{zIndex:'2000'}}>
+            <nav className="navbar is-link is-fixed-bottom is-mobile" role="navigation" style={{zIndex:'2000'}}>
                 <div className="navbar-brand">
                     <Link href='/'>
                         <a className="navbar-item is-expanded">
@@ -17,7 +17,7 @@ class FootNavbar extends React.Component {
                             <p className="is-size-7">Map</p>
                         </a>
                     </Link>
-                    <Link href="/gallery">
+                    <Link href="/medialist">
                         <a className="navbar-item is-expanded">
                             <i className="fas fa-images"></i>
                             <p className="is-size-7">Gallery</p>

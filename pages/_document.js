@@ -1,18 +1,16 @@
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-// import JssProvider from 'react-jss/lib/JssProvider';
-// import getPageContext from '../src/getPageContext';
-// import 'leaflet/dist/leaflet.css'
 import Navbar from '../src/components/navbar'
 import FootNavbar from '../src/components/footnavbar'
+import Card from '../src/components/card'
 
 class MyDocument extends Document {
   render() {
 
     return (
       <html lang="en" dir="ltr" style={{ height: '100%' }}>
-      <Head>
-      <title>Pro Cycling Map</title>
+      <head>
+        <title>Pro Cycling Map</title>
         <meta charSet="utf-8" />
         {/* Use minimum-scale=1 to enable GPU rasterization */}
         <meta
@@ -33,11 +31,18 @@ class MyDocument extends Document {
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous" />
 
         <script type="text/javascript" src="./static/attachNavbarBurgerClick.js"></script>
-      </Head>
-      <body className="has-navbar-fixed-top has-navbar-fixed-bottom" style={{ height: '100%' }}>
-      <Navbar />
-        <div id="map" style={{ width: '100%', height: '100%' }} />
-      <FootNavbar />
+      </head>
+      <body className="has-navbar-fixed-top has-navbar-fixed-bottom" style={{height: '100%'}}>
+          <Navbar />
+          <div className="columns is-gapless" style={{ width: '100%', height: '100%' }}>
+            <div class="column" style={{ width: '100%', height: '100%' }}>
+              <Card />
+            </div>
+            <div className="column">
+              <div id="map" style={{ width: '100%', height: '100%' }} />
+            </div>
+          </div>
+          <FootNavbar />
       <Main />
       <NextScript />
       </body>

@@ -14,6 +14,12 @@ export default class Map extends React.Component {
     this.getMapMarkers = this.getMapMarkers.bind(this);
     this.setMapMarkers = this.setMapMarkers.bind(this);
   }
+  static async getInitialProps({ req }) {
+    return {}
+  }
+  componentDidMount(){
+
+  }
   getMapMarkers(map){
     var searchUrl = encodeURI("http://localhost:3002/near?lon=-2&lat=45&radius=400000");
 
@@ -40,4 +46,3 @@ export default class Map extends React.Component {
     );
   }
 }
-

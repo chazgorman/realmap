@@ -23,4 +23,9 @@ module.exports = {
 
     return config;
   },
+  exportPathMap: async function (defaultPathMap) {
+    return {
+      '/': { page: '/' }
+    }
+  }
 };

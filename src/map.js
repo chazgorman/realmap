@@ -11,6 +11,7 @@ export default class MapPage extends React.Component {
 
     this.popupIsOpen = false;
   }
+
   componentDidMount() {
     this.map = getMap();
     //this.map.flyTo([0, 0], 3);
