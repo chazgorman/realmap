@@ -1,9 +1,16 @@
 import dynamic from 'next/dynamic'
 
-const DynamicMap = dynamic(import('../src/map'),
-{
-  ssr: false
-})
+// const DynamicMap = dynamic(import('../src/esrimap'),
+// {
+//   ssr: false
+// })
+
+// const DynamicMap = dynamic(import('../src/components/map'),
+// {
+//   ssr: false
+// })
+
+import DynamicMap from '../src/components/map';
 
 export default class Map extends React.Component {
   constructor(props) {
@@ -34,7 +41,7 @@ export default class Map extends React.Component {
     //this.map.setMapMarkers(markers);
   }
   render() {
-    this.map = (<DynamicMap getMapMarkers={this.getMapMarkers} />);
+    this.map = (<DynamicMap getMapMarkers={this.getMapMarkers}/>);
     return (
       this.map
     );
