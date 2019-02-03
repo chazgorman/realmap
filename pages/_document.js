@@ -1,8 +1,5 @@
 import React from 'react';
-import Document, { Head, Main, NextScript } from 'next/document';
-import Navbar from '../src/components/navbar'
-import FootNavbar from '../src/components/footnavbar'
-import Card from '../src/components/card'
+import Document, { Main, NextScript } from 'next/document';
 
 class MyDocument extends Document {
   render() {
@@ -37,18 +34,8 @@ class MyDocument extends Document {
         <script type="text/javascript" src="./static/attachNavbarBurgerClick.js"></script>
       </head>
       <body className="has-navbar-fixed-top has-navbar-fixed-bottom" style={{height: '100%'}}>
-          <Navbar />
-          <div className="columns is-gapless" style={{ width: '100%', height: '100%' }}>
-            <div class="column" style={{ width: '100%', height: '100%' }}>
-              <Card />
-            </div>
-            <div className="column">
-              <div id="map" style={{ width: '100%', height: '100%' }} />
-            </div>
-          </div>
-          <FootNavbar />
-      <Main />
-      <NextScript />
+        <Main />
+        <NextScript />
       </body>
       </html>
     );

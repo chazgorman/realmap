@@ -1,6 +1,9 @@
 import DynamicMap from '../src/components/map';
+import Navbar from '../src/components/navbar'
+import FootNavbar from '../src/components/footnavbar'
+import Card from '../src/components/card'
 
-export default class Map extends React.Component {
+export default class MainIndex extends React.Component {
   constructor(props) {
     super(props);
 
@@ -24,13 +27,24 @@ export default class Map extends React.Component {
     .then(map.setMapMarkers);
   }
   setMapMarkers(markers){
-    console.log("In index setMapMarkers", this.state, markers);
     return this.state.mapMarkers;
   }
   render() {
     this.map = (<DynamicMap getMapMarkers={this.getMapMarkers}/>);
     return (
-      this.map
+      <div>
+        <Navbar />
+        <div className="columns is-gapless" style={{ width: '100%', height: '100%' }}>
+          <div class="column" style={{ width: '100%', height: '100%' }}>
+            <Card />
+          </div>
+          <div className="column">
+            <div id="map" style={{ width: '100%', height: '100%' }} />
+          </div>
+        </div>
+        <FootNavbar />
+        {this.map}
+      </div>
     );
   }
 }
