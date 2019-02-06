@@ -1,35 +1,11 @@
 import Media from '../src/components/media'
 import "isomorphic-fetch"
+import Navbar from '../src/components/navbar'
+import FootNavbar from '../src/components/footnavbar'
 
 export default class MediaList extends React.Component {
   constructor(props) {
     super(props);
-  }
-  static async getInitialProps({ req }) {
-    var searchUrl = encodeURI("http://localhost:3002/near?lon=-2&lat=45&radius=400000");
-    var mapMarkers;
-
-    //const res = fetch(searchUrl);
-    //const json = await res.json();
-    //console.log(json);
-
-    var retVal = { mapMarkers: [] }
-
-    await fetch(searchUrl, {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(json => retVal.mapMarkers = json.features);
-
-    return retVal;
-  }
-  componentDidMount(){
-
   }
   render() {
     // var index = 0;
@@ -37,7 +13,124 @@ export default class MediaList extends React.Component {
     //   return <Media key={index++} text={"test text"} img={"test"} user={"Charlie"}></Media>
     // });
     return (
-      <div>test</div>
+      <div>
+        <Navbar />
+        <div className="tile is-ancestor">
+          <div className="tile is-parent is-vertical">
+            <div className="tile is-parent">
+              <figure className="tile image is-child is-1 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-1 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-1 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>                                   
+            </div>
+            <div className="tile is-parent">
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>                                   
+            </div>
+            <div className="tile is-parent">
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>                                   
+            </div>
+            <div className="tile is-parent">
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>                                   
+            </div>
+            <div className="tile is-parent">
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>                                   
+            </div>
+            <div className="tile is-parent">
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>                                   
+            </div>
+            <div className="tile is-parent">
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>                                   
+            </div>
+            <div className="tile is-parent">
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>                                   
+            </div>
+            <div className="tile is-parent">
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>                                   
+            </div>
+            <div className="tile is-parent">
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>
+              <figure className="tile image is-child is-4 box">
+                <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=m" alt="Placeholder image" />
+              </figure>                                   
+            </div>
+          </div>
+        </div>        
+        <FootNavbar />
+      </div>
     );
   }
 }

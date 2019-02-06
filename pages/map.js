@@ -35,29 +35,14 @@ export default class MainIndex extends React.Component {
     return (
       <div>
         <Navbar />
-        {/* <section className="hero is-fullheight-with-navbar"> */}
           <div className="columns is-gapless is-desktop" style={{ width: '100%', height: '100%' }}>
-                <div class="column" style={{ height: '100vh', padding:'0' }}>
-                  <div style={{ height: '100vh', overflow:'auto' }}>
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                  </div>
-                </div>
-                <div className="column is-two-thirds is-hidden-mobile">
-                  <div id="map" style={{ width: '100%', height: '100vh' }} />
-                </div>
+            <div className="column">
+                  <div className="center" id="map" style={{ width: '100%', height: '100vh' }} />
+            </div>
           </div>
-        {/* </section>    */}
         <FootNavbar />
         {this.map}
       </div>   
     );
   }
 }
-
