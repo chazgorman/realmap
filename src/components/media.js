@@ -10,16 +10,20 @@ class Media extends React.Component {
         return (
             <article className="media">
             <figure className="media-left">
-                <p className="image is-64x64">
-                <img src="https://bulma.io/images/placeholders/128x128.png" />
-                </p>
+            
+                <p className="image is-48x48">
+                {/* <img src="https://www.instagram.com/p/BnxzJn4FS8D/media?size=t" alt="Placeholder image" /> */}
+                <img className="is-rounded" src="http://pbs.twimg.com/profile_images/977594494391635968/cvqEwmaG_normal.jpg" alt="Placeholder image" />
+
+                </p>                
             </figure>
             <div className="media-content">
                 <div className="content">
                 <p>
                     <strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small>
                     <br />
-                    {this.props.text}
+                    Really enjoyed racing on home roads in Andorra 🇦🇩 for Stage 20, now off to Madrid for the final parade. #Vuelta18 @Ride_Argyle #pinkargyle \n📸 @jeredgruber \n.\n.\n.\n@cannondalePro @pocsports…
+                    <a>@bulmaio</a>.
                 </p>
                 </div>
                 <nav className="level is-mobile">

@@ -2,6 +2,7 @@ import DynamicMap from '../src/components/map';
 import Navbar from '../src/components/navbar'
 import FootNavbar from '../src/components/footnavbar'
 import Card from '../src/components/card'
+import Media from '../src/components/media'
 
 export default class MainIndex extends React.Component {
   constructor(props) {
@@ -34,17 +35,28 @@ export default class MainIndex extends React.Component {
     return (
       <div>
         <Navbar />
-        <div className="columns is-gapless" style={{ width: '100%', height: '100%' }}>
-          <div class="column" style={{ width: '100%', height: '100%' }}>
-            <Card />
+        {/* <section className="hero is-fullheight-with-navbar"> */}
+          <div className="columns is-gapless is-desktop" style={{ width: '100%', height: '100%' }}>
+                <div class="column" style={{ height: '100vh', padding:'0' }}>
+                  <div style={{ height: '100vh', overflow:'auto' }}>
+                    <Card />
+                    <Card />
+                    <Card />
+                    <Card />
+                    <Card />
+                    <Card />
+                    <Card />
+                    <Card />
+                  </div>
+                </div>
+                <div className="column is-two-thirds">
+                  <div className="center" id="map" style={{ width: '100%', height: '100vh' }} />
+                </div>
           </div>
-          <div className="column">
-            <div id="map" style={{ width: '100%', height: '100%' }} />
-          </div>
-        </div>
+        {/* </section>    */}
         <FootNavbar />
         {this.map}
-      </div>
+      </div>   
     );
   }
 }

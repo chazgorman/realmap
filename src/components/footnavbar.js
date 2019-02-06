@@ -3,9 +3,9 @@ import Link from 'next/link'
 class FootNavbar extends React.Component {
     render(){
         return (
-            <nav className="navbar is-link is-fixed-bottom is-mobile" role="navigation" style={{zIndex:'2000'}}>
+            <nav className="navbar is-link is-fixed-bottom is-desktop" role="navigation" style={{zIndex:'2000'}}>
                 <div className="navbar-brand">
-                    <Link href='/'>
+                    <Link className="center" href='/'>
                         <a className="navbar-item is-expanded">
                             <i className="fas fa-home"></i>
                             <p className="is-size-7">Home</p>
