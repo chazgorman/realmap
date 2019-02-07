@@ -1,5 +1,4 @@
 import Media from '../src/components/media'
-import "isomorphic-fetch"
 import Navbar from '../src/components/navbar'
 import FootNavbar from '../src/components/footnavbar'
 

@@ -37,7 +37,7 @@ export default class MainIndex extends React.Component {
         <Navbar />
         {/* <section className="hero is-fullheight-with-navbar"> */}
           <div className="columns is-gapless is-desktop" style={{ width: '100%', height: '100%' }}>
-                <div class="column" style={{ height: '100vh', padding:'0' }}>
+                <div className="column" style={{ height: '100vh', padding:'0' }}>
                   <div style={{ height: '100vh', overflow:'auto' }}>
                     <Card />
                     <Card />

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import PropTypes from "prop-types"
 
 class Card extends React.Component {
     render(){
@@ -31,7 +32,7 @@ class Card extends React.Component {
                     <a>@bulmaio</a>.
                     <a href="#">#Vuelta18</a> <a href="#">#pinkargyle</a>
                     <br />
-                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                    <time dateTime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                     </div>
                 </div>
             </div>
@@ -40,3 +41,11 @@ class Card extends React.Component {
 }
 
 export default Card;
+
+Card.propTypes = {
+    text: PropTypes.string,
+    profilePic: PropTypes.string,
+    fullname: PropTypes.string,
+    username: PropTypes.string,
+    tags: PropTypes.array,
+};

@@ -5,7 +5,7 @@ class FootNavbar extends React.Component {
         return (
             <nav className="navbar is-link is-fixed-bottom is-hidden-tablet" role="navigation" style={{zIndex:'2000'}}>
                 <div className="navbar-brand">
-                    <Link className="center" href='/'>
+                    <Link href='/'>
                         <a className="navbar-item is-expanded">
                             <i className="fas fa-home"></i>
                             <p className="is-size-7">Home</p>
