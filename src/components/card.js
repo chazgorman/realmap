@@ -2,7 +2,30 @@ import Link from 'next/link'
 import PropTypes from "prop-types"
 
 class Card extends React.Component {
+    constructor(props) {
+        super(props);
+    
+        this.state = {zooming: false};
+    }
+    zoomTo(){
+        console.log("In zoomTo", this.props.geometry);
+        var card = this;
+        var geom = this.props.geometry;
+        var map = this.props.geometry._layer._map;        
+        this.setState({zooming:true});
+
+        map.centerAndZoom(geom.geometry, 8).then(function(result){
+            card.setState({zooming:false});
+        })
+    }
     render(){
+        var buttonClassname = "button is-link";
+        if(this.state.zooming){
+            buttonClassname += " is-loading";
+        } else if(this.props.selected){
+            buttonClassname += "is-success is-outlined";
+        }
+
         return (
             <div className="card">
                 {/* <div className="card-image">
@@ -14,25 +37,28 @@ class Card extends React.Component {
                     <div className="media">
                     <div className="media-left">
                         <figure className="image is-48x48">
-                            <img className="is-rounded" src="http://pbs.twimg.com/profile_images/977594494391635968/cvqEwmaG_normal.jpg" alt="Placeholder image" />
+                            <img className="is-rounded" src={this.props.profilePic} alt="Placeholder image" />
                         </figure>
                     </div>
                     <div className="media-content">
-                        <p className="title is-4">Simon Clarke</p>
-                        <p className="subtitle is-6">@SimoClarke</p>
+                        <p className="title is-4">{this.props.fullname}</p>
+                        <p className="subtitle is-6">{this.props.username}</p>
                     </div>
                     <div className="media-right">
-                        <span class="icon" color="blue">
-                            <i class="fab fa-twitter" color="blue"></i>
+                        <span className="icon" color="blue">
+                            <i className="fab fa-twitter" color="blue"></i>
                         </span>
+                        <div className={buttonClassname} onClick={this.zoomTo.bind(this)}>
+                            <i className="fas fa-search" color="blue"></i>
+                        </div>
                     </div>
                     </div>
                     <div className="content">
-                    Really enjoyed racing on home roads in Andorra 🇦🇩 for Stage 20, now off to Madrid for the final parade. #Vuelta18 @Ride_Argyle #pinkargyle \n📸 @jeredgruber \n.\n.\n.\n@cannondalePro @pocsports…
+                        {this.props.text}
                     <a>@bulmaio</a>.
-                    <a href="#">#Vuelta18</a> <a href="#">#pinkargyle</a>
+                    {/* <a href="#">#Vuelta18</a> <a href="#">#pinkargyle</a>
                     <br />
-                    <time dateTime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                    <time dateTime="2016-1-1">11:09 PM - 1 Jan 2016</time> */}
                     </div>
                 </div>
             </div>
@@ -48,4 +74,7 @@ Card.propTypes = {
     fullname: PropTypes.string,
     username: PropTypes.string,
     tags: PropTypes.array,
+    geometry: PropTypes.object,
+    zoomTo: PropTypes.func,
+    mediaId: PropTypes.string
 };

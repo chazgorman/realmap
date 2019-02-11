@@ -6,16 +6,24 @@ class EsriMap extends React.Component {
   constructor(props) {
     super(props);
 
+    this.featuresSet = false;
+
+    //this.updateMapMarkers = this.props.updateMapMarkers.bind(this);
     this.setMapMarkers = this.setMapMarkers.bind(this);
     this.addGraphics = this.addGraphics.bind(this);
+    this.extentChanged = this.extentChanged.bind(this);
   }
   componentDidMount() {
-    console.log(this);
     const options = {
       url: 'https://js.arcgis.com/3.23/',
     };
-    loadModules(['esri/map','esri/layers/FeatureLayer','esri/dijit/PopupTemplate'], options)
-      .then(([Map, FeatureLayer, PopupTemplate]) => {
+    loadModules(['esri/map','esri/config','esri/layers/FeatureLayer','esri/dijit/PopupTemplate'], options)
+      .then(([Map, esriConfig, FeatureLayer, PopupTemplate]) => {
+        esriConfig.defaults.map.panDuration = 1000; // time in milliseconds, default panDuration: 350
+        esriConfig.defaults.map.panRate = 25; // default panRate: 25
+        esriConfig.defaults.map.zoomDuration = 1000; // default zoomDuration: 500
+        esriConfig.defaults.map.zoomRate = 25; // default zoomRate: 25
+
         // create map with the given options at a DOM node w/ id 'mapNode'
         const map = new Map('map', {
           center: [0, 34.5],
@@ -67,6 +75,14 @@ class EsriMap extends React.Component {
           description: "{display_text}"
         });
 
+        var flayer = new FeatureLayer("https://services9.arcgis.com/T1Rjzl3QPzLYGXGl/arcgis/rest/services/Twitter_View/FeatureServer/0",{
+          id: "twitter",
+          mode: esri.layers.FeatureLayer.MODE_ONDEMAND,
+          infoTemplate: popupTemplate,
+          outFields: ["*"]
+        });
+
+        
         //create a feature layer based on the feature collection
         var featureLayer = new FeatureLayer(featureCollection, {
           id: 'markers',
@@ -78,17 +94,47 @@ class EsriMap extends React.Component {
           map.infoWindow.setFeatures([evt.graphic]);
         });
 
-        map.addLayers([featureLayer]);
+        map.setInfoWindowOnClick(false);
+        map.addLayers([flayer, featureLayer]);
 
         return map;
       }).then(map => {
         this.map = map;
-        this.props.getMapMarkers(this);
+        this.mapExtentChange = map.on("extent-change", this.extentChanged.bind(this));
+        //this.props.getMapMarkers(this);
       })
       .catch(err => {
         // handle any script or module loading errors
         console.error(err);
       });
+
+  }
+  extentChanged(evt){
+    if(this.featuresSet){
+      return;
+    }
+
+    this.featuresSet = true;
+
+    var extent = evt.extent;
+    var zoomed = evt.levelChange;
+    var theMap = this.map;
+    var theComp = this;
+
+    const options = {
+      url: 'https://js.arcgis.com/3.23/',
+    };
+    loadModules(['esri/tasks/query'], options)
+    .then(([Query]) => {
+        var query = new Query();
+        query.geometry = evt.extent;
+        query.outFields = ["*"];
+
+        var layer = theMap.getLayer("twitter");
+        layer.queryFeatures(query, function(featureSet){
+          theComp.props.updateMapMarkers(featureSet.features);
+        })
+    });
 
   }
   setMapMarkers(markers){
@@ -139,7 +185,8 @@ class EsriMap extends React.Component {
 }
 
 EsriMap.propTypes = {
-  getMapMarkers: PropTypes.func
+  getMapMarkers: PropTypes.func,
+  updateMapMarkers: PropTypes.func
 };
 
 export default EsriMap;

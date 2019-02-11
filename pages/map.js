@@ -31,7 +31,7 @@ export default class MainIndex extends React.Component {
     return this.state.mapMarkers;
   }
   render() {
-    this.map = (<DynamicMap getMapMarkers={this.getMapMarkers}/>);
+    this.map = (<DynamicMap getMapMarkers={this.getMapMarkers} />);
     return (
       <div>
         <Navbar />

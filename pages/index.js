@@ -28,10 +28,26 @@ export default class MainIndex extends React.Component {
     .then(map.setMapMarkers);
   }
   setMapMarkers(markers){
-    return this.state.mapMarkers;
+    this.setState({mapMarkers: markers})
   }
   render() {
-    this.map = (<DynamicMap getMapMarkers={this.getMapMarkers}/>);
+    var i = 0;
+    var usernames = {};
+
+    this.map = (<DynamicMap getMapMarkers={this.getMapMarkers} updateMapMarkers={this.setMapMarkers}/>);
+    const cards = this.state.mapMarkers.map(markerInfo => {
+      var atts = markerInfo.attributes;
+      if(atts.user_name in usernames){
+        return;
+      }
+      usernames[atts.user_name] = true;
+
+      return (
+        <Media key={i++} text={atts.display_text} profilePic={atts.icon} fullname={atts.display_name} 
+          username={atts.user_name} geometry={markerInfo} mediaId={atts.place_id} mediaLink={atts.media}/>
+      )
+    });
+
     return (
       <div>
         <Navbar />
@@ -39,14 +55,7 @@ export default class MainIndex extends React.Component {
           <div className="columns is-gapless is-desktop" style={{ width: '100%', height: '100%' }}>
                 <div className="column" style={{ height: '100vh', padding:'0' }}>
                   <div style={{ height: '100vh', overflow:'auto' }}>
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
+                    {cards}
                   </div>
                 </div>
                 <div className="column is-two-thirds is-hidden-mobile">
