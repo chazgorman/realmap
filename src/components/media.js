@@ -88,6 +88,8 @@ class Media extends React.Component {
                 </div>
             );
         }
+        
+        var linkUrl = "/map?zoomto=" + this.props.mediaId;
 
         return (
             <article className="media">
@@ -121,8 +123,22 @@ class Media extends React.Component {
             <div className="media-right">
                 <div className="buttons">
                     {mediaLinkButton}
-                    <div className={buttonClassname} onClick={this.zoomTo.bind(this)}>
-                        <i className="fas fa-search" color="blue"></i>
+
+                    <div className="is-hidden-desktop">
+                        <Link href={linkUrl}>
+                            <a>
+                                <div className={buttonClassname}>
+                                    <i className="fas fa-search" color="blue"></i>
+                                </div>
+                            </a>
+                        </Link>
+                    </div>
+                    
+
+                    <div className="is-hidden-touch">
+                        <div className={buttonClassname} onClick={this.zoomTo.bind(this)}>
+                            <i className="fas fa-search" color="blue"></i>
+                        </div>
                     </div>
                 </div>
             </div>

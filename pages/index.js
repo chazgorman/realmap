@@ -4,6 +4,32 @@ import FootNavbar from '../src/components/footnavbar'
 import Card from '../src/components/card'
 import Media from '../src/components/media'
 
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
+
+export const allAppsQuery = gql`
+{
+  app {
+    id
+    name
+  }
+}
+`
+
+// export const allAppsQuery = gql`
+//   query allApps {
+//     app {
+//       id
+//       name
+//     }
+//   }
+// `
+
+export const allAppsQueryVars = {
+  skip: 0,
+  first: 10
+}
+
 export default class MainIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -34,39 +60,57 @@ export default class MainIndex extends React.Component {
     var i = 0;
     var usernames = {};
 
-    this.map = (<DynamicMap getMapMarkers={this.getMapMarkers} updateMapMarkers={this.setMapMarkers}/>);
-    const cards = this.state.mapMarkers.map(markerInfo => {
-      var atts = markerInfo.attributes;
-      if(atts.user_name in usernames){
-        return;
-      }
-      usernames[atts.user_name] = true;
+    // this.map = (<DynamicMap getMapMarkers={this.getMapMarkers} updateMapMarkers={this.setMapMarkers}/>);
+    // const cards = this.state.mapMarkers.map(markerInfo => {
+    //   var atts = markerInfo.attributes;
+    //   if(atts.user_name in usernames){
+    //     return;
+    //   }
+    //   usernames[atts.user_name] = true;
 
-      return (
-        <Media key={i++} text={atts.display_text} profilePic={atts.icon} fullname={atts.display_name} 
-          username={atts.user_name} geometry={markerInfo} mediaId={atts.place_id} mediaLink={atts.media}/>
-      )
-    });
+    //   return (
+    //     <Media key={i++} text={atts.display_text} profilePic={atts.icon} fullname={atts.display_name} 
+    //       username={atts.user_name} geometry={markerInfo} mediaId={atts.place_id} mediaLink={atts.media}/>
+    //   )
+    // });
 
     return (
-      <div>
-        <Navbar />
-        {/* <section className="hero is-fullheight-with-navbar"> */}
-          <div className="columns is-gapless is-desktop" style={{ width: '100%', height: '100%' }}>
-                <div className="column" style={{ height: '100vh', padding:'0' }}>
-                  <div style={{ height: '100vh', overflow:'auto' }}>
-                    {cards}
-                  </div>
-                </div>
-                <div className="column is-two-thirds is-hidden-mobile">
-                  <div id="map" style={{ width: '100%', height: '100vh' }} />
-                </div>
-          </div>
-        {/* </section>    */}
-        <FootNavbar />
-        {this.map}
-      </div>   
-    );
-  }
-}
+      <Query query={allAppsQuery}>
+      {({ loading, error, data: { app, _allAppsMeta }, fetchMore }) => {        
+        if (error) return <ErrorMessage message='Error loading posts.' />
+        if (loading) return <div>Loading</div>
 
+        console.log(app);
+
+        //const areMoreApps = allApps.length < _allAppsMeta.count
+        //var i = 0;
+
+        return (
+          <div>
+            <Navbar />
+            {/* <section className="hero is-fullheight-with-navbar"> */}
+              <div className="columns is-gapless is-desktop" style={{ width: '100%', height: '100%' }}>
+                    <div className="column" style={{ height: '100vh', padding:'0' }}>
+                      <div style={{ height: '100vh', overflow:'auto' }}>
+                      {app.map((app, i) => (
+                        <li key={app.id}>
+                          <div>
+                            <a href={app.name}>{app.name}</a>
+                          </div>
+                        </li>
+                      ))}
+                      </div>
+                    </div>
+                    <div className="column is-two-thirds is-hidden-mobile">
+                      <div id="map" style={{ width: '100%', height: '100vh' }} />
+                    </div>
+              </div>
+            {/* </section>    */}
+            <FootNavbar />
+            {this.map}
+          </div>   
+        );
+      }}
+    </Query>
+    )
+}}

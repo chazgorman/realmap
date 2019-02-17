@@ -1,3 +1,21 @@
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
+
+export const allAppQuery = gql`
+  query allPosts($first: Int!, $skip: Int!) {
+    allApps(first: $first, skip: $skip) {
+      id
+      name
+    }
+    _allAppsMeta {
+      count
+    }
+  }
+`
+export const allAppsQueryVars = {
+  skip: 0,
+  first: 10
+}
 class Navbar extends React.Component {
     componentDidMount(){
         // Add script to handle navbar-burger activation
