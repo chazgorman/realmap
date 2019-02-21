@@ -2,6 +2,38 @@ import React from 'react';
 import PropTypes from "prop-types"
 import { loadModules } from 'esri-loader';
 
+import ApolloClient from "apollo-boost";
+
+const client = new ApolloClient({
+  uri: "http://gql.procyclingmap.net/v1alpha1/graphql"
+});
+
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
+
+import createApolloFetch from 'apollo-boost'
+export const allMsgsQuery = gql`
+{
+      messages {
+        harvest_id
+        contributor_screen_name
+        contributor_name
+        message
+        message_id
+        time
+        like_count
+        twitter_favorite_count
+        twitter_favorite_count
+        network
+        location
+    }
+  }
+`
+export const messagesQueryVars = {
+  skip: 0,
+  first: 10
+}
+
 class EsriMap extends React.Component {
   constructor(props) {
     super(props);
@@ -110,6 +142,12 @@ class EsriMap extends React.Component {
 
   }
   extentChanged(evt){
+    client
+    .query({
+      query: allMsgsQuery
+    })
+    .then(result => console.log(result));
+
     if(this.featuresSet){
       return;
     }
@@ -180,7 +218,7 @@ class EsriMap extends React.Component {
           this.mapNode = c;
         }}
       />
-    );
+    )
   }
 }
 
