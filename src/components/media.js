@@ -69,7 +69,7 @@ class Media extends React.Component {
 
         if(this.state.showMedia){
             imageModal = (
-                <div className="modal is-active">
+                <div className="modal is-active" style={{zIndex:'1001'}}>
                 <div className="modal-background"></div>
                 <div className="modal-card">
                 <header className="modal-card-head">

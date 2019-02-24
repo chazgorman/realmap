@@ -22,7 +22,7 @@ class Navbar extends React.Component {
     }
     render(){
         return (
-            <nav className="navbar is-link is-fixed-top is-transparent" style={{zIndex:'2000'}}>
+            <nav className="navbar is-link is-fixed-top is-transparent" style={{zIndex:'1000'}}>
                 <div className="navbar-brand">  
                     <a href="/">
                         <img src="/static/PCMLogoLight_SideIcon.png" alt="Pro Cycling Map. Explore the World of Pro Cycling!" width="260px" height="60px"/>
