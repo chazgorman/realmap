@@ -26,6 +26,9 @@ class MyDocument extends Document {
 
         <link rel="stylesheet" href="https://js.arcgis.com/3.27/esri/css/esri.css" />
 
+        <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" />
+        <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+
         {/* <link rel="stylesheet" href="https://js.arcgis.com/4.10/esri/css/main.css" /> */}
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"></link>
