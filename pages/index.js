@@ -3,8 +3,7 @@ import Navbar from '../src/components/navbar'
 import FootNavbar from '../src/components/footnavbar'
 import Card from '../src/components/card'
 import Media from '../src/components/media'
-
-import { Query } from 'react-apollo'
+import { withApollo } from 'react-apollo';
 import gql from 'graphql-tag'
 
 export const allAppsQuery = gql`
@@ -16,21 +15,31 @@ export const allAppsQuery = gql`
 }
 `
 
-// export const allAppsQuery = gql`
-//   query allApps {
-//     app {
-//       id
-//       name
-//     }
-//   }
-// `
+
+export const allMsgsQuery = gql`
+{
+      messages_last_7_days {
+        harvest_id
+        contributor_screen_name
+        contributor_name
+        message
+        message_id
+        time
+        like_count
+        twitter_favorite_count
+        twitter_favorite_count
+        network
+        location
+    }
+  }
+`
 
 export const allAppsQueryVars = {
   skip: 0,
   first: 10
 }
 
-export default class MainIndex extends React.Component {
+class MainIndex extends React.Component {
   constructor(props) {
     super(props);
 
@@ -38,41 +47,38 @@ export default class MainIndex extends React.Component {
 
     this.getMapMarkers = this.getMapMarkers.bind(this);
     this.setMapMarkers = this.setMapMarkers.bind(this);
+    this.getMapMarkers();
   }
-  getMapMarkers(map){
-    var searchUrl = encodeURI("http://localhost:3002/near?lon=-2&lat=45&radius=400000");
-
-    fetch(searchUrl, {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(map.setMapMarkers);
+  getMapMarkers(layer){
+    if(layer !== undefined){
+      this.setMapMarkers(layer.graphics);
+    }
   }
   setMapMarkers(markers){
     this.setState({mapMarkers: markers})
   }
-  render() {
+  render() {    
     var i = 0;
     var usernames = {};
+    let cards = undefined;
 
-    this.map = (<DynamicMap getMapMarkers={this.getMapMarkers} updateMapMarkers={this.setMapMarkers}/>);
-    const cards = this.state.mapMarkers.map(markerInfo => {
-      var atts = markerInfo.attributes;
-      if(atts.user_name in usernames){
-        return;
-      }
-      usernames[atts.user_name] = true;
-
-      return (
-        <Media key={i++} text={atts.display_text} profilePic={atts.icon} fullname={atts.display_name} 
-          username={atts.user_name} geometry={markerInfo} mediaId={atts.place_id} mediaLink={atts.media}/>
-      )
-    });
+    if(this.state.mapMarkers !== undefined){
+      this.map = (<DynamicMap getMapMarkers={this.getMapMarkers} updateMapMarkers={this.setMapMarkers}/>);
+      cards = this.state.mapMarkers.map(markerInfo => {
+        var atts = markerInfo.attributes;
+        if(atts.contributor_name in usernames){
+          return;
+        }
+        usernames[atts.contributor_name] = true;
+  
+        var timeStamp = atts.time;
+        var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
+        return (
+          <Media key={i++} map={atts.map} text={atts.message} profilePic={atts.https_contributor_profile_pic} fullname={atts.contributor_name} 
+            username={atts.contributor_screen_name} geometry={markerInfo.geometry} mediaId={atts.message_id} mediaLink={atts.media} time={dateString}/>
+        )
+      });
+    }
 
     return (
       <div>
@@ -89,8 +95,10 @@ export default class MainIndex extends React.Component {
                 </div>
           </div>
         {/* </section>    */}
-        <FootNavbar />
+        {/* <FootNavbar /> */}
         {this.map}
       </div>  
     )
 }}
+
+export default withApollo(MainIndex);

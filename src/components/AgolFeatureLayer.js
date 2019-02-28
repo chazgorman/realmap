@@ -57,7 +57,6 @@ class AgolFeatureLayer {
         return flayer;
       }).then(layer => {
         this.layer = layer;
-        this.mapExtentChange = this.map.on("extent-change", this.extentChanged.bind(this));
       })
       .catch(err => {
         // handle any script or module loading errors

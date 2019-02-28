@@ -88,13 +88,6 @@ export default class MainIndex extends React.Component {
           description: "{display_text}"
         });
 
-        var flayer = new FeatureLayer("https://services9.arcgis.com/T1Rjzl3QPzLYGXGl/arcgis/rest/services/Twitter_View/FeatureServer/0",{
-          id: "twitter",
-          mode: esri.layers.FeatureLayer.MODE_ONDEMAND,
-          infoTemplate: popupTemplate,
-          outFields: ["*"]
-        });
-
         
         //create a feature layer based on the feature collection
         var featureLayer = new FeatureLayer(featureCollection, {
@@ -143,10 +136,10 @@ export default class MainIndex extends React.Component {
         query.geometry = evt.extent;
         query.outFields = ["*"];
 
-        var layer = theMap.getLayer("twitter");
-        layer.queryFeatures(query, function(featureSet){
-          theComp.props.updateMapMarkers(featureSet.features);
-        })
+        // var layer = theMap.getLayer("twitter");
+        // layer.queryFeatures(query, function(featureSet){
+        //   theComp.props.updateMapMarkers(featureSet.features);
+        // })
     });
 
   }

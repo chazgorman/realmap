@@ -1,21 +1,12 @@
 import { loadModules } from 'esri-loader';
-
-import ApolloClient from "apollo-boost";
-
-const client = new ApolloClient({
-  uri: "http://gql.procyclingmap.net/v1alpha1/graphql"
-});
-
-import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
-
-import createApolloFetch from 'apollo-boost'
 export const allMsgsQuery = gql`
 {
-      messages {
+      messages_last_7_days(limit: 100) {
         harvest_id
         contributor_screen_name
         contributor_name
+        https_contributor_profile_pic
         message
         message_id
         time
@@ -25,7 +16,7 @@ export const allMsgsQuery = gql`
         network
         location
     }
-  }
+}
 `
 export const messagesQueryVars = {
   skip: 0,
@@ -33,10 +24,12 @@ export const messagesQueryVars = {
 }
 
 class GraphqlFeatureLayer {
-  constructor(name, url, map) {
+  constructor(name, url, map, getMapMarkersFunc, client) {
     this.name = name;
     this.url = url;
     this.map = map;
+    this.getMapMarkers = getMapMarkersFunc;
+    this.client = client;
 
     this.featuresSet = false;
 
@@ -105,7 +98,7 @@ class GraphqlFeatureLayer {
         thisLayer.layer = layer;
         //thisLayer.mapExtentChange = thisLayer.map.on("extent-change", this.extentChanged.bind(this));
 
-        client
+        thisLayer.client
         .query({
           query: allMsgsQuery
         })
@@ -137,13 +130,14 @@ class GraphqlFeatureLayer {
       
       var sr = new SpatialReference(4326);
 
-      var graphics = markers.messages.map(m => {
+      this.graphics = markers.messages_last_7_days.map(m => {
         var p = new Point(m.location.coordinates[0], m.location.coordinates[1], sr);
         var g = new Graphic(p,markerSymbol);
+        m.map = thisLayer.map;
         g.setAttributes(m);
         return g;
       });
-      return graphics;
+      return this.graphics;
     })
     .then(thisLayer.addGraphics)
     .catch(err => {
@@ -158,6 +152,7 @@ class GraphqlFeatureLayer {
     graphics.map(g => {
       markerLayer.add(g);
     });
+    this.getMapMarkers(this);
   }
 }
 
