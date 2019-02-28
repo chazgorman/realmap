@@ -1,7 +1,5 @@
 import DynamicMap from '../src/components/map';
 import Navbar from '../src/components/navbar'
-import FootNavbar from '../src/components/footnavbar'
-import Card from '../src/components/card'
 import Media from '../src/components/media'
 import { withApollo } from 'react-apollo';
 import gql from 'graphql-tag'

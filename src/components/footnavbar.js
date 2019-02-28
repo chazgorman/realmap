@@ -3,7 +3,7 @@ import Link from 'next/link'
 class FootNavbar extends React.Component {
     render(){
         return (
-            <nav className="navbar is-link is-fixed-bottom is-hidden-tablet" role="navigation" style={{zIndex:'2000'}}>
+            <nav className="navbar is-link is-fixed-bottom is-hidden-tablet" role="navigation" style={{zIndex:'1000'}}>
                 <div className="navbar-brand">
                     <Link href='/'>
                         <a className="navbar-item is-expanded">
