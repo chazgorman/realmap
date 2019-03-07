@@ -90,6 +90,8 @@ class GraphqlFeatureLayer {
           id: thisLayer.name
         });
 
+        featureLayer.on("click", thisLayer.markerClick.bind(thisLayer));
+
         //map.setInfoWindowOnClick(false);
         thisLayer.map.addLayers([featureLayer]);
 
@@ -113,8 +115,12 @@ class GraphqlFeatureLayer {
   extentChanged(evt) {
 
   }
+  markerClick(evt){
+    console.log("markerClick", evt.graphic.attributes);
+  }
   setMapMarkers(markers) {
     let thisLayer = this;
+    var markerSelected = this.markerClick.bind(this);
 
     console.log("In map setMapMarkers", markers, this.mapNode);
     const options = {

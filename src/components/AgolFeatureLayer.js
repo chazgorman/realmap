@@ -1,12 +1,4 @@
 import { loadModules } from 'esri-loader';
-
-import ApolloClient from "apollo-boost";
-
-const client = new ApolloClient({
-  uri: "http://gql.procyclingmap.net/v1alpha1/graphql"
-});
-
-import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import createApolloFetch from 'apollo-boost'

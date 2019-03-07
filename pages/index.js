@@ -12,8 +12,6 @@ export const allAppsQuery = gql`
   }
 }
 `
-
-
 export const allMsgsQuery = gql`
 {
       messages_last_7_days {

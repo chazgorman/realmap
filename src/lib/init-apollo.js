@@ -14,7 +14,7 @@ function create (initialState) {
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link: new HttpLink({
-      uri: 'http://gql.procyclingmap.net/v1alpha1/graphql' // Server URL (must be absolute)
+      uri: 'https://gql.procyclingmap.net/v1alpha1/graphql' // Server URL (must be absolute),
     }),
     cache: new InMemoryCache().restore(initialState || {})
   })

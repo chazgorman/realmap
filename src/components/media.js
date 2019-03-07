@@ -22,7 +22,7 @@ class Media extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { zooming: false, showMedia: false, sharedLinks: [] };
+        this.state = { zooming: false, showModal: false, showMedia: true, sharedLinks: [] };
         var thisMedia = this;
 
         // this.props.client.query({
@@ -32,10 +32,16 @@ class Media extends React.Component {
         //     }
         // }).then(result => thisMedia.setState({ sharedLinks: result.data }));
     }
-    showMedia() {
-        var value = this.state.showMedia === true ? false : true;
+    showModal() {
+        var value = this.state.showModal === true ? false : true;
 
-        this.setState({ showMedia: value, showMap: !value });
+        this.setState({ showModal: value, showMap: !value });
+    }
+    showModalMedia() {
+        this.setState({ showModal: true, showMedia: true });
+    }
+    showModalMap() {
+        this.setState({ showModal: true, showMedia: false });
     }
     setSharedLinks(sharedLinks) {
         this.setState({ sharedLinks: sharedLinks });
@@ -50,11 +56,6 @@ class Media extends React.Component {
         map.centerAndZoom(geom, 14).then(function (result) {
             card.setState({ zooming: false });
         })
-    }
-    zoomToModal() {
-        console.log("In zoomTo", this.props.geometry);
-
-        this.setState({ showMap: true, showMedia: true });
     }
     render() {
         var buttonClassname = "button is-link";
@@ -89,7 +90,7 @@ class Media extends React.Component {
 
                         if (mediaUrl.startsWith("https://www.instagram.com")) {
                             mediaLinkButton = (
-                                <div className="button" onClick={this.showMedia.bind(this)}>
+                                <div className="button" onClick={this.showModalMedia.bind(this)}>
                                     <i className="fab fa-instagram"></i>
                                 </div>
                             )
@@ -101,7 +102,7 @@ class Media extends React.Component {
                         }
                         else {
                             mediaLinkButton = (
-                                <div className="button" onClick={this.showMedia.bind(this)}>
+                                <div className="button" onClick={this.showModalMedia.bind(this)}>
                                     <i className="far fa-image"></i>
                                 </div>
                             )
@@ -110,8 +111,17 @@ class Media extends React.Component {
                         }
                     }
 
+                    // ----------
+                    var mobileMapButtonGroup = (<div className="buttons">
+                        <div className={buttonClassname} onClick={this.showModalMap.bind(this)}>
+                            <i className="fas fa-search" color="blue"></i>
+                        </div>
+                        <button className="delete" aria-label="close" onClick={this.showModal.bind(this)}></button>
+                    </div>)
+
+                    // ---------
                     var mapLinkButtonMobile = (<div className="is-hidden-desktop">
-                        <div className={buttonClassname} onClick={this.zoomToModal.bind(this)}>
+                        <div className={buttonClassname} onClick={this.showModalMap.bind(this)}>
                             <i className="fas fa-search" color="blue"></i>
                         </div>
                     </div>)
@@ -122,17 +132,14 @@ class Media extends React.Component {
                         </div>
                     </div>)
 
-                    if (this.state.showMedia && this.state.showMap == false) {
+                    if (this.state.showModal && this.state.showMedia == true) {
                         imageModal = (
                             <div className="modal is-active" style={{ zIndex: '1005' }}>
                                 <div className="modal-background"></div>
                                 <div className="modal-card">
                                     <header className="modal-card-head">
-                                        <p className="modal-card-title"><strong>{this.props.fullname}</strong> <small>{this.props.time}</small></p>  
-                                        <div className="buttons">
-                                            {mapLinkButtonMobile}
-                                            <button className="delete" aria-label="close" onClick={this.showMedia.bind(this)}></button>
-                                        </div>                                      
+                                        <p className="modal-card-title"><strong>{this.props.fullname}</strong> <small>{this.props.time}</small></p>
+                                        {mobileMapButtonGroup}
                                     </header>
                                     <section className="modal-card-body">
                                         <p className="image is-2by2">
@@ -146,8 +153,7 @@ class Media extends React.Component {
                             </div>
                         );
                     }
-                    else if(this.state.showMedia && this.state.showMap)
-                    {
+                    else if (this.state.showModal && this.state.showMedia == false) {
                         this.map = (<EsriModalMap geometry={this.props.geometry} />);
                         imageModal = (
                             <div className="modal is-active" style={{ zIndex: '1005' }}>
@@ -155,13 +161,13 @@ class Media extends React.Component {
                                 <div className="modal-card">
                                     <header className="modal-card-head">
                                         <p className="modal-card-title"><strong>{this.props.fullname}</strong> <small>{this.props.time}</small></p>
-                                        <div className="buttons">
+                                        {<div className="buttons">
                                             {mediaLinkButton}
-                                            <button className="delete" aria-label="close" onClick={this.showMedia.bind(this)}></button>
-                                        </div>
+                                            <button className="delete" aria-label="close" onClick={this.showModal.bind(this)}></button>
+                                        </div>}
                                     </header>
                                     <section className="modal-card-body">
-                                        <div id="modal-map"></div>                                        
+                                        <div id="modal-map"></div>
                                     </section>
                                     <footer className="modal-card-foot">
                                         <p>{this.props.text}</p>
