@@ -36,47 +36,40 @@ class EsriMap extends React.Component {
 
     this.featuresSet = false;
 
-    this.extentChanged = this.extentChanged.bind(this);    
+    this.extentChanged = this.extentChanged.bind(this);
   }
   componentDidMount() {
     var thisMap = this;
-    const options = {
-      url: 'https://js.arcgis.com/3.23/',
-    };
-    loadModules(['esri/map','esri/config'], options)
-      .then(([Map, esriConfig]) => {
-        esriConfig.defaults.map.panDuration = 1000; // time in milliseconds, default panDuration: 350
-        esriConfig.defaults.map.panRate = 25; // default panRate: 25
-        esriConfig.defaults.map.zoomDuration = 1000; // default zoomDuration: 500
-        esriConfig.defaults.map.zoomRate = 25; // default zoomRate: 25
+    // first, we use Dojo's loader to require the map class
+    loadModules(['esri/Map','esri/views/SceneView'])
+      .then(([Map, SceneView]) => {
 
-        // create map with the given options at a DOM node w/ id 'mapNode'
-        const map = new Map('map', {
-          center: [0, 34.5],
-          zoom: 2,
-          basemap: 'streets',
+        var map = new Map({
+          basemap: "topo",
+          ground: "world-elevation"
         });
 
-        // let twitterUrl = "https://services9.arcgis.com/T1Rjzl3QPzLYGXGl/arcgis/rest/services/Twitter_View/FeatureServer/0";
-        // let pcmlayer = new AgolFeatureLyr("twitter", twitterUrl, map);
-        // pcmlayer.loadLayer();        
-        
-        let graphqlLayer = new GraphqlLyr("graphql", "", map, thisMap.props.getMapMarkers, thisMap.props.client);
+        var view = new SceneView({
+          container: "map",  // Reference to the DOM node that will contain the view
+          map: map  // References the map object created in step 3
+        });
+
+        let graphqlLayer = new GraphqlLyr("graphql", "", view, thisMap.props.getMapMarkers, thisMap.props.client);
         graphqlLayer.loadLayer();
 
-        return map;
+        return view;
       }).then(map => {
         this.map = map;
+        
         this.mapExtentChange = map.on("extent-change", this.extentChanged.bind(this));
         //this.props.getMapMarkers(this);
       })
       .catch(err => {
-        // handle any script or module loading errors
+        // handle any errors
         console.error(err);
       });
-
   }
-  extentChanged(evt){
+  extentChanged(evt) {
 
   }
   render() {

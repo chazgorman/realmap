@@ -53,7 +53,12 @@ class Media extends React.Component {
         var map = this.props.map;
         this.setState({ zooming: true });
 
-        map.centerAndZoom(geom, 14).then(function (result) {
+        var options = {
+            target: geom,
+            zoom: 14,
+            tilt: 45        
+        };
+        map.goTo(options).then(function (result) {
             card.setState({ zooming: false });
         })
     }
@@ -167,7 +172,7 @@ class Media extends React.Component {
                                         </div>}
                                     </header>
                                     <section className="modal-card-body">
-                                        <div id="modal-map"></div>
+                                        <div id="modal-map" style={{height:"300px", width:"300px"}}></div>
                                     </section>
                                     <footer className="modal-card-foot">
                                         <p>{this.props.text}</p>

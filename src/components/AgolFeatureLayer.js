@@ -35,7 +35,7 @@ class AgolFeatureLayer {
     const options = {
       url: 'https://js.arcgis.com/3.23/',
     };
-    loadModules(['esri/layers/FeatureLayer'], options)
+    loadModules(['esri/layers/FeatureLayer'])
       .then(([FeatureLayer]) => {
 
         var flayer = new FeatureLayer(thisLayer.url,{
