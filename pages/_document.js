@@ -5,7 +5,7 @@ class MyDocument extends Document {
   render() {
 
     return (
-      <html lang="en" dir="ltr" style={{ height: '100%' }}>
+      <html lang="en" dir="ltr" style={{ height: '100%', overflowY: 'hidden' }}>
       <head>
         <title>Pro Cycling Map</title>
         <meta charSet="utf-8" />
@@ -34,7 +34,7 @@ class MyDocument extends Document {
 
         <script type="text/javascript" src="./static/attachNavbarBurgerClick.js"></script>
       </head>
-      <body className="has-navbar-fixed-top has-navbar-fixed-bottom" style={{height: '100%'}}>
+      <body className="has-navbar-fixed-top" style={{height: '100%'}}>
         <Main />
         <NextScript />
       </body>
