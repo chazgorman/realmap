@@ -4,6 +4,7 @@ import { withApollo } from 'react-apollo';
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import EsriModalMap from './modalmap'
+import SideMedia from './sidemedia'
 
 export const mediaForMsgQuery = gql`
 query($messageid: String) {
@@ -38,6 +39,7 @@ class Media extends React.Component {
         this.setState({ showModal: value, showMap: !value });
     }
     showModalMedia() {
+        this.zoomTo();
         this.setState({ showModal: true, showMedia: true });
     }
     showModalMap() {
@@ -55,7 +57,7 @@ class Media extends React.Component {
 
         var options = {
             target: geom,
-            zoom: 14,
+            zoom: 12,
             tilt: 45        
         };
         map.goTo(options).then(function (result) {
@@ -143,7 +145,7 @@ class Media extends React.Component {
                                 <div className="modal-background"></div>
                                 <div className="modal-card">
                                     <header className="modal-card-head">
-                                        <p className="modal-card-title"><strong>{this.props.fullname}</strong> <small>{this.props.time}</small></p>
+                                        <p className="modal-card-title"><strong>{this.props.username}</strong> <small>{this.props.time}</small></p>
                                         {mobileMapButtonGroup}
                                     </header>
                                     <section className="modal-card-body">
@@ -165,7 +167,7 @@ class Media extends React.Component {
                                 <div className="modal-background"></div>
                                 <div className="modal-card">
                                     <header className="modal-card-head">
-                                        <p className="modal-card-title"><strong>{this.props.fullname}</strong> <small>{this.props.time}</small></p>
+                                        <p className="modal-card-title"><strong>{this.props.username}</strong> <small>{this.props.time}</small></p>
                                         {<div className="buttons">
                                             {mediaLinkButton}
                                             <button className="delete" aria-label="close" onClick={this.showModal.bind(this)}></button>
@@ -184,6 +186,14 @@ class Media extends React.Component {
                     }
 
                     var linkUrl = "/map?zoomto=" + this.props.mediaId;
+
+                    var sideMedia = (
+                        <SideMedia mediaId={this.props.mediaId} text={this.props.text} hideImage={this.showModal.bind(this)}></SideMedia>
+                    );
+
+                    if(this.state.showModal){
+                        return sideMedia;
+                    }
 
                     return (
                         <article className="media">
@@ -217,17 +227,6 @@ class Media extends React.Component {
                             <div className="media-right">
                                 <div className="buttons">
                                     {mediaLinkButton}
-
-                                    {/* <div className="is-hidden-desktop">
-                                        <Link href={linkUrl}>
-                                            <a>
-                                                <div className={buttonClassname}>
-                                                    <i className="fas fa-search" color="blue"></i>
-                                                </div>
-                                            </a>
-                                        </Link>
-                                    </div> */}
-
                                     {mapLinkButtonMobile}
                                     {mapLinkButtonDesktop}
                                 </div>
@@ -240,8 +239,6 @@ class Media extends React.Component {
         );
     }
 }
-
-
 
 Media.propTypes = {
     text: PropTypes.string,
