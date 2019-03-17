@@ -119,92 +119,45 @@ class SideMedia extends React.Component {
 
                     if (this.state.showModal && this.state.showMedia == true) {
                         imageModal = (
-                            <div className="modal-card">
-                                <header className="modal-card-head">
-                                    <div class="media-content">
-                                        <p class="title is-4">{this.props.fullname}</p>
-                                        <p class="subtitle is-6">@{this.props.username}</p>
-                                    </div>                                    
+                            <article className="message">
+                                <div className="message-header">
+                                    <p>@{this.props.username}</p>
                                     {mobileMapButtonGroup}
-                                </header>
-                                <section className="modal-card-body">
+                                </div>
+                                <section className="message-body">
                                     <div className="image is-2by2">
                                         <img src={mediaImage} alt="" />
                                         {/* <div className="is-overlay" style={{ background: 'rgba(75, 104, 133, 0.7)', margin: '1vh', fontSize: 'large', color: 'white', bottom: '0', top: 'unset' }}>{this.props.text}</div> */}
                                     </div>
                                 </section>
-                                <footer className="modal-card-foot">
+                                <div>
                                     <p>{this.props.text}</p>
-                                    <nav className="level is-mobile">
-                                        <div className="level-left">
-                                            <a className="level-item" target="_blank" href={replyToLink}>
-                                                <span className="icon is-small"><i className="fas fa-reply"></i></span>
-                                            </a>
-                                            <a className="level-item" target="_blank" href={retweetLink}>
-                                                <span className="icon is-small"><i className="fas fa-retweet"></i></span>
-                                            </a>
-                                            <a className="level-item" target="_blank" href={likeLink}>
-                                                <span className="icon is-small"><i className="fas fa-heart"></i></span>
-                                            </a>
-                                        </div>
-                                    </nav>
-                                </footer>
-                            </div>
+                                </div>
+                            </article>
                         );
                     }
                     else if (this.state.showModal && this.state.showMap == true) {
-
                         this.map = (<EsriModalMap geometry={this.props.geometry} />);
                         imageModal = (
-                            <div className="modal-card">
-                                <header className="modal-card-head">
-                                    <div class="media-content">
-                                        <p class="title is-4">{this.props.fullname}</p>
-                                        <p class="subtitle is-6">@{this.props.username}</p>
-                                    </div>
-                                    {<div className="buttons">
-                                        {mediaLinkButton}
-                                        <button className="delete" aria-label="close" onClick={this.props.hideImage}></button>
-                                    </div>}
-                                </header>
-                                <section className="modal-card-body">
-                                    <div id="modal-map" style={{ height: "65vh", width: "65vw" }}></div>
+                            <article className="message">
+                                <div className="message-header">
+                                    <p>@{this.props.username}</p>
+                                    {mobileMapButtonGroup}
+                                </div>
+                                <section className="message-body">
+                                    <div id="modal-map" style={{ height: "60vh" }}></div>
                                 </section>
-                                <footer className="modal-card-foot">
+                                <div>
                                     <p>{this.props.text}</p>
-                                    <nav className="level is-mobile">
-                                        <div className="level-left">
-                                            <a className="level-item" target="_blank" href={replyToLink}>
-                                                <span className="icon is-small"><i className="fas fa-reply"></i></span>
-                                            </a>
-                                            <a className="level-item" target="_blank" href={retweetLink}>
-                                                <span className="icon is-small"><i className="fas fa-retweet"></i></span>
-                                            </a>
-                                            <a className="level-item" target="_blank" href={likeLink}>
-                                                <span className="icon is-small"><i className="fas fa-heart"></i></span>
-                                            </a>
-                                        </div>
-                                    </nav>
-                                </footer>
+                                </div>
                                 {this.map}
-                            </div>
+                            </article>
                         );
                     }
 
-                    var modalDiv = (<div className="modal is-active is-hidden-desktop" style={{ zIndex: '1005' }}>
-                        <div className="modal-background"></div>
-                        {imageModal}
-                    </div>);
-
-                    var nonModalDiv = (<div className="is-hidden-touch">
-                        <div className="modal-background"></div>
-                        {imageModal}
-                    </div>);
-
                     return (
                         <article className="media">
-                            {modalDiv}
-                            {nonModalDiv}
+                            {imageModal}
                         </article>
                     );
                 }}
