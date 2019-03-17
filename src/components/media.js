@@ -25,25 +25,20 @@ class Media extends React.Component {
 
         this.state = { zooming: false, showModal: false, showMedia: true, sharedLinks: [] };
         var thisMedia = this;
-
-        // this.props.client.query({
-        //     query: mediaForMsgQuery,
-        //     variables: {
-        //         messageid: this.props.mediaId
-        //     }
-        // }).then(result => thisMedia.setState({ sharedLinks: result.data }));
     }
     showModal() {
         var value = this.state.showModal === true ? false : true;
 
-        this.setState({ showModal: value, showMap: !value });
+        this.setState({ showModal: value });
     }
-    showModalMedia() {
-        this.zoomTo();
-        this.setState({ showModal: true, showMedia: true });
+    showModalMedia(zoom) {
+        if(zoom){
+            this.zoomTo();
+        }
+        this.setState({ showModal: true, showMedia: true, showMap: false });
     }
     showModalMap() {
-        this.setState({ showModal: true, showMedia: false });
+        this.setState({ showModal: true, showMedia: false, showMap: true });
     }
     setSharedLinks(sharedLinks) {
         this.setState({ sharedLinks: sharedLinks });
@@ -65,18 +60,9 @@ class Media extends React.Component {
         })
     }
     render() {
-        var buttonClassname = "button is-link";
-        if (this.state.zooming) {
-            buttonClassname += " is-loading";
-        } else if (this.props.selected) {
-            buttonClassname += "is-success is-outlined";
-        }
-
         var retweetLink = "https://twitter.com/intent/retweet?tweet_id=" + this.props.mediaId;
         var replyToLink = "https://twitter.com/intent/tweet?in_reply_to=" + this.props.mediaId;
         var likeLink = "https://twitter.com/intent/like?tweet_id=" + this.props.mediaId;
-
-        var imageModal = undefined;
 
         var mediaLinkButton = undefined;
         var mediaImage = undefined; //"https://www.instagram.com/p/BtbXwXgFqevg2e_zNtzD9ED8HPodoyLbi0KoA00/media?size=l"
@@ -118,85 +104,19 @@ class Media extends React.Component {
                         }
                     }
 
-                    // ----------
-                    var mobileMapButtonGroup = (<div className="buttons">
-                        <div className={buttonClassname} onClick={this.showModalMap.bind(this)}>
-                            <i className="fas fa-search" color="blue"></i>
-                        </div>
-                        <button className="delete" aria-label="close" onClick={this.showModal.bind(this)}></button>
-                    </div>)
-
-                    // ---------
-                    var mapLinkButtonMobile = (<div className="is-hidden-desktop">
-                        <div className={buttonClassname} onClick={this.showModalMap.bind(this)}>
-                            <i className="fas fa-search" color="blue"></i>
-                        </div>
-                    </div>)
-
-                    var mapLinkButtonDesktop = (<div className="is-hidden-touch">
-                        <div className={buttonClassname} onClick={this.zoomTo.bind(this)}>
-                            <i className="fas fa-search" color="blue"></i>
-                        </div>
-                    </div>)
-
-                    if (this.state.showModal && this.state.showMedia == true) {
-                        imageModal = (
-                            <div className="modal is-active" style={{ zIndex: '1005' }}>
-                                <div className="modal-background"></div>
-                                <div className="modal-card">
-                                    <header className="modal-card-head">
-                                        <p className="modal-card-title"><strong>{this.props.username}</strong> <small>{this.props.time}</small></p>
-                                        {mobileMapButtonGroup}
-                                    </header>
-                                    <section className="modal-card-body">
-                                        <p className="image is-2by2">
-                                            <img src={mediaImage} alt="" />
-                                        </p>
-                                    </section>
-                                    <footer className="modal-card-foot">
-                                        <p>{this.props.text}</p>
-                                    </footer>
-                                </div>
-                            </div>
-                        );
-                    }
-                    else if (this.state.showModal && this.state.showMedia == false) {
-                        this.map = (<EsriModalMap geometry={this.props.geometry} />);
-                        imageModal = (
-                            <div className="modal is-active" style={{ zIndex: '1005' }}>
-                                <div className="modal-background"></div>
-                                <div className="modal-card">
-                                    <header className="modal-card-head">
-                                        <p className="modal-card-title"><strong>{this.props.username}</strong> <small>{this.props.time}</small></p>
-                                        {<div className="buttons">
-                                            {mediaLinkButton}
-                                            <button className="delete" aria-label="close" onClick={this.showModal.bind(this)}></button>
-                                        </div>}
-                                    </header>
-                                    <section className="modal-card-body">
-                                        <div id="modal-map" style={{height:"300px", width:"300px"}}></div>
-                                    </section>
-                                    <footer className="modal-card-foot">
-                                        <p>{this.props.text}</p>
-                                    </footer>
-                                </div>
-                                {this.map}
-                            </div>
-                        );
-                    }
-
                     var linkUrl = "/map?zoomto=" + this.props.mediaId;
 
-                    var sideMedia = (
-                        <SideMedia mediaId={this.props.mediaId} text={this.props.text} hideImage={this.showModal.bind(this)}></SideMedia>
-                    );
-
                     if(this.state.showModal){
+                        var sideMedia = (
+                            <SideMedia mediaId={this.props.mediaId} username={this.props.username} date={this.props.date} text={this.props.text} hideImage={this.showModal.bind(this)} 
+                                        profilePic={this.props.profilePic} fullname={this.props.fullname} geometry={this.props.geometry} time={this.props.time}>
+                            </SideMedia>
+                        );
                         return sideMedia;
                     }
 
                     return (
-                        <article className="media">
+                        <article className="media" onClick={this.showModalMedia.bind(this)} data-mediaid={this.props.mediaId}>
                             <figure className="media-left">
                                 <p className="image is-48x48">
                                     <img className="is-rounded" src={this.props.profilePic} alt="Placeholder image" />
@@ -226,12 +146,9 @@ class Media extends React.Component {
                             </div>
                             <div className="media-right">
                                 <div className="buttons">
-                                    {mediaLinkButton}
-                                    {mapLinkButtonMobile}
-                                    {mapLinkButtonDesktop}
+                                    {mediaLinkButton}                            
                                 </div>
-                            </div>
-                            {imageModal}
+                            </div>                            
                         </article>
                     );
                 }}

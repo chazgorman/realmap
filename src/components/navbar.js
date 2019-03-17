@@ -26,7 +26,7 @@ class Navbar extends React.Component {
                 <div className="navbar-brand">  
                     <a href="/">
                         <img src="/static/PCMLogoLight_SideIcon.png" alt="Pro Cycling Map. Explore the World of Pro Cycling!" width="260px" height="60px"/>
-                    </a>                  
+                    </a>                
                     <div className="navbar-burger burger" data-target="navbarExampleTransparentExample">
                         <span></span>
                         <span></span>

@@ -21,7 +21,7 @@ class SideMedia extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { zooming: false, showModal: false, showMedia: true, sharedLinks: [] };
+        this.state = { zooming: false, showModal: true, showMedia: true, sharedLinks: [] };
     }
     showModal() {
         var value = this.state.showModal === true ? false : true;
@@ -29,10 +29,10 @@ class SideMedia extends React.Component {
         this.setState({ showModal: value, showMap: !value });
     }
     showModalMedia() {
-        this.setState({ showModal: true, showMedia: true });
+        this.setState({ showModal: true, showMedia: true, showMap: false });
     }
     showModalMap() {
-        this.setState({ showModal: true, showMedia: false });
+        this.setState({ showModal: true, showMedia: false, showMap: true });
     }
     setSharedLinks(sharedLinks) {
         this.setState({ sharedLinks: sharedLinks });
@@ -54,7 +54,7 @@ class SideMedia extends React.Component {
         })
     }
     render() {
-        var buttonClassname = "button is-link";
+        var buttonClassname = "button is-link is-hidden-desktop";
         if (this.state.zooming) {
             buttonClassname += " is-loading";
         } else if (this.props.selected) {
@@ -86,7 +86,7 @@ class SideMedia extends React.Component {
 
                         if (mediaUrl.startsWith("https://www.instagram.com")) {
                             mediaLinkButton = (
-                                <div className="button" onClick={this.showModalMedia.bind(this)}>
+                                <div className="button is-hidden-touch" onClick={this.showModalMedia.bind(this)}>
                                     <i className="fab fa-instagram"></i>
                                 </div>
                             )
@@ -98,7 +98,7 @@ class SideMedia extends React.Component {
                         }
                         else {
                             mediaLinkButton = (
-                                <div className="button" onClick={this.showModalMedia.bind(this)}>
+                                <div className="button is-hidden-touch" onClick={this.showModalMedia.bind(this)}>
                                     <i className="far fa-image"></i>
                                 </div>
                             )
@@ -107,30 +107,104 @@ class SideMedia extends React.Component {
                         }
                     }
 
-                    var imageModal = (
-                        <div className="modal-card">
-                            <header className="modal-card-head">
-                                <p className="modal-card-title"><strong>{this.props.username}</strong> <small>{this.props.time}</small></p>
-                                {<div className="buttons">
-                                    {mediaLinkButton}
-                                    <button className="delete" aria-label="close" onClick={this.props.hideImage}></button>
-                                </div>}
-                            </header>
-                            <section className="modal-card-body">
-                                <p className="image is-2by2">
-                                    <img src={mediaImage} alt="" />
-                                </p>
-                            </section>
-                            <footer className="modal-card-foot">
-                                <p>{this.props.text}</p>
-                            </footer>
+                    // ----------
+                    var mobileMapButtonGroup = (<div className="buttons">
+                        <div className={buttonClassname} onClick={this.showModalMap.bind(this)}>
+                            <i className="fas fa-search" color="blue"></i>
                         </div>
-                    );
+                        <button className="delete" aria-label="close" onClick={this.props.hideImage}></button>
+                    </div>)
 
+                    var imageModal = undefined;
+
+                    if (this.state.showModal && this.state.showMedia == true) {
+                        imageModal = (
+                            <div className="modal-card">
+                                <header className="modal-card-head">
+                                    <div class="media-content">
+                                        <p class="title is-4">{this.props.fullname}</p>
+                                        <p class="subtitle is-6">@{this.props.username}</p>
+                                    </div>                                    
+                                    {mobileMapButtonGroup}
+                                </header>
+                                <section className="modal-card-body">
+                                    <div className="image is-2by2">
+                                        <img src={mediaImage} alt="" />
+                                        {/* <div className="is-overlay" style={{ background: 'rgba(75, 104, 133, 0.7)', margin: '1vh', fontSize: 'large', color: 'white', bottom: '0', top: 'unset' }}>{this.props.text}</div> */}
+                                    </div>
+                                </section>
+                                <footer className="modal-card-foot">
+                                    <p>{this.props.text}</p>
+                                    <nav className="level is-mobile">
+                                        <div className="level-left">
+                                            <a className="level-item" target="_blank" href={replyToLink}>
+                                                <span className="icon is-small"><i className="fas fa-reply"></i></span>
+                                            </a>
+                                            <a className="level-item" target="_blank" href={retweetLink}>
+                                                <span className="icon is-small"><i className="fas fa-retweet"></i></span>
+                                            </a>
+                                            <a className="level-item" target="_blank" href={likeLink}>
+                                                <span className="icon is-small"><i className="fas fa-heart"></i></span>
+                                            </a>
+                                        </div>
+                                    </nav>
+                                </footer>
+                            </div>
+                        );
+                    }
+                    else if (this.state.showModal && this.state.showMap == true) {
+
+                        this.map = (<EsriModalMap geometry={this.props.geometry} />);
+                        imageModal = (
+                            <div className="modal-card">
+                                <header className="modal-card-head">
+                                    <div class="media-content">
+                                        <p class="title is-4">{this.props.fullname}</p>
+                                        <p class="subtitle is-6">@{this.props.username}</p>
+                                    </div>
+                                    {<div className="buttons">
+                                        {mediaLinkButton}
+                                        <button className="delete" aria-label="close" onClick={this.props.hideImage}></button>
+                                    </div>}
+                                </header>
+                                <section className="modal-card-body">
+                                    <div id="modal-map" style={{ height: "65vh", width: "65vw" }}></div>
+                                </section>
+                                <footer className="modal-card-foot">
+                                    <p>{this.props.text}</p>
+                                    <nav className="level is-mobile">
+                                        <div className="level-left">
+                                            <a className="level-item" target="_blank" href={replyToLink}>
+                                                <span className="icon is-small"><i className="fas fa-reply"></i></span>
+                                            </a>
+                                            <a className="level-item" target="_blank" href={retweetLink}>
+                                                <span className="icon is-small"><i className="fas fa-retweet"></i></span>
+                                            </a>
+                                            <a className="level-item" target="_blank" href={likeLink}>
+                                                <span className="icon is-small"><i className="fas fa-heart"></i></span>
+                                            </a>
+                                        </div>
+                                    </nav>
+                                </footer>
+                                {this.map}
+                            </div>
+                        );
+                    }
+
+                    var modalDiv = (<div className="modal is-active is-hidden-desktop" style={{ zIndex: '1005' }}>
+                        <div className="modal-background"></div>
+                        {imageModal}
+                    </div>);
+
+                    var nonModalDiv = (<div className="is-hidden-touch">
+                        <div className="modal-background"></div>
+                        {imageModal}
+                    </div>);
 
                     return (
                         <article className="media">
-                            {imageModal}
+                            {modalDiv}
+                            {nonModalDiv}
                         </article>
                     );
                 }}

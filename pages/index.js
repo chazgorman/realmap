@@ -1,6 +1,6 @@
 import DynamicMap from '../src/components/map';
 import Navbar from '../src/components/navbar'
-import Media from '../src/components/media'
+import MediaList from '../src/components/mediaList'
 import { withApollo } from 'react-apollo';
 import gql from 'graphql-tag'
 
@@ -39,62 +39,61 @@ class MainIndex extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {mapMarkers: []};
+    this.state = { mapMarkers: [] };
 
     this.getMapMarkers = this.getMapMarkers.bind(this);
     this.setMapMarkers = this.setMapMarkers.bind(this);
     this.getMapMarkers();
   }
-  getMapMarkers(layer){
-    if(layer !== undefined){
+  getMapMarkers(layer) {
+    if (layer !== undefined) {
       this.setMapMarkers(layer.graphics);
     }
   }
-  setMapMarkers(markers){
-    this.setState({mapMarkers: markers})
+  setMapMarkers(markers) {
+    this.setState({ mapMarkers: markers })
   }
-  render() {    
-    var i = 0;
-    var usernames = {};
-    let cards = undefined;
+  render() {
+    // let searchInput = (<input className="input is-small" type="text" placeholder="Search ie. #LeTour"/>);
+    // let topicChooser = (<div className="tabs is-small">
+    //   <ul>
+    //     <li className="is-active"><a>Riders</a></li>
+    //     <li><a>News</a></li>
+    //     <li><a>Teams</a></li>
+    //     <li><a>Races</a></li>
+    //     <li><a>Road</a></li>
+    //     <li><a>MTB</a></li>
+    //     <li><a>Cyclocross</a></li>
+    //     <li><a>Men</a></li>
+    //     <li><a>Women</a></li>
+    //   </ul>
+    // </div>);
 
-    if(this.state.mapMarkers !== undefined){
-      this.map = (<DynamicMap getMapMarkers={this.getMapMarkers} updateMapMarkers={this.setMapMarkers}/>);
-      cards = this.state.mapMarkers.map(markerInfo => {
-        var atts = markerInfo.attributes;
-        if(atts.contributor_name in usernames){
-          return;
-        }
-        usernames[atts.contributor_name] = true;
-  
-        var timeStamp = atts.time;
-        var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
-        return (
-          <Media key={i++} map={atts.map} text={atts.message} profilePic={atts.https_contributor_profile_pic} fullname={atts.contributor_name} 
-            username={atts.contributor_screen_name} geometry={markerInfo.geometry} mediaId={atts.message_id} mediaLink={atts.media} time={dateString}/>
-        )
-      });
+    let mediaList = (<MediaList mapMarkers={this.state.mapMarkers} />)
+
+    if (this.state.mapMarkers !== undefined) {
+      this.map = (<DynamicMap getMapMarkers={this.getMapMarkers} updateMapMarkers={this.setMapMarkers} />);
     }
 
     return (
       <div>
         <Navbar />
-        {/* <section className="hero is-fullheight-with-navbar"> */}
-          <div className="columns is-gapless is-desktop" style={{ width: '100%', height: '100%', paddingTop: '1.0rem' }}>
-                <div className="column" style={{ height: '100vh', padding:'0' }}>
-                  <div style={{ height: '100vh', overflow:'auto' }}>
-                    {cards}
-                  </div>
-                </div>
-                <div className="column is-two-thirds is-hidden-mobile">
-                  <div id="map" style={{ width: '100%', height: "100%"}} />
-                </div>
+        <div className="columns is-gapless is-desktop" style={{ width: '100%', height: '100%', paddingTop: '1.0rem' }}>
+          <div className="column" style={{ height: '100vh', padding: '0' }}>
+            {/* {searchInput}
+            {topicChooser} */}
+            <div style={{ height: '100vh', overflow: 'auto' }}>
+              {mediaList}
+            </div>
           </div>
-        {/* </section>    */}
-        {/* <FootNavbar /> */}
+          <div className="column is-two-thirds is-hidden-mobile">
+            <div id="map" style={{ width: '100%', height: "100%" }} />
+          </div>
+        </div>
         {this.map}
-      </div>  
+      </div>
     )
-}}
+  }
+}
 
 export default withApollo(MainIndex);
