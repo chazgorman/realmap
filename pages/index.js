@@ -14,7 +14,7 @@ export const allAppsQuery = gql`
 `
 export const allMsgsQuery = gql`
 {
-      messages_last_7_days {
+      messages_last_14_days {
         harvest_id
         contributor_screen_name
         contributor_name

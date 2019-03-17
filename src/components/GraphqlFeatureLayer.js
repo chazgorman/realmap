@@ -2,7 +2,7 @@ import { loadModules } from 'esri-loader';
 import gql from 'graphql-tag'
 export const allMsgsQuery = gql`
 {
-      messages_last_7_days(limit: 100) {
+      messages_last_14_days(limit: 100) {
         harvest_id
         contributor_screen_name
         contributor_name
@@ -110,7 +110,7 @@ class GraphqlFeatureLayer {
       
       var sr = new SpatialReference(4326);
 
-      var graphics = markers.messages_last_7_days.map(m => {
+      var graphics = markers.messages_last_14_days.map(m => {
         var p = new Point(m.location.coordinates[0], m.location.coordinates[1], sr);
         var graphicProps = {
           attributes: m,
