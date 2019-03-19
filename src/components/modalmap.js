@@ -52,7 +52,7 @@ class EsriModalMap extends React.Component {
         });
 
         var view = new SceneView({
-          container: "modal-map",  // Reference to the DOM node that will contain the view
+          container: thisMap.props.containerId,  // Reference to the DOM node that will contain the view
           map: map  // References the map object created in step 3
         });
 
@@ -104,6 +104,7 @@ class EsriModalMap extends React.Component {
 }
 
 EsriModalMap.propTypes = {
+  containerId: PropTypes.string,
   geometry: PropTypes.object
 };
 

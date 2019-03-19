@@ -137,7 +137,7 @@ class SideMedia extends React.Component {
                         );
                     }
                     else if (this.state.showModal && this.state.showMap == true) {
-                        this.map = (<EsriModalMap geometry={this.props.geometry} />);
+                        this.map = (<EsriModalMap containerId={this.props.mediaId} geometry={this.props.geometry} />);
                         imageModal = (
                             <article className="message">
                                 <div className="message-header">
@@ -145,7 +145,7 @@ class SideMedia extends React.Component {
                                     {mobileMapButtonGroup}
                                 </div>
                                 <section className="message-body">
-                                    <div id="modal-map" style={{ height: "60vh" }}></div>
+                                    <div id={this.props.mediaId} style={{ height: "60vh" }}></div>
                                 </section>
                                 <div>
                                     <p>{this.props.text}</p>
