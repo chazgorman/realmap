@@ -129,10 +129,10 @@ class SideMedia extends React.Component {
                                         <img src={mediaImage} alt="" />
                                         {/* <div className="is-overlay" style={{ background: 'rgba(75, 104, 133, 0.7)', margin: '1vh', fontSize: 'large', color: 'white', bottom: '0', top: 'unset' }}>{this.props.text}</div> */}
                                     </div>
+                                    <div>
+                                        <p>{this.props.text}</p>
+                                    </div>
                                 </section>
-                                <div>
-                                    <p>{this.props.text}</p>
-                                </div>
                             </article>
                         );
                     }
@@ -146,10 +146,10 @@ class SideMedia extends React.Component {
                                 </div>
                                 <section className="message-body">
                                     <div id={this.props.mediaId} style={{ height: "60vh" }}></div>
+                                    <div>
+                                        <p>{this.props.text}</p>
+                                    </div>
                                 </section>
-                                <div>
-                                    <p>{this.props.text}</p>
-                                </div>
                                 {this.map}
                             </article>
                         );
