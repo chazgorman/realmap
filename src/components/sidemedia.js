@@ -110,7 +110,7 @@ class SideMedia extends React.Component {
                     // ----------
                     var mobileMapButtonGroup = (<div className="buttons">
                         <div className={buttonClassname} onClick={this.showModalMap.bind(this)}>
-                            <i className="fas fa-search" color="blue"></i>
+                            <i className="fas fa-globe" color="blue"></i>
                         </div>
                         <button className="delete" aria-label="close" onClick={this.props.hideImage}></button>
                     </div>)

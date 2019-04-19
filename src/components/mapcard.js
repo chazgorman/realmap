@@ -49,7 +49,7 @@ class Card extends React.Component {
                             <i className="fab fa-twitter" color="blue"></i>
                         </span>
                         <div className={buttonClassname} onClick={this.zoomTo.bind(this)}>
-                            <i className="fas fa-search" color="blue"></i>
+                            <i className="fas fa-globe" color="blue"></i>
                         </div>
                     </div>
                     </div>

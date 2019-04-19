@@ -37,6 +37,7 @@ class EsriMap extends React.Component {
     this.featuresSet = false;
 
     this.extentChanged = this.extentChanged.bind(this);
+    this.viewImmediateClick = this.viewImmediateClick.bind(this);
   }
   componentDidMount() {
     var thisMap = this;
@@ -62,6 +63,8 @@ class EsriMap extends React.Component {
         this.map = map;
         
         this.mapExtentChange = map.on("extent-change", this.extentChanged.bind(this));
+
+        map.on("immediate-click", thisMap.viewImmediateClick);
         //this.props.getMapMarkers(this);
       })
       .catch(err => {
@@ -72,7 +75,25 @@ class EsriMap extends React.Component {
   extentChanged(evt) {
 
   }
+  viewImmediateClick(evt){
+    console.log("In viewImmediateClick");
+    var thisMap = this;
+    this.map.hitTest(evt).then(function(response) {
+      // check if a feature is returned from the hurricanesLayer
+      // do something with the result graphic
+      console.log(response.results);
+
+      if(response.results[0].graphic != undefined){
+        let activeMsgId = response.results[0].graphic.attributes.message_id;
+        console.log("Active Message: ", activeMsgId);
+
+        //this.props.client.writeData({ data: { activeMessage: activeMsgId } });
+      }
+    });
+  }
   render() {
+    console.log("EsriMap: ", this);
+
     return (
       <div
         ref={c => {
