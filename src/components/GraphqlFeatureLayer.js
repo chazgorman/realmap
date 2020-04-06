@@ -1,36 +1,18 @@
 import { loadModules } from 'esri-loader';
-import gql from 'graphql-tag'
-export const allMsgsQuery = gql`
-{
-      messages_last_14_days(limit: 100) {
-        harvest_id
-        contributor_screen_name
-        contributor_name
-        https_contributor_profile_pic
-        message
-        message_id
-        time
-        like_count
-        twitter_favorite_count
-        twitter_favorite_count
-        network
-        location
-    }
-}
-`
+
 export const messagesQueryVars = {
   skip: 0,
   first: 10
 }
 
 class GraphqlFeatureLayer {
-  constructor(name, url, map, getMapMarkersFunc, client) {
+  constructor(name, url, map, query, getMapMarkersFunc, client) {
     this.name = name;
     this.url = url;
     this.map = map;
     this.getMapMarkers = getMapMarkersFunc;
     this.client = client;
-
+    this.query = query;
     this.featuresSet = false;
 
     //this.updateMapMarkers = this.props.updateMapMarkers.bind(this);
@@ -44,7 +26,7 @@ class GraphqlFeatureLayer {
 
     thisLayer.client
     .query({
-      query: allMsgsQuery
+      query: thisLayer.query
     })
     .then(result => thisLayer.setMapMarkers(result.data));
   }

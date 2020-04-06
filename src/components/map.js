@@ -10,10 +10,11 @@ import gql from 'graphql-tag'
 
 export const allMsgsQuery = gql`
 {
-      messages {
+      messages_last_14_days(limit: 100) {
         harvest_id
         contributor_screen_name
         contributor_name
+        https_contributor_profile_pic
         message
         message_id
         time
@@ -23,7 +24,7 @@ export const allMsgsQuery = gql`
         network
         location
     }
-  }
+}
 `
 export const messagesQueryVars = {
   skip: 0,
@@ -42,20 +43,59 @@ class EsriMap extends React.Component {
   componentDidMount() {
     var thisMap = this;
     // first, we use Dojo's loader to require the map class
-    loadModules(['esri/Map','esri/views/SceneView'])
-      .then(([Map, SceneView]) => {
+    loadModules(['esri/Map','esri/views/SceneView', 'esri/widgets/Popup'])
+      .then(([Map, SceneView, Popup]) => {
 
         var map = new Map({
-          basemap: "topo",
+          basemap: "osm",
           ground: "world-elevation"
         });
 
+        // var popup = new Popup({
+        //   actions: null,
+        //   content: "Your Mom's House",
+        //   title: "Current Location",
+        //   visible: true,
+        //   dockEnabled: true,
+        //   dockOptions: {
+        //     buttonEnabled: false,
+        //     width: 100,
+        //     height: 50,
+        //     position: "top-right"
+        //   }
+        // });
+
         var view = new SceneView({
           container: "map",  // Reference to the DOM node that will contain the view
-          map: map  // References the map object created in step 3
+          map: map,  // References the map object created in step 3
+          // popup: {
+          //   actions: null,
+          //   content: "Your Mom's House",
+          //   title: "Current Location",
+          //   visible: true,
+          //   dockEnabled: true,
+          //   dockOptions: {
+          //     buttonEnabled: false,
+          //     width: 100,
+          //     height: 50,
+          //     position: "top-right"
+          //   }
+          // }
         });
 
-        let graphqlLayer = new GraphqlLyr("graphql", "", view, thisMap.props.getMapMarkers, thisMap.props.client);
+        thisMap.popup = view.popup;
+
+        // view.when(function(){
+        //   thisMap.popup.open({
+        //     title: "Current Location",
+        //     content: "Your Mom's House"
+        //   });
+        //   thisMap.popup.set("dockOptions",{
+        //     position: "top-right"
+        //   });
+        // });
+
+        let graphqlLayer = new GraphqlLyr("graphql", "", view, allMsgsQuery, thisMap.props.getMapMarkers, thisMap.props.client);
         graphqlLayer.loadLayer();
 
         return view;

@@ -100,7 +100,7 @@ class Media extends React.Component {
                                 </div>
                             )
 
-                            mediaImage = mediaUrl;
+                            mediaImage = sharedLinks[0].source;
                         }
                     }
 
