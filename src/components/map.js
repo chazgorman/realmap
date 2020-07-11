@@ -43,11 +43,11 @@ class EsriMap extends React.Component {
   componentDidMount() {
     var thisMap = this;
     // first, we use Dojo's loader to require the map class
-    loadModules(['esri/Map','esri/views/SceneView', 'esri/widgets/Popup'])
-      .then(([Map, SceneView, Popup]) => {
+    loadModules(['esri/Map','esri/views/SceneView', 'esri/widgets/BasemapToggle', 'esri/widgets/Popup'])
+      .then(([Map, SceneView, BasemapToggle, Popup]) => {
 
         var map = new Map({
-          basemap: "osm",
+          basemap: "topo",
           ground: "world-elevation"
         });
 
@@ -83,7 +83,14 @@ class EsriMap extends React.Component {
           // }
         });
 
-        thisMap.popup = view.popup;
+        var toggle = new BasemapToggle({
+          view: view,
+          nextBasemap: "hybrid"
+        });
+
+        view.ui.add(toggle, "top-right");
+
+        //thisMap.popup = view.popup;
 
         // view.when(function(){
         //   thisMap.popup.open({
