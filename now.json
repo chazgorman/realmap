@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "alias": "procyclingmap.tech",
+    "alias": "procyclingmap.app",
     "builds": [
       { "src": "package.json", "use": "@now/next" }
     ]
