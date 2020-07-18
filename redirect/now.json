@@ -1,0 +1,11 @@
+{
+    "version": 2,
+    "alias": ["www.procyclingmap.com"],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "status": 301,
+        "headers": { "Location": "https://procyclingmap.com/$1" }
+      }
+    ]
+  }
