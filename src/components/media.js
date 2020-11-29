@@ -6,6 +6,8 @@ import gql from 'graphql-tag'
 import EsriModalMap from './modalmap'
 import SideMedia from './sidemedia'
 
+export const embedUrl = "https://pcm-embed-rompi.ondigitalocean.app/oembedresponse?request=";
+
 export const mediaForMsgQuery = gql`
 query($messageid: String) {
     shared_links(where: {message_id: {_eq: $messageid}}) {
@@ -59,6 +61,17 @@ class Media extends React.Component {
             card.setState({ zooming: false });
         })
     }
+    getInstagramEmbed(url) {
+        //this.embedUrl = "https://pcm-embed-rompi.ondigitalocean.app/oembedresponse?request=";
+
+        var request = embedUrl + url;
+        console.log("Making instagram embed request: " + request);
+        fetch(request)
+            .then(response => response.json())
+            .then(data => console.log(data));
+
+        return data;
+    }
     render() {
         var retweetLink = "https://twitter.com/intent/retweet?tweet_id=" + this.props.mediaId;
         var replyToLink = "https://twitter.com/intent/tweet?in_reply_to=" + this.props.mediaId;
@@ -90,7 +103,9 @@ class Media extends React.Component {
 
                             var linkParts = mediaUrl.split("?");
                             if (linkParts != undefined && linkParts.length == 2) {
-                                mediaImage = linkParts[0] + "media?size=l";
+                                //mediaImage = linkParts[0] + "media?size=l";
+                                embedJson = this.getInstagramEmbed(linkParts[0])
+                                mediaImage = embedJson.thumbnail_url;
                             }
                         }
                         else {
