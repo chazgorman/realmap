@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import PropTypes from "prop-types"
 
+// Test comment to trigger master branch deployment.
+
 class Card extends React.Component {
     constructor(props) {
         super(props);
