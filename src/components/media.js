@@ -63,14 +63,15 @@ class Media extends React.Component {
     }
     getInstagramEmbed(url) {
         //this.embedUrl = "https://pcm-embed-rompi.ondigitalocean.app/oembedresponse?request=";
-
+        var retData = null;
         var request = embedUrl + url;
         console.log("Making instagram embed request: " + request);
         fetch(request)
             .then(response => response.json())
-            .then(data => console.log(data));
+            .then(data => retData = data);
 
-        return data;
+        console.log(retData)
+        return retData;
     }
     render() {
         var retweetLink = "https://twitter.com/intent/retweet?tweet_id=" + this.props.mediaId;
