@@ -126,8 +126,7 @@ class SideMedia extends React.Component {
                                 </div>
                                 <section className="message-body">
                                     <div className="image is-2by2">
-                                        <a className="is-hidden-touch" href={directLink} target="_blank" title="Click image to view on Instagram."><img src={mediaImage} alt="View on Instagram"/></a>
-                                        <a className="is-hidden-desktop" href={directLink} target="_self" title="Click image to view on Instagram."><img src={mediaImage} alt="View on Instagram"/></a>
+                                        <a href={directLink} target="_blank" title="Click image to view on Instagram."><img src={mediaImage} alt="View on Instagram"/></a>
                                     </div>
                                     <div>
                                         <p>{this.props.text}</p>
