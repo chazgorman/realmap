@@ -17,6 +17,7 @@ query($messageid: String) {
           source
           host
           location
+          preview
     }
   }`
 
@@ -70,8 +71,8 @@ class Media extends React.Component {
             .then(response => response.json())
             .then(data => retData = data);
 
-        console.log(retData)
-        return retData;
+        console.log(retData[0])
+        return retData[0];
     }
     render() {
         var retweetLink = "https://twitter.com/intent/retweet?tweet_id=" + this.props.mediaId;
@@ -102,12 +103,7 @@ class Media extends React.Component {
                                 </div>
                             )
 
-                            var linkParts = mediaUrl.split("?");
-                            if (linkParts != undefined && linkParts.length == 2) {
-                                //mediaImage = linkParts[0] + "media?size=l";
-                                embedJson = this.getInstagramEmbed(linkParts[0])
-                                mediaImage = embedJson.thumbnail_url;
-                            }
+                            mediaImage = sharedLinks[0].preview;
                         }
                         else {
                             mediaLinkButton = (
