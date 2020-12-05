@@ -14,6 +14,7 @@ query($messageid: String) {
           source
           host
           location
+          preview
     }
   }`
 
@@ -69,6 +70,7 @@ class SideMedia extends React.Component {
 
         var mediaLinkButton = undefined;
         var mediaImage = undefined; //"https://www.instagram.com/p/BtbXwXgFqevg2e_zNtzD9ED8HPodoyLbi0KoA00/media?size=l"
+        var directLink = undefined;
 
         return (
             <Query
@@ -91,10 +93,8 @@ class SideMedia extends React.Component {
                                 </div>
                             )
 
-                            var linkParts = mediaUrl.split("?");
-                            if (linkParts != undefined && linkParts.length == 2) {
-                                mediaImage = linkParts[0] + "media?size=l";
-                            }
+                            directLink = sharedLinks[0].url;
+                            mediaImage = sharedLinks[0].preview;
                         }
                         else {
                             mediaLinkButton = (
@@ -126,8 +126,8 @@ class SideMedia extends React.Component {
                                 </div>
                                 <section className="message-body">
                                     <div className="image is-2by2">
-                                        <img src={mediaImage} alt="" />
-                                        {/* <div className="is-overlay" style={{ background: 'rgba(75, 104, 133, 0.7)', margin: '1vh', fontSize: 'large', color: 'white', bottom: '0', top: 'unset' }}>{this.props.text}</div> */}
+                                        <a className="is-hidden-touch" href={directLink} target="_blank" title="Click image to view on Instagram."><img src={mediaImage} alt="View on Instagram"/></a>
+                                        <a className="is-hidden-desktop" href={directLink} target="_self" title="Click image to view on Instagram."><img src={mediaImage} alt="View on Instagram"/></a>
                                     </div>
                                     <div>
                                         <p>{this.props.text}</p>
