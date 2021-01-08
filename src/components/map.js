@@ -47,7 +47,7 @@ class EsriMap extends React.Component {
       .then(([Map, SceneView, BasemapToggle, Popup]) => {
 
         var map = new Map({
-          basemap: "topo",
+          basemap: "hybrid",
           ground: "world-elevation"
         });
 
@@ -85,7 +85,7 @@ class EsriMap extends React.Component {
 
         var toggle = new BasemapToggle({
           view: view,
-          nextBasemap: "hybrid"
+          nextBasemap: "topo"
         });
 
         view.ui.add(toggle, "top-right");

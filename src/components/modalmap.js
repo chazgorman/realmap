@@ -47,7 +47,7 @@ class EsriModalMap extends React.Component {
       .then(([Map, SceneView, SimpleMarkerSymbol, Graphic]) => {
 
         var map = new Map({
-          basemap: "topo",
+          basemap: "hybrid",
           ground: "world-elevation"
         });
 
