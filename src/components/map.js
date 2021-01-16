@@ -10,7 +10,7 @@ import gql from 'graphql-tag'
 
 export const allMsgsQuery = gql`
 {
-      messages_last_14_days(limit: 100) {
+      geomessages_last_14_days(limit: 100) {
         harvest_id
         contributor_screen_name
         contributor_name
