@@ -92,7 +92,7 @@ class GraphqlFeatureLayer {
       
       var sr = new SpatialReference(4326);
 
-      var graphics = markers.messages_last_14_days.map(m => {
+      var graphics = markers.geomessages_last_14_days.map(m => {
         var p = new Point(m.location.coordinates[0], m.location.coordinates[1], sr);
         var graphicProps = {
           attributes: m,
