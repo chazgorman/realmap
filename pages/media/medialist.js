@@ -5,24 +5,43 @@ import { withApollo } from 'react-apollo';
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
-export const allMsgsQuery = gql`
-{
-      messages_last_14_days(limit: 100) {
-        harvest_id
-        contributor_screen_name
-        contributor_name
-        https_contributor_profile_pic
-        message
-        message_id
-        time
-        like_count
-        twitter_favorite_count
-        twitter_favorite_count
-        network
-        location
-    }
-}
-`
+// export const allMsgsQuery = gql`
+// {
+//       messages_last_14_days(limit: 100) {
+//         harvest_id
+//         contributor_screen_name
+//         contributor_name
+//         https_contributor_profile_pic
+//         message
+//         message_id
+//         time
+//         like_count
+//         twitter_favorite_count
+//         twitter_favorite_count
+//         network
+//         location
+//     }
+// }
+// `
+
+  export const allMsgsQuery = gql`
+  {
+    messages_last_14_days(limit: 100) {
+      harvest_id
+          contributor_screen_name
+          contributor_name
+          https_contributor_profile_pic
+          message
+          message_id
+          time
+          like_count
+          twitter_favorite_count
+          twitter_favorite_count
+          network
+          location
+      }
+  }
+  `
 
 class MediaList extends React.Component {
   constructor(props) {

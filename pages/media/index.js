@@ -14,8 +14,8 @@ export const allAppsQuery = gql`
 `
 export const allMsgsQuery = gql`
 {
-      messages_last_7_days {
-        harvest_id
+  messages_last_7_days {
+    harvest_id
         contributor_screen_name
         contributor_name
         message
@@ -76,20 +76,6 @@ class MediaPage extends React.Component {
       <div>
         <Navbar />
         <div className="columns is-gapless is-desktop" style={{ width: '100%', height: '100%', paddingTop: '1.0rem' }}>
-          <div className="column" style={{ height: '100vh', padding: '0' }}>
-            {/* {searchInput}
-          {topicChooser} */}
-            <div style={{ height: '100vh', overflow: 'auto' }}>
-              <Link href="/">
-                <a className="bd-tw-button button">Geo Posts</a>
-              </Link>
-              <Link href="/media">
-                <a className="bd-tw-button button">Media Wall</a>
-              </Link>
-
-              {mediaList}
-            </div>
-          </div>
           <div className="column" style={{ height: '100vh', padding: '0' }}>
             {/* {searchInput}
           {topicChooser} */}
