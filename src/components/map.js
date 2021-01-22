@@ -26,6 +26,7 @@ export const allMsgsQuery = gql`
     }
 }
 `
+
 export const messagesQueryVars = {
   skip: 0,
   first: 10
