@@ -1,5 +1,6 @@
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+import Link from 'next/link'
 
 export const allAppQuery = gql`
   query allPosts($first: Int!, $skip: Int!) {
@@ -47,7 +48,22 @@ class Navbar extends React.Component {
                             <a className="navbar-item" target="_blank" href="https://twitter.com/ChazGorman/">
                                 <i className="fab fa-twitter"></i> Created by Charlie Gorman
                             </a>
-                        </div>
+                        </div>                     
+                    </div>
+                    <div className="navbar-item has-dropdown is-hoverable">
+                        <a className="navbar-link">
+                            Feed
+                        </a>
+                        <div className="navbar-dropdown is-boxed">
+                            <Link href="/">
+                                <a className="navbar-item">Geo Posts</a>
+                            </Link>
+                            <Link href="/media">
+                                <a className="navbar-item">Media Wall</a>
+                            </Link>
+                        </div>     
+                        
+                                          
                     </div>
                 </div>
                 <div className="navbar-end">
