@@ -1,5 +1,6 @@
-import { ApolloClient, InMemoryCache, HttpLink } from 'apollo-boost'
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 import fetch from 'isomorphic-unfetch'
+import { createHttpLink } from "apollo-link-http";
 
 let apolloClient = null
 
@@ -13,9 +14,7 @@ function create (initialState) {
   return new ApolloClient({
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
-    link: new HttpLink({
-      uri: 'https://gql.procyclingmap.net/v1/graphql' // Server URL (must be absolute),
-    }),
+    link: createHttpLink ({uri: 'https://gql.procyclingmap.net/v1/graphql'}), // Server URL (must be absolute),
     cache: new InMemoryCache().restore(initialState || {})
   })
 }
