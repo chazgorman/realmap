@@ -26,7 +26,7 @@ class Navbar extends React.Component {
             <nav className="navbar is-link is-fixed-top is-transparent" style={{zIndex:'1000'}}>
                 <div className="navbar-brand">  
                     <a href="/">
-                        <img src="/static/PCMLogoLight_SideIcon.png" alt="Pro Cycling Map. Explore the World of Pro Cycling!" width="260px" height="60px"/>
+                        <img src="/public/static/PCMLogoLight_SideIcon.png" alt="Pro Cycling Map. Explore the World of Pro Cycling!" width="260px" height="60px"/>
                     </a>                
                     <div className="navbar-burger burger" data-target="navbarExampleTransparentExample">
                         <span></span>

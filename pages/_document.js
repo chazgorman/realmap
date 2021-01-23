@@ -32,7 +32,7 @@ class MyDocument extends Document {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"></link>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossOrigin="anonymous" />
 
-        <script type="text/javascript" src="./static/attachNavbarBurgerClick.js"></script>
+        <script type="text/javascript" src="./public/static/attachNavbarBurgerClick.js"></script>
       </head>
       <body className="has-navbar-fixed-top" style={{height: '100%'}}>
         <Main />
