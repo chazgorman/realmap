@@ -2,7 +2,7 @@ import App from 'next/app'
 import Head from 'next/head'
 import React from 'react'
 import withApolloClient from '../src/lib/with-apollo-client'
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider } from '@apollo/client';
 
 class MyApp extends App {
   render () {

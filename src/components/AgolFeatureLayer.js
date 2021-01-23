@@ -1,24 +1,5 @@
 import { loadModules } from 'esri-loader';
-import gql from 'graphql-tag'
 
-import createApolloFetch from 'apollo-boost'
-export const allMsgsQuery = gql`
-{
-      messages {
-        harvest_id
-        contributor_screen_name
-        contributor_name
-        message
-        message_id
-        time
-        like_count
-        twitter_favorite_count
-        twitter_favorite_count
-        network
-        location
-    }
-  }
-`
 export const messagesQueryVars = {
   skip: 0,
   first: 10

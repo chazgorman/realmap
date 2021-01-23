@@ -1,9 +1,7 @@
+import React from 'react';
 import PropTypes from "prop-types"
-import Link from 'next/link'
-import { withApollo } from 'react-apollo';
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
 import EsriModalMap from './modalmap'
+import { Query, gql } from '@apollo/client';
 
 export const mediaForMsgQuery = gql`
 query($messageid: String) {
@@ -181,4 +179,4 @@ SideMedia.propTypes = {
     hideImage: PropTypes.func
 };
 
-export default withApollo(SideMedia);
+export default SideMedia;

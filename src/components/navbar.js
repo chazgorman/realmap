@@ -1,6 +1,6 @@
-import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import Link from 'next/link'
+import React from 'react'
 
 export const allAppQuery = gql`
   query allPosts($first: Int!, $skip: Int!) {

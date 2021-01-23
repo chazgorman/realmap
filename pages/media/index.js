@@ -1,8 +1,8 @@
+import React from 'react';
 import Navbar from '../../src/components/navbar'
 import MediaList from './medialist'
-import { withApollo } from 'react-apollo';
-import gql from 'graphql-tag'
 import Link from 'next/link'
+import { gql } from '@apollo/client';
 
 export const allAppsQuery = gql`
 {
@@ -104,5 +104,4 @@ class MediaPage extends React.Component {
   }
 }
 
-
-  export default withApollo(MediaPage);
+export default MediaPage;

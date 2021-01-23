@@ -1,30 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types"
-import { withApollo } from 'react-apollo';
-
 import { loadModules } from 'esri-loader';
-//import AgolFeatureLyr from './AgolFeatureLayer'
-//import GraphqlLyr from './GraphqlFeatureLayer'
 
-import gql from 'graphql-tag'
-
-export const allMsgsQuery = gql`
-{
-      messages {
-        harvest_id
-        contributor_screen_name
-        contributor_name
-        message
-        message_id
-        time
-        like_count
-        twitter_favorite_count
-        twitter_favorite_count
-        network
-        location
-    }
-  }
-`
 export const messagesQueryVars = {
   skip: 0,
   first: 50

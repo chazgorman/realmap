@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import PropTypes from "prop-types"
 import Media from '../components/media'
+import React from 'react'
 
 class MediaList extends React.Component {
     constructor(props) {

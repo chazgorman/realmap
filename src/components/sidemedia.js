@@ -1,9 +1,7 @@
-import PropTypes from "prop-types"
-import Link from 'next/link'
-import { withApollo } from 'react-apollo';
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
-import EsriModalMap from './modalmap'
+import React from 'react';
+import PropTypes from "prop-types";
+import EsriModalMap from './modalmap';
+import { useQuery, gql } from '@apollo/client';
 
 export const mediaForMsgQuery = gql`
 query($messageid: String) {
@@ -72,95 +70,88 @@ class SideMedia extends React.Component {
         var mediaImage = undefined; //"https://www.instagram.com/p/BtbXwXgFqevg2e_zNtzD9ED8HPodoyLbi0KoA00/media?size=l"
         var directLink = undefined;
 
-        return (
-            <Query
-                query={mediaForMsgQuery}
-                variables={{ messageid: this.props.mediaId }}
-            >
-                {({ loading, error, data }) => {
-                    if (loading) return <div className="button is-loading"></div>;
-                    if (error) return <p>Error</p>;
+        const { loading, error, data } = useQuery(mediaForMsgQuery, variables={ messageid: this.props.mediaId });
 
-                    var sharedLinks = data.shared_links;
+        if (loading) return <div className="button is-loading"></div>;
+        if (error) return <p>Error</p>;
 
-                    if (sharedLinks !== undefined && sharedLinks.length > 0) {
-                        var mediaUrl = sharedLinks[0].expanded_url;
+        var sharedLinks = data.shared_links;
 
-                        if (mediaUrl.startsWith("https://www.instagram.com")) {
-                            mediaLinkButton = (
-                                <div className="button is-hidden-touch" onClick={this.showModalMedia.bind(this)}>
-                                    <i className="fab fa-instagram"></i>
-                                </div>
-                            )
+        if (sharedLinks !== undefined && sharedLinks.length > 0) {
+            var mediaUrl = sharedLinks[0].expanded_url;
 
-                            directLink = sharedLinks[0].url;
-                            mediaImage = sharedLinks[0].preview;
-                        }
-                        else {
-                            mediaLinkButton = (
-                                <div className="button is-hidden-touch" onClick={this.showModalMedia.bind(this)}>
-                                    <i className="far fa-image"></i>
-                                </div>
-                            )
+            if (mediaUrl.startsWith("https://www.instagram.com")) {
+                mediaLinkButton = (
+                    <div className="button is-hidden-touch" onClick={this.showModalMedia.bind(this)}>
+                        <i className="fab fa-instagram"></i>
+                    </div>
+                )
 
-                            mediaImage = sharedLinks[0].source;
-                        }
-                    }
+                directLink = sharedLinks[0].url;
+                mediaImage = sharedLinks[0].preview;
+            }
+            else {
+                mediaLinkButton = (
+                    <div className="button is-hidden-touch" onClick={this.showModalMedia.bind(this)}>
+                        <i className="far fa-image"></i>
+                    </div>
+                )
 
-                    // ----------
-                    var mobileMapButtonGroup = (<div className="buttons">
-                        <div className={buttonClassname} onClick={this.showModalMap.bind(this)}>
-                            <i className="fas fa-globe" color="blue"></i>
+                mediaImage = sharedLinks[0].source;
+            }
+        }
+
+        // ----------
+        var mobileMapButtonGroup = (<div className="buttons">
+            <div className={buttonClassname} onClick={this.showModalMap.bind(this)}>
+                <i className="fas fa-globe" color="blue"></i>
+            </div>
+            <button className="delete" aria-label="close" onClick={this.props.hideImage}></button>
+        </div>)
+
+        var imageModal = undefined;
+
+        if (this.state.showModal && this.state.showMedia == true) {
+            imageModal = (
+                <article className="message">
+                    <div className="message-header">
+                        <p>@{this.props.username}</p>
+                        {mobileMapButtonGroup}
+                    </div>
+                    <section className="message-body">
+                        <div className="image is-2by2">
+                            <a href={directLink} target="_blank" title="Click image to view on Instagram."><img src={mediaImage} alt="View on Instagram"/></a>
                         </div>
-                        <button className="delete" aria-label="close" onClick={this.props.hideImage}></button>
-                    </div>)
+                        <div>
+                            <p>{this.props.text}</p>
+                        </div>
+                    </section>
+                </article>
+            );
+        }
+        else if (this.state.showModal && this.state.showMap == true) {
+            this.map = (<EsriModalMap containerId={this.props.mediaId} geometry={this.props.geometry} />);
+            imageModal = (
+                <article className="message">
+                    <div className="message-header">
+                        <p>@{this.props.username}</p>
+                        {mobileMapButtonGroup}
+                    </div>
+                    <section className="message-body">
+                        <div id={this.props.mediaId} style={{ height: "60vh" }}></div>
+                        <div>
+                            <p>{this.props.text}</p>
+                        </div>
+                    </section>
+                    {this.map}
+                </article>
+            );
+        }
 
-                    var imageModal = undefined;
-
-                    if (this.state.showModal && this.state.showMedia == true) {
-                        imageModal = (
-                            <article className="message">
-                                <div className="message-header">
-                                    <p>@{this.props.username}</p>
-                                    {mobileMapButtonGroup}
-                                </div>
-                                <section className="message-body">
-                                    <div className="image is-2by2">
-                                        <a href={directLink} target="_blank" title="Click image to view on Instagram."><img src={mediaImage} alt="View on Instagram"/></a>
-                                    </div>
-                                    <div>
-                                        <p>{this.props.text}</p>
-                                    </div>
-                                </section>
-                            </article>
-                        );
-                    }
-                    else if (this.state.showModal && this.state.showMap == true) {
-                        this.map = (<EsriModalMap containerId={this.props.mediaId} geometry={this.props.geometry} />);
-                        imageModal = (
-                            <article className="message">
-                                <div className="message-header">
-                                    <p>@{this.props.username}</p>
-                                    {mobileMapButtonGroup}
-                                </div>
-                                <section className="message-body">
-                                    <div id={this.props.mediaId} style={{ height: "60vh" }}></div>
-                                    <div>
-                                        <p>{this.props.text}</p>
-                                    </div>
-                                </section>
-                                {this.map}
-                            </article>
-                        );
-                    }
-
-                    return (
-                        <article className="media">
-                            {imageModal}
-                        </article>
-                    );
-                }}
-            </Query>
+        return (
+            <article className="media">
+                {imageModal}
+            </article>
         );
     }
 }
@@ -181,4 +172,4 @@ SideMedia.propTypes = {
     hideImage: PropTypes.func
 };
 
-export default withApollo(SideMedia);
+export default SideMedia;

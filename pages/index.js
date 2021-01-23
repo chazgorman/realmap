@@ -1,35 +1,7 @@
+import React from 'react'
 import DynamicMap from '../src/components/map';
 import Navbar from '../src/components/navbar'
 import MediaList from '../src/components/mediaList'
-import { withApollo } from 'react-apollo';
-import gql from 'graphql-tag'
-import Link from 'next/link'
-
-export const allAppsQuery = gql`
-{
-  app {
-    id
-    name
-  }
-}
-`
-export const allMsgsQuery = gql`
-{
-      geomessages_last_14_days {
-        harvest_id
-        contributor_screen_name
-        contributor_name
-        message
-        message_id
-        time
-        like_count
-        twitter_favorite_count
-        twitter_favorite_count
-        network
-        location
-    }
-  }
-`
 
 export const allAppsQueryVars = {
   skip: 0,
@@ -72,9 +44,9 @@ class MainIndex extends React.Component {
 
     let mediaList = (<MediaList mapMarkers={this.state.mapMarkers} />)
 
-    if (this.state.mapMarkers !== undefined) {
-      this.map = (<DynamicMap getMapMarkers={this.getMapMarkers} updateMapMarkers={this.setMapMarkers} />);
-    }
+    // if (this.state.mapMarkers !== undefined) {
+    //   this.map = (<DynamicMap getMapMarkers={this.getMapMarkers} updateMapMarkers={this.setMapMarkers} />);
+    // }
 
     return (
       <div>
@@ -91,10 +63,12 @@ class MainIndex extends React.Component {
             <div id="map" style={{ width: '100%', height: "100%" }} />
           </div>
         </div>
-        {this.map}
+        <React.StrictMode>
+          <DynamicMap></DynamicMap>
+        </React.StrictMode>
       </div>
     )
   }
 }
 
-export default withApollo(MainIndex);
+export default MainIndex;

@@ -1,9 +1,7 @@
-import Link from 'next/link'
+import React from 'react';
 import PropTypes from "prop-types"
 import Media from './media'
-import { withApollo } from 'react-apollo';
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
+import { useQuery, gql } from '@apollo/client';
 
 // export const allMsgsQuery = gql`
 // {
@@ -42,57 +40,41 @@ import gql from 'graphql-tag'
       }
   }
   `
+function MediaList() {
+    const { loading, error, data } = useQuery(allMsgsQuery);
 
-class MediaList extends React.Component {
-  constructor(props) {
-    super(props);
+    if (loading) return <div className="button is-loading"></div>;
+    if (error) return <p>Error</p>;
 
-  }
-  zoomTo() {
+    var i = 0;
+    var usernames = {};
+    let cards = undefined;
 
-  }
-  render() {
+    if (data !== undefined) {
+      cards = data.messages_last_14_days.map(markerInfo => {
+        var atts = markerInfo;
+        // if (atts.contributor_name in usernames) {
+        //   c;
+        // }
+        // usernames[atts.contributor_name] = true;
+
+        var timeStamp = atts.time;
+        var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
+        return (
+          <Media key={i++} text={atts.message} profilePic={atts.https_contributor_profile_pic} fullname={atts.contributor_name}
+            username={atts.contributor_screen_name} geometry={atts.location} mediaId={atts.message_id} mediaLink={atts.media} time={dateString} />
+        )
+      });
+    }
     return (
-      <Query
-        query={allMsgsQuery}
-      >
-        {({ loading, error, data }) => {
-          if (loading) return <div className="button is-loading"></div>;
-          if (error) return <p>Error</p>;
-
-          var i = 0;
-          var usernames = {};
-          let cards = undefined;
-
-          if (data !== undefined) {
-            cards = data.messages_last_14_days.map(markerInfo => {
-              var atts = markerInfo;
-              // if (atts.contributor_name in usernames) {
-              //   c;
-              // }
-              // usernames[atts.contributor_name] = true;
-
-              var timeStamp = atts.time;
-              var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
-              return (
-                <Media key={i++} text={atts.message} profilePic={atts.https_contributor_profile_pic} fullname={atts.contributor_name}
-                  username={atts.contributor_screen_name} geometry={atts.location} mediaId={atts.message_id} mediaLink={atts.media} time={dateString} />
-              )
-            });
-          }
-          return (
-            <div>
-              {cards}
-            </div>
-          )
-        }}
-      </Query>
-    );
-  }
+      <div>
+        {cards}
+      </div>
+    )
 }
-
-export default withApollo(MediaList);
 
 MediaList.propTypes = {
   query: PropTypes.object
 };
+
+export default MediaList;
