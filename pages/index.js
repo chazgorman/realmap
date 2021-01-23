@@ -84,12 +84,6 @@ class MainIndex extends React.Component {
             {/* {searchInput}
             {topicChooser} */}
             <div style={{ height: '100vh', overflow: 'auto' }}>
-            <Link href="/">
-              <a className="bd-tw-button button">Geo Posts</a>
-            </Link>
-            <Link href="/media">
-              <a className="bd-tw-button button">Media Wall</a>
-            </Link>
               {mediaList}
             </div>
           </div>
