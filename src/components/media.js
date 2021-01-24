@@ -1,13 +1,21 @@
 import React from 'react';
 import PropTypes from "prop-types"
 import SideMedia from './sidemedia'
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql, useReactiveVar } from '@apollo/client';
+import { activeMessageIdVar } from '../appstate/cache'
 
 {/* <Media key={i++} map={atts.map} text={atts.message} profilePic={atts.https_contributor_profile_pic} fullname={atts.contributor_name} 
 username={atts.contributor_screen_name} geometry={markerInfo.geometry} mediaId={atts.message_id} mediaLink={atts.media} time={dateString}/> 
             var timeStamp = atts.time;
             var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
 */}
+
+export const GET_CART_ITEMS = gql`
+  query GetCartItems {
+    cartItems @client
+  }
+`;
+
 const mediaForMsgQuery = gql`
 query($messageid: String) {
     shared_links(where: {message_id: {_eq: $messageid}}) {
@@ -19,7 +27,27 @@ query($messageid: String) {
           location
           preview
     }
+    geomessages_last_14_days(where: {message_id: {_eq: $messageid}}) {
+        harvest_id
+        contributor_screen_name
+        contributor_name
+        https_contributor_profile_pic
+        message
+        message_id
+        time
+        like_count
+        twitter_favorite_count
+        twitter_favorite_count
+        network
+        location
+    }
   }`
+
+function setActiveMessage(id){
+    //const activeMessages = useReactiveVar(activeMessageIdVar);
+
+    activeMessageIdVar([id])
+}
 
 function Media({ messageid }) {
     const { loading, error, data, refetch, networkStatus } = useQuery(
@@ -30,6 +58,11 @@ function Media({ messageid }) {
         // pollInterval: 500
       }
     );
+
+    const activeMessages = useReactiveVar(activeMessageIdVar);
+
+    console.log(activeMessages)
+
   
     if (networkStatus === 4) return <p>Refetching!</p>;
     if (loading) return <div className="button is-loading"></div>;
@@ -44,40 +77,83 @@ function Media({ messageid }) {
     var mediaImage = undefined; 
 
     var sharedLinks = data.shared_links;
+    var message = null;
+
+    if(data.geomessages_last_14_days != undefined && data.geomessages_last_14_days.length > 0){
+        message = data.geomessages_last_14_days[0]
+    }
 
     if (sharedLinks !== undefined && sharedLinks.length > 0) {
         var mediaUrl = sharedLinks[0].expanded_url;
 
         if (mediaUrl.startsWith("https://www.instagram.com")) {
-            // mediaLinkButton = (
-            //     <div className="button" onClick={this.showModalMedia.bind(this)}>
-            //         <i className="fab fa-instagram"></i>
-            //     </div>
-            // )
+            mediaLinkButton = (
+                <div className="button" onClick={() => activeMessageIdVar([messageid])}>
+                    <i className="fab fa-instagram"></i>
+                </div>
+            )
 
             mediaImage = sharedLinks[0].preview;
         }
         else {
-            // mediaLinkButton = (
-            //     <div className="button" onClick={this.showModalMedia.bind(this)}>
-            //         <i className="far fa-image"></i>
-            //     </div>
-            // )
+            mediaLinkButton = (
+                <div className="button">
+                    <i className="far fa-image"></i>
+                </div>
+            )
 
-            mediaImage = "https://placekitten.com/200/300"; //sharedLinks[0].preview;
+            mediaImage = sharedLinks[0].preview;
         }
     }
 
+    if(activeMessages.includes(messageid)){
+        return <img src={mediaImage} alt="View on Instagram"/>;
+    }
 
-    var sideMedia = (
-        <img src={mediaImage} alt="View on Instagram"/>
-        // <SideMedia mediaId={mediaData.mediaId} username={mediaData.username} date={mediaData.date} text={mediaData.text} 
-        //             profilePic={mediaData.profilePic} fullname={mediaData.fullname} geometry={mediaData.geometry} time={mediaData.time}>
-        // </SideMedia>
-    );
-    
+    // var sideMedia = (
+    //     <img src={mediaImage} alt="View on Instagram"/>
+    //     // <SideMedia mediaId={mediaData.mediaId} username={mediaData.username} date={mediaData.date} text={mediaData.text} 
+    //     //             profilePic={mediaData.profilePic} fullname={mediaData.fullname} geometry={mediaData.geometry} time={mediaData.time}>
+    //     // </SideMedia>
+    // );
+    var timeStamp = message.time;
+    var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
+
     return (
-        sideMedia
+        <article className="media" data-mediaid={messageid}>
+            <figure className="media-left">
+                <p className="image is-48x48">
+                    <img className="is-rounded" src={message.https_contributor_profile_pic} alt="Placeholder image" />
+                </p>
+            </figure>
+            <div className="media-content">
+                <div className="content">
+                    <p>
+                        <strong>{message.contributor_name}</strong> <small>{message.contributor_screen_name}</small> <small>{dateString}</small>
+                        <br />
+                        {message.message}
+                    </p>
+                </div>
+                <nav className="level is-mobile">
+                    <div className="level-left">
+                        <a className="level-item" target="_blank" href={replyToLink}>
+                            <span className="icon is-small"><i className="fas fa-reply"></i></span>
+                        </a>
+                        <a className="level-item" target="_blank" href={retweetLink}>
+                            <span className="icon is-small"><i className="fas fa-retweet"></i></span>
+                        </a>
+                        <a className="level-item" target="_blank" href={likeLink}>
+                            <span className="icon is-small"><i className="fas fa-heart"></i></span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+            <div className="media-right">
+                <div className="buttons">
+                    {mediaLinkButton}                            
+                </div>
+            </div>                            
+        </article>
     );
 }
 

@@ -1,8 +1,10 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache, makeVar } from '@apollo/client';
 import fetch from 'isomorphic-unfetch'
 import { createHttpLink } from "apollo-link-http";
+import { activeMessageIdVar } from '../appstate/cache'
 
 let apolloClient = null
+
 
 // Polyfill fetch() on the server (used by apollo-client)
 if (!process.browser) {
@@ -15,7 +17,19 @@ function create (initialState) {
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link: createHttpLink ({uri: 'https://gql.procyclingmap.net/v1/graphql'}), // Server URL (must be absolute),
-    cache: new InMemoryCache().restore(initialState || {})
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            activeMessage: {
+              read() {
+                return activeMessageIdVar();
+              }
+            }
+          }
+        }
+      }
+    }).restore(initialState || {})
   })
 }
 
