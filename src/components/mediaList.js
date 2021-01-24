@@ -1,6 +1,5 @@
-import Link from 'next/link'
 import PropTypes from "prop-types"
-import Media from '../components/media'
+import Media from './media'
 import React from 'react'
 
 class MediaList extends React.Component {
@@ -17,7 +16,7 @@ class MediaList extends React.Component {
 
         if(this.props.mapMarkers !== undefined){    
           cards = this.props.mapMarkers.map(markerInfo => {
-            var atts = markerInfo.attributes;
+            var atts = markerInfo;
             if(atts.contributor_name in usernames){
               return;
             }
@@ -40,8 +39,8 @@ class MediaList extends React.Component {
     }
 }
 
-export default MediaList;
-
 MediaList.propTypes = {
     mapMarkers: PropTypes.array
 };
+
+export default MediaList;

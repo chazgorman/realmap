@@ -40,7 +40,7 @@ import { useQuery, gql } from '@apollo/client';
       }
   }
   `
-function MediaList() {
+function MediaList(props) {
     const { loading, error, data } = useQuery(allMsgsQuery);
 
     if (loading) return <div className="button is-loading"></div>;
