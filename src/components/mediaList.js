@@ -21,12 +21,9 @@ class MediaList extends React.Component {
               return;
             }
             usernames[atts.contributor_name] = true;
-      
-            var timeStamp = atts.time;
-            var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
+
             return (
-              <Media key={i++} map={atts.map} text={atts.message} profilePic={atts.https_contributor_profile_pic} fullname={atts.contributor_name} 
-                username={atts.contributor_screen_name} geometry={markerInfo.geometry} mediaId={atts.message_id} mediaLink={atts.media} time={dateString}/>
+              <Media key={i++} messageid={atts.message_id} />
             )
           });
         }

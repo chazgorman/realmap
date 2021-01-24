@@ -1,8 +1,13 @@
 import React from 'react';
 import PropTypes from "prop-types"
-//import SideMedia from './sidemedia'
+import SideMedia from './sidemedia'
 import { useQuery, gql } from '@apollo/client';
 
+{/* <Media key={i++} map={atts.map} text={atts.message} profilePic={atts.https_contributor_profile_pic} fullname={atts.contributor_name} 
+username={atts.contributor_screen_name} geometry={markerInfo.geometry} mediaId={atts.message_id} mediaLink={atts.media} time={dateString}/> 
+            var timeStamp = atts.time;
+            var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
+*/}
 const mediaForMsgQuery = gql`
 query($messageid: String) {
     shared_links(where: {message_id: {_eq: $messageid}}) {
@@ -30,10 +35,10 @@ function Media({ messageid }) {
     if (loading) return <div className="button is-loading"></div>;
     if (error) return <p>`Error!: ${error}`</p>;  
 
-    
-    var retweetLink = "https://twitter.com/intent/retweet?tweet_id=" + this.props.mediaId;
-    var replyToLink = "https://twitter.com/intent/tweet?in_reply_to=" + this.props.mediaId;
-    var likeLink = "https://twitter.com/intent/like?tweet_id=" + this.props.mediaId;
+    //var mediaData = data.shared_links[0]
+    var retweetLink = "https://twitter.com/intent/retweet?tweet_id=" + messageid;
+    var replyToLink = "https://twitter.com/intent/tweet?in_reply_to=" + messageid;
+    var likeLink = "https://twitter.com/intent/like?tweet_id=" + messageid;
 
     var mediaLinkButton = undefined;
     var mediaImage = undefined; 
@@ -44,34 +49,35 @@ function Media({ messageid }) {
         var mediaUrl = sharedLinks[0].expanded_url;
 
         if (mediaUrl.startsWith("https://www.instagram.com")) {
-            mediaLinkButton = (
-                <div className="button" onClick={this.showModalMedia.bind(this)}>
-                    <i className="fab fa-instagram"></i>
-                </div>
-            )
+            // mediaLinkButton = (
+            //     <div className="button" onClick={this.showModalMedia.bind(this)}>
+            //         <i className="fab fa-instagram"></i>
+            //     </div>
+            // )
 
             mediaImage = sharedLinks[0].preview;
         }
         else {
-            mediaLinkButton = (
-                <div className="button" onClick={this.showModalMedia.bind(this)}>
-                    <i className="far fa-image"></i>
-                </div>
-            )
+            // mediaLinkButton = (
+            //     <div className="button" onClick={this.showModalMedia.bind(this)}>
+            //         <i className="far fa-image"></i>
+            //     </div>
+            // )
 
-            mediaImage = sharedLinks[0].preview;
+            mediaImage = "https://placekitten.com/200/300"; //sharedLinks[0].preview;
         }
     }
 
 
     var sideMedia = (
-        <SideMedia mediaId={this.props.mediaId} username={this.props.username} date={this.props.date} text={this.props.text} 
-                    profilePic={this.props.profilePic} fullname={this.props.fullname} geometry={this.props.geometry} time={this.props.time}>
-        </SideMedia>
+        <img src={mediaImage} alt="View on Instagram"/>
+        // <SideMedia mediaId={mediaData.mediaId} username={mediaData.username} date={mediaData.date} text={mediaData.text} 
+        //             profilePic={mediaData.profilePic} fullname={mediaData.fullname} geometry={mediaData.geometry} time={mediaData.time}>
+        // </SideMedia>
     );
     
     return (
-        {sideMedia}
+        sideMedia
     );
 }
 
