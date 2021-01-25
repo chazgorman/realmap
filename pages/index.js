@@ -1,14 +1,14 @@
 import React from 'react'
-//import DynamicMap from '../src/components/map';
+import DynamicMap from '../src/components/map';
 import Navbar from '../src/components/navbar'
 import ClientMediaList from '../src/components/mediaList'
 import dynamic from 'next/dynamic'
 import { useQuery, gql } from '@apollo/client';
 
-const SceneViewMap = dynamic(
-  () => import('../src/components/SceneView'),
-  { ssr: false }
-)
+// const SceneViewMap = dynamic(
+//   () => import('../src/components/SceneView'),
+//   { ssr: false }
+// )
 
 // const ClientMediaList = dynamic(
 //   () => import('../src/components/mediaList'),
@@ -62,7 +62,7 @@ function MainIndex() {
         </div>
         <div className="column is-two-thirds is-hidden-mobile">
           <div id="map" style={{ width: '100%', height: "100%" }}>
-            <SceneViewMap></SceneViewMap>
+            <DynamicMap></DynamicMap>
           </div>
         </div>
       </div>

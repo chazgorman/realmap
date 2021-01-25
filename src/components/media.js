@@ -30,7 +30,7 @@ query($messageid: String) {
     }
   }`
 
-function Media({ messageid }) {
+export default function Media({ messageid }) {
     const { loading, error, data, refetch, networkStatus } = useQuery(
       MSG_BY_ID_QUERY,
       {
