@@ -26,11 +26,6 @@ export const allMsgsQuery = gql`
 }
 `
 
-export const messagesQueryVars = {
-  skip: 0,
-  first: 10
-}
-
 class EsriMap extends React.Component {
   constructor(props) {
     super(props);
