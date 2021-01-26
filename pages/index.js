@@ -42,7 +42,7 @@ export const allAppsQueryVars = {
 
 function MainIndex() {
 
-  const { loading, error, data } = useQuery(allMsgsQuery);
+  const { loading, error, data } = useQuery(allMsgsQuery, {pollInterval: 5000});
 
   if (loading) return <div className="button is-loading"></div>;
   if (error) return <p>Error</p>;
