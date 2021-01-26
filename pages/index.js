@@ -42,9 +42,13 @@ export const allAppsQueryVars = {
 
 function MainIndex() {
 
-  const { loading, error, data } = useQuery(allMsgsQuery, {pollInterval: 5000});
+  const { loading, error, data, networkStatus } = useQuery(allMsgsQuery, {pollInterval: 5000, notifyOnNetworkStatusChange: true});
 
+  var refreshIndicator = <div></div>
   if (loading) return <div className="button is-loading"></div>;
+  if (networkStatus === NetworkStatus.refetch){
+    refreshIndicator = <div className="button is-loading"></div>;
+  }
   if (error) return <p>Error</p>;
 
   let mediaList = (<ClientMediaList mapMarkers={data.geomessages_last_14_days} />)
@@ -58,6 +62,7 @@ function MainIndex() {
           {/* {searchInput}
             {topicChooser} */}
           <div style={{ height: '100vh', overflow: 'auto' }}>
+            {refreshIndicator}
             {mediaList}
           </div>
         </div>
