@@ -89,7 +89,7 @@ export default function SideMedia({ messageid }) {
 
     var mediaModal = undefined;
     if (showMap) {
-        this.map = (<EsriModalMap containerId={messageid} geometry={message.location} />);
+        var map = (<EsriModalMap containerId={messageid} geometry={message.location} />);
         mediaModal = (
             <article className="message is-small">
                 <div className="message-header">
@@ -102,7 +102,7 @@ export default function SideMedia({ messageid }) {
                         <p>{message.message}</p>
                     </div>
                 </section>
-                {this.map}
+                {map}
             </article>
         );
     }

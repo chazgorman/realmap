@@ -21,8 +21,8 @@ class EsriModalMap extends React.Component {
     console.log("In modalmap componentDidMount");
 
     var thisMap = this;
-    loadModules(['esri/Map', 'esri/views/SceneView', 'esri/symbols/SimpleMarkerSymbol', 'esri/Graphic'])
-      .then(([Map, SceneView, SimpleMarkerSymbol, Graphic]) => {
+    loadModules(['esri/Map', 'esri/views/SceneView', 'esri/symbols/SimpleMarkerSymbol', 'esri/Graphic','esri/geometry/SpatialReference','esri/geometry/Point'])
+      .then(([Map, SceneView, SimpleMarkerSymbol, Graphic, SpatialReference, Point]) => {
 
         var map = new Map({
           basemap: "hybrid",
@@ -41,8 +41,11 @@ class EsriModalMap extends React.Component {
         };
         var markerSymbol = new SimpleMarkerSymbol(markerSymbolProps);
 
+        var sr = new SpatialReference(4326);
+        var p = new Point(this.props.geometry.coordinates[0], this.props.geometry.coordinates[1], sr);
+
         var graphicProps = {
-          geometry: thisMap.props.geometry,
+          geometry: p,
           symbol: markerSymbol
         }
         var g = new Graphic(graphicProps);
