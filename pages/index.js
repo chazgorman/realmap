@@ -4,6 +4,7 @@ import Navbar from '../src/components/navbar'
 import ClientMediaList from '../src/components/mediaList'
 import dynamic from 'next/dynamic'
 import { useQuery, gql } from '@apollo/client';
+//import { SceneViewMap } from '../src/components/SceneView'
 
 // const SceneViewMap = dynamic(
 //   () => import('../src/components/SceneView'),
@@ -62,7 +63,7 @@ function MainIndex() {
         </div>
         <div className="column is-two-thirds is-hidden-mobile">
           <div id="map" style={{ width: '100%', height: "100%" }}>
-            <DynamicMap></DynamicMap>
+            <DynamicMap points={data}></DynamicMap>
           </div>
         </div>
       </div>
