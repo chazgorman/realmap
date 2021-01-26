@@ -3,7 +3,7 @@ import DynamicMap from '../src/components/map';
 import Navbar from '../src/components/navbar'
 import ClientMediaList from '../src/components/mediaList'
 import dynamic from 'next/dynamic'
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql, NetworkStatus } from '@apollo/client';
 //import { SceneViewMap } from '../src/components/SceneView'
 
 // const SceneViewMap = dynamic(
