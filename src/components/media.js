@@ -84,14 +84,38 @@ export default function Media({ messageid }) {
         }
     }
 
+    var sideMedia = <div></div>;
     if(activeMessages.includes(messageid)){
-        return <SideMedia messageid={messageid}></SideMedia>
+         sideMedia = <SideMedia messageid={messageid}></SideMedia>;
+     }
+
+    var modalClassname = "modal is-hidden"
+    if(activeMessages.includes(messageid)){
+      //return <SideMedia messageid={messageid}></SideMedia>
+      modalClassname = "modal;"
     }
 
     var timeStamp = message.time;
     var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
 
     return (
+        <div>
+        <div class={modalClassname}>
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                <p class="modal-card-title">Modal title</p>
+                <button class="delete" aria-label="close" onClick={() => activeMessageIdVar(activeMessages.filter(item => item !== messageid))}></button>
+                </header>
+                <section class="modal-card-body">
+                {sideMedia}
+                </section>
+                <footer class="modal-card-foot">
+                <button class="button is-success">Save changes</button>
+                <button class="button">Cancel</button>
+                </footer>
+            </div>
+        </div>
         <article className="media" onClick={() => activeMessageIdVar([messageid])} data-mediaid={messageid}>
             <figure className="media-left">
                 <p className="image is-48x48">
@@ -126,5 +150,6 @@ export default function Media({ messageid }) {
                 </div>
             </div>                            
         </article>
+        </div>
     );
 }
