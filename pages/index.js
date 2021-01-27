@@ -41,15 +41,20 @@ function MainIndex() {
 
   const activeMessages = useReactiveVar(activeMessageIdVar);
 
-  let mediaColumn = undefined;
+  let mediaModal = undefined;
+  let mediaModalColumn = undefined
+  let mediaListStyle = { height: '100vh', overflow: 'auto'};
 
   if(activeMessages.length > 0){
-    mediaColumn = <MediaModal messageid={activeMessages[0]}></MediaModal>
-  } else {
-    mediaColumn = (<div style={{ height: '100vh', overflow: 'auto' }}>
-                    <ClientMediaList mapMarkers={data.geomessages_last_14_days} />
-                  </div>);
+    mediaModal = <MediaModal messageid={activeMessages[0]}></MediaModal>;
+    mediaModalColumn = (
+        <div className="is-centered is-vcentered">
+          {mediaModal}
+        </div>
+    );
+    mediaListStyle = { height: '100vh', overflow: 'auto', display: 'none'};
   }
+
   return (
 
     <div>
@@ -58,7 +63,10 @@ function MainIndex() {
         <div className="column" style={{ height: '100vh', padding: '0' }}>
           {/* {searchInput}
             {topicChooser} */}
-            {mediaColumn}
+            {mediaModalColumn}
+            <div style={mediaListStyle}>
+              <ClientMediaList mapMarkers={data.geomessages_last_14_days} />
+            </div>);
         </div>
         <div className="column is-two-thirds is-hidden-mobile">
           <div id="map" style={{ width: '100%', height: "100%" }}>
@@ -66,7 +74,6 @@ function MainIndex() {
           </div>
         </div>
       </div>
-
     </div>
   )
 }

@@ -86,14 +86,8 @@ export default function MediaModal({ messageid }) {
         }
     }
 
-    var sideMedia = <div></div>;
-    if(activeMessages.includes(messageid)){
-         sideMedia = <SideMedia messageid={messageid}></SideMedia>;
-     }
-
      var modalClassname = "modal is-hidden"
      if(activeMessages.includes(messageid)){
-      //return <SideMedia messageid={messageid}></SideMedia>
       modalClassname = "modal;"
     }
 
@@ -101,23 +95,23 @@ export default function MediaModal({ messageid }) {
     var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
 
     return (
-        <div class={modalClassname}>
-            <div class="modal-background"></div>
-            <div class="modal-card ml-0">
-                <header class="modal-card-head">
-                    {/* <p class="modal-card-title">Modal title</p> */}
+        <div className={modalClassname}>
+            <div className="modal-background"></div>
+            <div className="modal-card">
+                <header className="modal-card-head">
+                    {/* <p className="modal-card-title">Modal title</p> */}
                     <figure className="media-left">
                     <p className="image is-48x48">
                         <img className="is-rounded" src={message.https_contributor_profile_pic} alt="Placeholder image" />
                     </p>
                     </figure>
-                    <div class="media-content">
+                    <div className="media-content">
                         <p><strong>{message.contributor_name}</strong></p>
                         <p><small>@{message.contributor_screen_name}</small></p>
                     </div>
-                    <button class="delete is-large" aria-label="close" onClick={() => activeMessageIdVar(activeMessages.filter(item => item !== messageid))}></button>
+                    <button className="delete is-large" aria-label="close" onClick={() => activeMessageIdVar(activeMessages.filter(item => item !== messageid))}></button>
                 </header>
-                <section class="modal-card-body">
+                <section className="modal-card-body">
                     <section>
                         <div>
                             <p>{message.message}</p>
