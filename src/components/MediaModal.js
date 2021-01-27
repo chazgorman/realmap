@@ -97,7 +97,7 @@ export default function MediaModal({ messageid }) {
     return (
         <div className={modalClassname}>
             <div className="modal-background"></div>
-            <div className="modal-card">
+            <div class="modal-card ml-0">
                 <header className="modal-card-head">
                     {/* <p className="modal-card-title">Modal title</p> */}
                     <figure className="media-left">
