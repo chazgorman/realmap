@@ -91,8 +91,8 @@ export default function MediaModal({ messageid }) {
          sideMedia = <SideMedia messageid={messageid}></SideMedia>;
      }
 
-    var modalClassname = "modal is-hidden"
-    if(activeMessages.includes(messageid)){
+     var modalClassname = "modal is-hidden"
+     if(activeMessages.includes(messageid)){
       //return <SideMedia messageid={messageid}></SideMedia>
       modalClassname = "modal;"
     }
@@ -103,7 +103,7 @@ export default function MediaModal({ messageid }) {
     return (
         <div class={modalClassname}>
             <div class="modal-background"></div>
-            <div class="modal-card">
+            <div class="modal-card ml-0">
                 <header class="modal-card-head">
                     {/* <p class="modal-card-title">Modal title</p> */}
                     <figure className="media-left">
