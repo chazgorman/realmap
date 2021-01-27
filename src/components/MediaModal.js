@@ -112,7 +112,7 @@ export default function MediaModal({ messageid }) {
                     </p>
                     </figure>
                     <div class="media-content">
-                        <p><small>{message.contributor_name}</small></p>
+                        <p><strong>{message.contributor_name}</strong></p>
                         <p><small>@{message.contributor_screen_name}</small></p>
                     </div>
                     <button class="delete is-large" aria-label="close" onClick={() => activeMessageIdVar(activeMessages.filter(item => item !== messageid))}></button>

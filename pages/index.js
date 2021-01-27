@@ -20,17 +20,8 @@ import { activeMessageIdVar } from '../src/appstate/cache'
 export const allMsgsQuery = gql`
 {
       geomessages_last_14_days(limit: 100) {
-        harvest_id
-        contributor_screen_name
         contributor_name
-        https_contributor_profile_pic
-        message
         message_id
-        time
-        like_count
-        twitter_favorite_count
-        twitter_favorite_count
-        network
         location
     }
 }
@@ -55,7 +46,9 @@ function MainIndex() {
   if(activeMessages.length > 0){
     mediaColumn = <MediaModal messageid={activeMessages[0]}></MediaModal>
   } else {
-    mediaColumn = (<ClientMediaList mapMarkers={data.geomessages_last_14_days} />)
+    mediaColumn = (<div style={{ height: '100vh', overflow: 'auto' }}>
+                    <ClientMediaList mapMarkers={data.geomessages_last_14_days} />
+                  </div>);
   }
   return (
 
@@ -65,9 +58,7 @@ function MainIndex() {
         <div className="column" style={{ height: '100vh', padding: '0' }}>
           {/* {searchInput}
             {topicChooser} */}
-          <div style={{ height: '100vh', overflow: 'auto' }}>
             {mediaColumn}
-          </div>
         </div>
         <div className="column is-two-thirds is-hidden-mobile">
           <div id="map" style={{ width: '100%', height: "100%" }}>
