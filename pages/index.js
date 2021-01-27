@@ -2,9 +2,10 @@ import React from 'react'
 import DynamicMap from '../src/components/map';
 import Navbar from '../src/components/navbar'
 import ClientMediaList from '../src/components/mediaList'
+import MediaModal from '../src/components/MediaModal'
 import dynamic from 'next/dynamic'
-import { useQuery, gql } from '@apollo/client';
-//import { SceneViewMap } from '../src/components/SceneView'
+import { useQuery, gql, useReactiveVar } from '@apollo/client';
+import { activeMessageIdVar } from '../src/appstate/cache'
 
 // const SceneViewMap = dynamic(
 //   () => import('../src/components/SceneView'),
@@ -47,8 +48,15 @@ function MainIndex() {
   if (loading) return <div className="button is-loading"></div>;
   if (error) return <p>Error</p>;
 
-  let mediaList = (<ClientMediaList mapMarkers={data.geomessages_last_14_days} />)
+  const activeMessages = useReactiveVar(activeMessageIdVar);
 
+  let mediaColumn = undefined;
+
+  if(activeMessages.length > 0){
+    mediaColumn = <MediaModal messageid={activeMessages[0]}></MediaModal>
+  } else {
+    mediaColumn = (<ClientMediaList mapMarkers={data.geomessages_last_14_days} />)
+  }
   return (
 
     <div>
@@ -58,7 +66,7 @@ function MainIndex() {
           {/* {searchInput}
             {topicChooser} */}
           <div style={{ height: '100vh', overflow: 'auto' }}>
-            {mediaList}
+            {mediaColumn}
           </div>
         </div>
         <div className="column is-two-thirds is-hidden-mobile">
