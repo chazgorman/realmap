@@ -1,3 +1,4 @@
+import useSwr from 'swr'
 import React from 'react'
 import DynamicMap from '../src/components/map';
 import Navbar from '../src/components/navbar'
@@ -6,6 +7,7 @@ import MediaModal from '../src/components/MediaModal'
 import dynamic from 'next/dynamic'
 import { useQuery, gql, useReactiveVar } from '@apollo/client';
 import { activeMessageIdVar } from '../src/appstate/cache'
+import DeckglMap from '../src/components/DeckglMap'
 
 // const SceneViewMap = dynamic(
 //   () => import('../src/components/SceneView'),
@@ -19,20 +21,35 @@ import { activeMessageIdVar } from '../src/appstate/cache'
 
 export const allMsgsQuery = gql`
 {
-      geomessages_last_14_days(limit: 100) {
+    geomessages_last_14_days(limit: 100) {
         contributor_name
         message_id
         location
     }
+    geomsgfeatures_last_14_days(limit: 100) {
+      rowjsonb_to_geojson
+    }
 }
 `
+
+// export const allMsgsQuery = gql`
+// {
+//   geomsgfeatures_last_14_days(limit: 100) {
+//     rowjsonb_to_geojson
+//   }
+// }
+// `
 
 export const allAppsQueryVars = {
   skip: 0,
   first: 10
 }
 
+const fetcher = (url) => fetch(url).then((res) => res.json())
+
 function MainIndex() {
+
+  //const { data1, error1 } = useSwr('/api/layer', fetcher)
 
   const { loading, error, data } = useQuery(allMsgsQuery);
 
@@ -55,6 +72,10 @@ function MainIndex() {
     mediaListStyle = { height: '100vh', overflow: 'auto', display: 'none'};
   }
 
+  var msgPoints = data.geomsgfeatures_last_14_days.map(feature => {
+    return JSON.parse(feature.rowjsonb_to_geojson);
+  });
+
   return (
 
     <div>
@@ -70,7 +91,8 @@ function MainIndex() {
         </div>
         <div className="column is-two-thirds is-hidden-mobile">
           <div id="map" style={{ width: '100%', height: "100%" }}>
-            <DynamicMap points={data}></DynamicMap>
+            <DeckglMap points={msgPoints}></DeckglMap>
+            {/* <DynamicMap points={data}></DynamicMap> */}
           </div>
         </div>
       </div>

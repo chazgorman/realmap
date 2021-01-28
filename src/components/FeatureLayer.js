@@ -5,7 +5,7 @@ export const messagesQueryVars = {
   first: 10
 }
 
-class AgolFeatureLayer {
+class FeatureLayer {
   constructor(name, url, map) {
     this.name = name;
     this.url = url;
