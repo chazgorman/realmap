@@ -6,6 +6,7 @@ import MediaModal from '../src/components/MediaModal'
 import dynamic from 'next/dynamic'
 import { useQuery, gql, useReactiveVar } from '@apollo/client';
 import { activeMessageIdVar } from '../src/appstate/cache'
+import MapController from '../src/components/MapController'
 
 // const SceneViewMap = dynamic(
 //   () => import('../src/components/SceneView'),
@@ -71,6 +72,7 @@ function MainIndex() {
         <div className="column is-two-thirds is-hidden-mobile">
           <div id="map" style={{ width: '100%', height: "100%" }}>
             <DynamicMap points={data}></DynamicMap>
+            <MapController map={this}></MapController>
           </div>
         </div>
       </div>

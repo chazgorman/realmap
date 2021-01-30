@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from "prop-types"
-
 import { loadModules } from 'esri-loader';
 //import AgolFeatureLyr from './AgolFeatureLayer'
 import GraphqlLyr from './GraphqlFeatureLayer'
-
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client';
+import { activeMessageIdVar, activeMap } from '../appstate/cache'
 
 export const allMsgsQuery = gql`
 {
@@ -29,9 +28,11 @@ export const allMsgsQuery = gql`
 class EsriMap extends React.Component {
   constructor(props) {
     super(props);
-
+    this.zoomTo = this.zoomTo.bind(this);
   }
   componentDidMount() {
+    var thisMap = this;
+
     // first, we use Dojo's loader to require the map class
     loadModules(['esri/Map','esri/views/SceneView', 'esri/widgets/BasemapToggle', 'esri/widgets/Popup'])
       .then(([Map, SceneView, BasemapToggle]) => {
@@ -56,7 +57,12 @@ class EsriMap extends React.Component {
         var lyr = GraphqlLyr(this.props.points);
         lyr.then((layer) => view.map.layers.add(layer));
 
+        thisMap.map = view;
+
+        activeMap(thisMap);
+
         return map;
+
       }).then(map => {        
 
       })
@@ -66,21 +72,29 @@ class EsriMap extends React.Component {
       });
   }
   zoomTo() {
-    // console.log("In zoomTo", this.props.geometry);
-    // var card = this;
-    // var geom = this.props.geometry;
-    // var map = this.props.map;
-    // this.setState({ zooming: true });
+    console.log("In zoomTo");
 
-    // var options = {
-    //     target: geom,
-    //     zoom: 12,
-    //     tilt: 45        
-    // };
-    // this.map.goTo(options).then(function (result) {
-    //     card.setState({ zooming: false });
-    // })
-}
+    const activeMessages = activeMessageIdVar();
+
+    if(activeMessages !== undefined && activeMessages.length > 0){
+      var activeMsg = undefined;
+
+  
+      if(this.props.points !== undefined && this.props.points.geomessages_last_14_days != undefined){
+        const findByMsgId = (element) => element.message_id == activeMessages[0];
+
+        var msgIdIndex = this.props.points.geomessages_last_14_days.findIndex(findByMsgId);
+        var message = this.props.points.geomessages_last_14_days[msgIdIndex];
+        
+        var options = {
+            center: message.location.coordinates,
+            zoom: 12,
+            tilt: 45        
+        };
+        this.map.goTo(options);
+      }
+    }
+  }
   render() {
     return (
       <div
