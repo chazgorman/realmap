@@ -16,7 +16,7 @@ function create (initialState) {
   return new ApolloClient({
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
-    link: createHttpLink ({uri: 'https://gql.procyclingmap.net/v1/graphql'}), // Server URL (must be absolute),
+    link: createHttpLink ({uri: 'https://gcm.procyclingmap.net/v1/graphql'}), // Server URL (must be absolute),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
