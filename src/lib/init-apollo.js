@@ -1,7 +1,10 @@
-import { ApolloClient, InMemoryCache, HttpLink } from 'apollo-boost'
+import { ApolloClient, InMemoryCache, makeVar } from '@apollo/client';
 import fetch from 'isomorphic-unfetch'
+import { createHttpLink } from "apollo-link-http";
+import { activeMessageIdVar } from '../appstate/cache'
 
 let apolloClient = null
+
 
 // Polyfill fetch() on the server (used by apollo-client)
 if (!process.browser) {
@@ -13,10 +16,20 @@ function create (initialState) {
   return new ApolloClient({
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
-    link: new HttpLink({
-      uri: process.env.NEXT_PUBLIC_PCM_GRAPHQL_URL // Server URL (must be absolute),
-    }),
-    cache: new InMemoryCache().restore(initialState || {})
+    link: createHttpLink ({uri: process.env.NEXT_PUBLIC_PCM_GRAPHQL_URL}), // Server URL (must be absolute),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            activeMessage: {
+              read() {
+                return activeMessageIdVar();
+              }
+            }
+          }
+        }
+      }
+    }).restore(initialState || {})
   })
 }
 

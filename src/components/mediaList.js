@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import PropTypes from "prop-types"
-import Media from '../components/media'
+import Media from './media'
+import React from 'react'
 
 class MediaList extends React.Component {
     constructor(props) {
@@ -16,17 +16,14 @@ class MediaList extends React.Component {
 
         if(this.props.mapMarkers !== undefined){    
           cards = this.props.mapMarkers.map(markerInfo => {
-            var atts = markerInfo.attributes;
+            var atts = markerInfo;
             if(atts.contributor_name in usernames){
               return;
             }
             usernames[atts.contributor_name] = true;
-      
-            var timeStamp = atts.time;
-            var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
+
             return (
-              <Media key={i++} map={atts.map} text={atts.message} profilePic={atts.https_contributor_profile_pic} fullname={atts.contributor_name} 
-                username={atts.contributor_screen_name} geometry={markerInfo.geometry} mediaId={atts.message_id} mediaLink={atts.media} time={dateString}/>
+              <Media key={i++} messageid={atts.message_id} />
             )
           });
         }
@@ -39,8 +36,8 @@ class MediaList extends React.Component {
     }
 }
 
-export default MediaList;
-
 MediaList.propTypes = {
     mapMarkers: PropTypes.array
 };
+
+export default MediaList;
