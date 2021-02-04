@@ -1,10 +1,7 @@
+import React from 'react';
 import PropTypes from "prop-types"
-import Link from 'next/link'
-import { withApollo } from 'react-apollo';
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
-import EsriModalMap from './modalmap'
 import SideMedia from './sidemedia'
+import { Query, gql } from '@apollo/client';
 
 export const mediaForMsgQuery = gql`
 query($messageid: String) {
@@ -170,4 +167,4 @@ Media.propTypes = {
     date: PropTypes.string
 };
 
-export default withApollo(Media);
+export default Media;

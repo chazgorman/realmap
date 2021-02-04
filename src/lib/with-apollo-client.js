@@ -1,9 +1,9 @@
 import React from 'react'
 import initApollo from './init-apollo'
 import Head from 'next/head'
-import { getDataFromTree } from 'react-apollo'
+import { getDataFromTree } from "@apollo/client/react/ssr";
 
-export default App => {
+const WithApolloClient = App => {
   return class Apollo extends React.Component {
     static displayName = 'withApollo(App)'
     static async getInitialProps (ctx) {
@@ -58,4 +58,6 @@ export default App => {
       return <App {...this.props} apolloClient={this.apolloClient} />
     }
   }
-}
+};
+
+export default WithApolloClient;

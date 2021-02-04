@@ -1,30 +1,8 @@
 import React from 'react';
 import PropTypes from "prop-types"
-import { withApollo } from 'react-apollo';
 
 import { loadModules } from 'esri-loader';
-import AgolFeatureLyr from './AgolFeatureLayer'
-import GraphqlLyr from './GraphqlFeatureLayer'
 
-import gql from 'graphql-tag'
-
-export const allMsgsQuery = gql`
-{
-      messages {
-        harvest_id
-        contributor_screen_name
-        contributor_name
-        message
-        message_id
-        time
-        like_count
-        twitter_favorite_count
-        twitter_favorite_count
-        network
-        location
-    }
-  }
-`
 export const messagesQueryVars = {
   skip: 0,
   first: 50
@@ -43,8 +21,8 @@ class EsriModalMap extends React.Component {
     console.log("In modalmap componentDidMount");
 
     var thisMap = this;
-    loadModules(['esri/Map', 'esri/views/SceneView', 'esri/symbols/SimpleMarkerSymbol', 'esri/Graphic'])
-      .then(([Map, SceneView, SimpleMarkerSymbol, Graphic]) => {
+    loadModules(['esri/Map', 'esri/views/SceneView', 'esri/symbols/SimpleMarkerSymbol', 'esri/Graphic','esri/geometry/SpatialReference','esri/geometry/Point'])
+      .then(([Map, SceneView, SimpleMarkerSymbol, Graphic, SpatialReference, Point]) => {
 
         var map = new Map({
           basemap: "hybrid",
@@ -63,8 +41,11 @@ class EsriModalMap extends React.Component {
         };
         var markerSymbol = new SimpleMarkerSymbol(markerSymbolProps);
 
+        var sr = new SpatialReference(4326);
+        var p = new Point(this.props.geometry.coordinates[0], this.props.geometry.coordinates[1], sr);
+
         var graphicProps = {
-          geometry: thisMap.props.geometry,
+          geometry: p,
           symbol: markerSymbol
         }
         var g = new Graphic(graphicProps);

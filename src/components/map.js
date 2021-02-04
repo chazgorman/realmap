@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from "prop-types"
-import { withApollo } from 'react-apollo';
-
 import { loadModules } from 'esri-loader';
-import AgolFeatureLyr from './AgolFeatureLayer'
+//import AgolFeatureLyr from './AgolFeatureLayer'
 import GraphqlLyr from './GraphqlFeatureLayer'
-
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client';
+import { activeMessageIdVar, activeMap } from '../appstate/cache'
 
 export const allMsgsQuery = gql`
 {
@@ -27,61 +25,26 @@ export const allMsgsQuery = gql`
 }
 `
 
-export const messagesQueryVars = {
-  skip: 0,
-  first: 10
-}
-
 class EsriMap extends React.Component {
   constructor(props) {
     super(props);
-
-    this.featuresSet = false;
-
-    this.extentChanged = this.extentChanged.bind(this);
-    this.viewImmediateClick = this.viewImmediateClick.bind(this);
+    this.zoomTo = this.zoomTo.bind(this);
   }
   componentDidMount() {
     var thisMap = this;
+
     // first, we use Dojo's loader to require the map class
     loadModules(['esri/Map','esri/views/SceneView', 'esri/widgets/BasemapToggle', 'esri/widgets/Popup'])
-      .then(([Map, SceneView, BasemapToggle, Popup]) => {
+      .then(([Map, SceneView, BasemapToggle]) => {
 
         var map = new Map({
           basemap: "hybrid",
           ground: "world-elevation"
         });
 
-        // var popup = new Popup({
-        //   actions: null,
-        //   content: "Your Mom's House",
-        //   title: "Current Location",
-        //   visible: true,
-        //   dockEnabled: true,
-        //   dockOptions: {
-        //     buttonEnabled: false,
-        //     width: 100,
-        //     height: 50,
-        //     position: "top-right"
-        //   }
-        // });
-
         var view = new SceneView({
           container: "map",  // Reference to the DOM node that will contain the view
           map: map,  // References the map object created in step 3
-          // popup: {
-          //   actions: null,
-          //   content: "Your Mom's House",
-          //   title: "Current Location",
-          //   visible: true,
-          //   dockEnabled: true,
-          //   dockOptions: {
-          //     buttonEnabled: false,
-          //     width: 100,
-          //     height: 50,
-          //     position: "top-right"
-          //   }
-          // }
         });
 
         var toggle = new BasemapToggle({
@@ -91,57 +54,48 @@ class EsriMap extends React.Component {
 
         view.ui.add(toggle, "top-right");
 
-        //thisMap.popup = view.popup;
+        var lyr = GraphqlLyr(this.props.points);
+        lyr.then((layer) => view.map.layers.add(layer));
 
-        // view.when(function(){
-        //   thisMap.popup.open({
-        //     title: "Current Location",
-        //     content: "Your Mom's House"
-        //   });
-        //   thisMap.popup.set("dockOptions",{
-        //     position: "top-right"
-        //   });
-        // });
+        thisMap.map = view;
 
-        let graphqlLayer = new GraphqlLyr("graphql", "", view, allMsgsQuery, thisMap.props.getMapMarkers, thisMap.props.client);
-        graphqlLayer.loadLayer();
+        activeMap(thisMap);
 
-        return view;
-      }).then(map => {
-        this.map = map;
-        
-        this.mapExtentChange = map.on("extent-change", this.extentChanged.bind(this));
+        return map;
 
-        map.on("immediate-click", thisMap.viewImmediateClick);
-        //this.props.getMapMarkers(this);
+      }).then(map => {        
+
       })
       .catch(err => {
         // handle any errors
         console.error(err);
       });
   }
-  extentChanged(evt) {
+  zoomTo() {
+    console.log("In zoomTo");
 
-  }
-  viewImmediateClick(evt){
-    console.log("In viewImmediateClick");
-    var thisMap = this;
-    this.map.hitTest(evt).then(function(response) {
-      // check if a feature is returned from the hurricanesLayer
-      // do something with the result graphic
-      console.log(response.results);
+    const activeMessages = activeMessageIdVar();
 
-      if(response.results[0].graphic != undefined){
-        let activeMsgId = response.results[0].graphic.attributes.message_id;
-        console.log("Active Message: ", activeMsgId);
+    if(activeMessages !== undefined && activeMessages.length > 0){
+      var activeMsg = undefined;
 
-        //this.props.client.writeData({ data: { activeMessage: activeMsgId } });
+  
+      if(this.props.points !== undefined && this.props.points.geomessages_last_14_days != undefined){
+        const findByMsgId = (element) => element.message_id == activeMessages[0];
+
+        var msgIdIndex = this.props.points.geomessages_last_14_days.findIndex(findByMsgId);
+        var message = this.props.points.geomessages_last_14_days[msgIdIndex];
+        
+        var options = {
+            center: message.location.coordinates,
+            zoom: 12,
+            tilt: 45        
+        };
+        this.map.goTo(options);
       }
-    });
+    }
   }
   render() {
-    console.log("EsriMap: ", this);
-
     return (
       <div
         ref={c => {
@@ -153,8 +107,7 @@ class EsriMap extends React.Component {
 }
 
 EsriMap.propTypes = {
-  getMapMarkers: PropTypes.func,
-  updateMapMarkers: PropTypes.func
+  datapoints: PropTypes.object
 };
 
-export default withApollo(EsriMap);
+export default EsriMap;
