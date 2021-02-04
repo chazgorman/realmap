@@ -15,6 +15,7 @@ query($messageid: String) {
           source
           host
           location
+          preview
     }
   }`
 
@@ -88,10 +89,7 @@ class Media extends React.Component {
                                 </div>
                             )
 
-                            var linkParts = mediaUrl.split("?");
-                            if (linkParts != undefined && linkParts.length == 2) {
-                                mediaImage = linkParts[0] + "media?size=l";
-                            }
+                            mediaImage = sharedLinks[0].preview;
                         }
                         else {
                             mediaLinkButton = (

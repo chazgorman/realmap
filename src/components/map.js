@@ -10,7 +10,7 @@ import gql from 'graphql-tag'
 
 export const allMsgsQuery = gql`
 {
-      messages_last_14_days(limit: 100) {
+      geomessages_last_14_days(limit: 100) {
         harvest_id
         contributor_screen_name
         contributor_name
@@ -47,7 +47,7 @@ class EsriMap extends React.Component {
       .then(([Map, SceneView, BasemapToggle, Popup]) => {
 
         var map = new Map({
-          basemap: "topo",
+          basemap: "hybrid",
           ground: "world-elevation"
         });
 
@@ -85,7 +85,7 @@ class EsriMap extends React.Component {
 
         var toggle = new BasemapToggle({
           view: view,
-          nextBasemap: "hybrid"
+          nextBasemap: "topo"
         });
 
         view.ui.add(toggle, "top-right");
