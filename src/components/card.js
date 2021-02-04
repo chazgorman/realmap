@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import PropTypes from "prop-types"
+import React from 'react'
 
 // Test comment to trigger master branch deployment.
 

@@ -1,5 +1,6 @@
-import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+import Link from 'next/link'
+import React from 'react'
 
 export const allAppQuery = gql`
   query allPosts($first: Int!, $skip: Int!) {
@@ -38,6 +39,23 @@ class Navbar extends React.Component {
                 <div className="navbar-start">
                     <div className="navbar-item has-dropdown is-hoverable">
                         <a className="navbar-link">
+                            Feed
+                        </a>
+                        <div className="navbar-dropdown is-boxed">
+                            <Link href="/">
+                                <a className="navbar-item">Geo Posts</a>
+                            </Link>
+                            <Link href="/media">
+                                <a className="navbar-item">Media Wall</a>
+                            </Link>
+                        </div>     
+                        
+                                          
+                    </div>
+                </div>
+                <div className="navbar-end">
+                    <div className="navbar-item has-dropdown is-hoverable">
+                        <a className="navbar-link">
                             About
                         </a>
                         <div className="navbar-dropdown is-boxed">
@@ -47,24 +65,22 @@ class Navbar extends React.Component {
                             <a className="navbar-item" target="_blank" href="https://twitter.com/ChazGorman/">
                                 <i className="fab fa-twitter"></i> Created by Charlie Gorman
                             </a>
+                        </div>                     
+                    </div>
+                    <div className="navbar-item">
+                        <div className="field is-grouped">
+                        <p className="control">
+                        <a className="bd-tw-button button" data-social-network="Twitter" data-social-action="tweet" data-social-target="http://procyclingmap.com" target="_blank" href="https://twitter.com/intent/tweet?text=Check out Pro Cycling Map. Tweets, Instagram posts, and Strava rides from pro cyclists in an online map!&amp;hashtags=procyclingmap,cycling,uci&amp;url=http://procyclingmap.com&amp;">
+                            <span className="icon">
+                                <i className="fab fa-twitter"></i>
+                            </span>
+                            <span>
+                                Share
+                            </span>
+                            </a>
+                        </p>
                         </div>
                     </div>
-                </div>
-                <div className="navbar-end">
-                <div className="navbar-item">
-                    <div className="field is-grouped">
-                    <p className="control">
-                    <a className="bd-tw-button button" data-social-network="Twitter" data-social-action="tweet" data-social-target="http://procyclingmap.com" target="_blank" href="https://twitter.com/intent/tweet?text=Check out Pro Cycling Map. Tweets, Instagram posts, and Strava rides from pro cyclists in an online map!&amp;hashtags=procyclingmap,cycling,uci&amp;url=http://procyclingmap.com&amp;">
-                        <span className="icon">
-                            <i className="fab fa-twitter"></i>
-                        </span>
-                        <span>
-                            Share
-                        </span>
-                        </a>
-                    </p>
-                    </div>
-                </div>
                 </div>
             </div>
             </nav>
