@@ -6,25 +6,6 @@ import GraphqlLyr from './GraphqlFeatureLayer'
 import { gql } from '@apollo/client';
 import { activeMessageIdVar, activeMap } from '../appstate/cache'
 
-export const allMsgsQuery = gql`
-{
-      geomessages_last_14_days(limit: 100) {
-        harvest_id
-        contributor_screen_name
-        contributor_name
-        https_contributor_profile_pic
-        message
-        message_id
-        time
-        like_count
-        twitter_favorite_count
-        twitter_favorite_count
-        network
-        location
-    }
-}
-`
-
 class EsriMap extends React.Component {
   constructor(props) {
     super(props);

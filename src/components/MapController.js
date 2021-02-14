@@ -7,5 +7,5 @@ export default function MapController({map}){
   if(mapView != undefined && mapView.zoomTo != undefined){
     mapView.zoomTo();
   }
-  return <div>;)</div>
+  return <div>|</div>
 }
