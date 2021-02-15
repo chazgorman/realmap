@@ -10,7 +10,7 @@ import MapModalHeader from '../../src/components/MapModalHeader'
 
 export const allMsgsQuery = gql`
 {
-      geomessages_last_14_days(limit: 100) {
+      messages_last_14_days(limit: 100) {
         contributor_name
         message_id
         location
