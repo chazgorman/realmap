@@ -1,107 +1,94 @@
-import React from 'react';
+import React from 'react'
+import DynamicMap from '../../src/components/map';
 import Navbar from '../../src/components/navbar'
-import MediaList from './medialist'
-import Link from 'next/link'
-import { gql } from '@apollo/client';
+import ClientMediaList from '../../src/components/mediaList'
+import MediaModal from '../../src/components/MediaModal'
+import { useQuery, gql, useReactiveVar } from '@apollo/client';
+import { activeMessageIdVar, showMobileMapMode } from '../../src/appstate/cache'
+import MapController from '../../src/components/MapController'
+import MapModalHeader from '../../src/components/MapModalHeader'
 
-export const allAppsQuery = gql`
-{
-  app {
-    id
-    name
-  }
-}
-`
 export const allMsgsQuery = gql`
 {
-  messages_last_7_days {
-    harvest_id
-        contributor_screen_name
+      geomessages_last_14_days(limit: 100) {
         contributor_name
-        message
         message_id
-        time
-        like_count
-        twitter_favorite_count
-        twitter_favorite_count
-        network
         location
     }
-  }
+}
 `
 
-export const allAppsQueryVars = {
-  skip: 0,
-  first: 10
-}
+function MediaIndex() {
+  // React hook from Apollo is used to fetch data: useQuery
+  const { loading, error, data } = useQuery(allMsgsQuery);
 
-class MediaPage extends React.Component {
-  constructor(props) {
-    super(props);
+  // Loading/error indicators
+  if (loading) return <div className="button is-loading"></div>;
+  if (error) return <p>Error</p>;
 
-    this.state = { mapMarkers: [] };
+  // Apollo reactive variables used to get current state;
+  const activeMessages = useReactiveVar(activeMessageIdVar); // Is there a message selected?
+  const showMobileMap = useReactiveVar(showMobileMapMode)    // Is active view a map and on a mobile device?
 
-    // this.getMapMarkers = this.getMapMarkers.bind(this);
-    // this.setMapMarkers = this.setMapMarkers.bind(this);
-    // this.getMapMarkers();
+  // Variables to hold conditional react components and style
+  let mediaModal = undefined;
+  let mediaModalColumn = undefined;
+  let mapModalColumn = undefined;
+  let mediaListStyle = { height: '100vh', overflow: 'auto' };
+  let navbar = <Navbar />;
+  let mapClassName = "column is-two-thirds is-hidden-mobile";
+  let mapStyle = { width: '100%', height: "100%" };
+  let headerStyle = { width: '100%', height: "20%", display: 'none' };
+
+  // There is an active message, and we're on desktop; 
+  if (activeMessages.length > 0 && showMobileMap == false) {
+    // Create modal to display image/media
+    mediaModal = <MediaModal messageid={activeMessages[0]}></MediaModal>;
+    mediaModalColumn = (
+      <div className="is-centered is-vcentered">
+        {mediaModal}
+      </div>
+    );
+    mediaListStyle = { height: '100vh', overflow: 'auto', display: 'none' };
   }
-  getMapMarkers(layer) {
-    if (layer !== undefined) {
-      this.setMapMarkers(layer.graphics);
-    }
+  // Mobile map mode implies that there is an active message; set up modal to display map
+  else if (showMobileMap) {
+    mapClassName = "modal column"
+    mapStyle = { width: '100%', height: "100%" };
+    headerStyle = { width: '100%' };
+    mediaListStyle = { height: '100vh', overflow: 'auto', display: 'none' };
+    mapModalColumn = <MapModalHeader messageid={activeMessages[0]}></MapModalHeader>
+    mediaModalColumn = undefined;
+    navbar = <div></div>;
   }
-  setMapMarkers(markers) {
-    this.setState({ mapMarkers: markers })
-  }
-  render() {
-    // let searchInput = (<input className="input is-small" type="text" placeholder="Search ie. #LeTour"/>);
-    // let topicChooser = (<div className="tabs is-small">
-    //   <ul>
-    //     <li className="is-active"><a>Riders</a></li>
-    //     <li><a>News</a></li>
-    //     <li><a>Teams</a></li>
-    //     <li><a>Races</a></li>
-    //     <li><a>Road</a></li>
-    //     <li><a>MTB</a></li>
-    //     <li><a>Cyclocross</a></li>
-    //     <li><a>Men</a></li>
-    //     <li><a>Women</a></li>
-    //   </ul>
-    // </div>);
 
-    let mediaList = (<MediaList query={allMsgsQuery} />)
-
-
-    return (
-      <div>
-        <Navbar />
-        <div className="columns is-gapless is-desktop" style={{ width: '100%', height: '100%', paddingTop: '1.0rem' }}>
-          <div className="column" style={{ height: '100vh', padding: '0' }}>
-            {/* {searchInput}
-          {topicChooser} */}
-            <div style={{ height: '100vh', overflow: 'auto' }}>
-              {mediaList}
-            </div>
+  return (
+    // As per Bulma.io docs, 'columns' are only activated on tablet devices and above;
+    // Mobile devices will have columns stacked vertically.
+    // When in mobile map mode, elements in the first column are undefined or hidden, so 2nd column takes up full display.
+    <div>
+      {navbar}
+      <div className="columns is-gapless is-desktop" style={{ width: '100%', height: '100%', paddingTop: '1.0rem' }}>
+        <div className="column" style={{ height: '100vh', padding: '0' }}>
+          {/* {searchInput}
+            {topicChooser} */}
+          {mediaModalColumn}
+          <div style={mediaListStyle}>
+            <ClientMediaList mapMarkers={data.geomessages_last_14_days} />
+          </div>);
+        </div>
+        <div className={mapClassName}>
+          <div id="mobileMapHeader" style={headerStyle}>
+            {mapModalColumn}
           </div>
-          <div className="column" style={{ height: '100vh', padding: '0' }}>
-            {/* {searchInput}
-          {topicChooser} */}
-            <div style={{ height: '100vh', overflow: 'auto' }}>
-              <Link href="/">
-                <a className="bd-tw-button button">Geo Posts</a>
-              </Link>
-              <Link href="/media">
-                <a className="bd-tw-button button">Media Wall</a>
-              </Link>
-
-              {mediaList}
-            </div>
+          <div id="map" style={mapStyle}>
+            <DynamicMap points={data}></DynamicMap>
+            <MapController map={this}></MapController>
           </div>
         </div>
-        {this.map}
       </div>
-    )
-  }
+    </div>
+  )
 }
 
-export default MediaPage;
+export default MediaIndex;
