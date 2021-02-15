@@ -10,7 +10,7 @@ import MapModalHeader from '../../src/components/MapModalHeader'
 
 export const allMsgsQuery = gql`
 {
-      messages_last_14_days(limit: 100) {
+      messages: messages_last_14_days(limit: 100) {
         contributor_name
         message_id
         location
@@ -18,17 +18,17 @@ export const allMsgsQuery = gql`
 }
 `
 
-function MediaIndex() {
+function Media() {
   // React hook from Apollo is used to fetch data: useQuery
   const { loading, error, data } = useQuery(allMsgsQuery);
-
-  // Loading/error indicators
-  if (loading) return <div className="button is-loading"></div>;
-  if (error) return <p>Error</p>;
 
   // Apollo reactive variables used to get current state;
   const activeMessages = useReactiveVar(activeMessageIdVar); // Is there a message selected?
   const showMobileMap = useReactiveVar(showMobileMapMode)    // Is active view a map and on a mobile device?
+
+  // Loading/error indicators
+  if (loading) return <div className="button is-loading"></div>;
+  if (error) return <p>Error</p>;
 
   // Variables to hold conditional react components and style
   let mediaModal = undefined;
@@ -74,7 +74,7 @@ function MediaIndex() {
             {topicChooser} */}
           {mediaModalColumn}
           <div style={mediaListStyle}>
-            <ClientMediaList mapMarkers={data.geomessages_last_14_days} />
+            <ClientMediaList mapMarkers={data.messages} />
           </div>);
         </div>
         <div className={mapClassName}>
@@ -91,4 +91,4 @@ function MediaIndex() {
   )
 }
 
-export default MediaIndex;
+export default Media;

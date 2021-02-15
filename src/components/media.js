@@ -16,7 +16,7 @@ query($messageid: String) {
         location
         preview
     }
-    geomessages_last_14_days(where: {message_id: {_eq: $messageid}}) {
+    messages: messages_last_14_days(where: {message_id: {_eq: $messageid}}) {
         harvest_id
         contributor_screen_name
         contributor_name
@@ -59,8 +59,8 @@ export default function Media({ messageid }) {
     var sharedLinks = data.shared_links;
     var message = null;
 
-    if(data.geomessages_last_14_days != undefined && data.geomessages_last_14_days.length > 0){
-        message = data.geomessages_last_14_days[0]
+    if(data.messages != undefined && data.messages.length > 0){
+        message = data.messages[0]
     }
 
     if (sharedLinks !== undefined && sharedLinks.length > 0) {

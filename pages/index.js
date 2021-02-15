@@ -10,7 +10,7 @@ import MapModalHeader from '../src/components/MapModalHeader'
 
 export const allMsgsQuery = gql`
 {
-      geomessages_last_14_days(limit: 100) {
+      messages: geomessages_last_14_days(limit: 100) {
         contributor_name
         message_id
         location
@@ -74,7 +74,7 @@ function MainIndex() {
             {topicChooser} */}
           {mediaModalColumn}
           <div style={mediaListStyle}>
-            <ClientMediaList mapMarkers={data.geomessages_last_14_days} />
+            <ClientMediaList mapMarkers={data.messages} />
           </div>);
         </div>
         <div className={mapClassName}>

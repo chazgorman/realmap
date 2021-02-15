@@ -61,11 +61,11 @@ class EsriMap extends React.Component {
       var activeMsg = undefined;
 
   
-      if(this.props.points !== undefined && this.props.points.geomessages_last_14_days != undefined){
+      if(this.props.points !== undefined && this.props.points.messages != undefined){
         const findByMsgId = (element) => element.message_id == activeMessages[0];
 
-        var msgIdIndex = this.props.points.geomessages_last_14_days.findIndex(findByMsgId);
-        var message = this.props.points.geomessages_last_14_days[msgIdIndex];
+        var msgIdIndex = this.props.points.messages.findIndex(findByMsgId);
+        var message = this.props.points.messages[msgIdIndex];
         
         var options = {
             center: message.location.coordinates,
