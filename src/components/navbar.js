@@ -46,7 +46,7 @@ class Navbar extends React.Component {
                                 <a className="navbar-item">Geo Posts</a>
                             </Link>
                             <Link href="/media">
-                                <a className="navbar-item">Media Wall</a>
+                                <a className="navbar-item">All Posts</a>
                             </Link>
                         </div>     
                         
