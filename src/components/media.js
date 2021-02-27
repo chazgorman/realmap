@@ -77,7 +77,7 @@ export default function Media({ messageid }) {
         }
         else {
             mediaLinkButton = (
-                <div className="button">
+                <div className="button" onClick={() => activeMessageIdVar([messageid])}>
                     <i className="far fa-image"></i>
                 </div>
             )

@@ -67,12 +67,14 @@ class EsriMap extends React.Component {
         var msgIdIndex = this.props.points.messages.findIndex(findByMsgId);
         var message = this.props.points.messages[msgIdIndex];
         
-        var options = {
-            center: message.location.coordinates,
-            zoom: 12,
-            tilt: 45        
-        };
-        this.map.goTo(options);
+        if(message !== undefined && message.location !== undefined){
+            var options = {
+              center: message.location.coordinates,
+              zoom: 12,
+              tilt: 45        
+            };
+            this.map.goTo(options);
+        }
       }
     }
   }
