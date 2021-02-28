@@ -1,7 +1,6 @@
 import React from 'react';
 import { useQuery, gql, useReactiveVar } from '@apollo/client';
-import { activeMessageIdVar, showMobileMedia } from '../appstate/cache'
-import { TwitterTweetEmbed } from 'react-twitter-embed';
+import { activeMessageIdVar, showMobileMapMode, showMobileMedia } from '../appstate/cache'
 
 const MSG_BY_ID_QUERY = gql`
 query($messageid: String) {
@@ -22,11 +21,15 @@ query($messageid: String) {
         message
         message_id
         time
+        like_count
+        twitter_favorite_count
+        twitter_favorite_count
+        network
         location
     }
   }`
 
-export default function MediaModal({ messageid }) {
+export default function MediaModalHeader({ messageid }) {
     const { loading, error, data, refetch, networkStatus } = useQuery(
       MSG_BY_ID_QUERY,
       {
@@ -37,7 +40,7 @@ export default function MediaModal({ messageid }) {
     );
 
     const activeMessages = useReactiveVar(activeMessageIdVar);
-  
+     
     if (networkStatus === 4) return <p>Refetching!</p>;
     if (loading) return <div className="button is-loading"></div>;
     if (error) return <p>`Error!: ${error}`</p>;  
@@ -49,9 +52,8 @@ export default function MediaModal({ messageid }) {
     var message = null;
     var directLink = undefined;
     
-    var modalBody = undefined;
-
     var closeModalFunc = () => {
+        showMobileMapMode(false);
         showMobileMedia(false);
         activeMessageIdVar(activeMessages.filter(item => item !== messageid));
     };
@@ -60,7 +62,6 @@ export default function MediaModal({ messageid }) {
         message = data.messages[0]
     }
 
-    
     if (sharedLinks !== undefined && sharedLinks.length > 0) {
         var mediaUrl = sharedLinks[0].expanded_url;
 
@@ -72,19 +73,6 @@ export default function MediaModal({ messageid }) {
             )
             directLink = sharedLinks[0].url;
             mediaImage = sharedLinks[0].preview;
-
-            modalBody = (
-                <section className="modal-card-body">
-                    <section>
-                        <div>
-                            <p>{message.message}</p>
-                        </div>
-                        <div className="image is-2by2">
-                            <a href={directLink} target="_blank" title="Click image to view on Instagram."><img src={mediaImage} alt="View on Instagram" /></a>
-                        </div>
-                    </section>
-                </section>
-            );
         }
         else {
             mediaLinkButton = (
@@ -94,24 +82,7 @@ export default function MediaModal({ messageid }) {
             )
             directLink = sharedLinks[0].url;
             mediaImage = sharedLinks[0].preview;
-
-            modalBody = (
-                <section className="modal-card-body">
-                    <section>
-                        <TwitterTweetEmbed key={messageid} tweetId={messageid} placeholder="Loading Tweet..."/>
-                    </section>
-                </section>
-            );
         }
-    }
-    else {
-        modalBody = (
-            <section className="modal-card-body">
-                <section>
-                    <TwitterTweetEmbed key={messageid} tweetId={messageid} placeholder="Loading Tweet..."/>
-                </section>
-            </section>
-        );
     }
 
      var modalClassname = "modal is-hidden"
@@ -120,23 +91,19 @@ export default function MediaModal({ messageid }) {
     }
 
     return (
-        <div className={modalClassname}>
-            <div className="modal-background"></div>
-            <div className="modal-card ml-0">
-                <header className="modal-card-head">
-                    <figure className="media-left">
-                        <p className="image is-48x48">
-                            <img className="is-rounded" src={message.https_contributor_profile_pic} alt="Placeholder image" />
-                        </p>
-                    </figure>
-                    <div className="media-content">
-                        <p><strong>{message.contributor_name}</strong></p>
-                        <p><small>@{message.contributor_screen_name}</small></p>
-                    </div>
-                    <button className="delete is-large" aria-label="close" onClick={() => closeModalFunc()}></button>
-                </header>
-                {modalBody}
-            </div>
+        <div className="modal-card ml-0">
+            <header className="modal-card-head">
+                <figure className="media-left">
+                <p className="image is-48x48">
+                    <img className="is-rounded" src={message.https_contributor_profile_pic} alt="Placeholder image" />
+                </p>
+                </figure>
+                <div className="media-content">
+                    <p><strong>{message.contributor_name}</strong></p>
+                    <p><small>@{message.contributor_screen_name}</small></p>
+                </div>
+                <button className="delete is-large" aria-label="close" onClick={() => closeModalFunc()}></button>
+            </header>
         </div>
     );
 }
