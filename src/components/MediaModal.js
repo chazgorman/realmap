@@ -22,10 +22,6 @@ query($messageid: String) {
         message
         message_id
         time
-        like_count
-        twitter_favorite_count
-        twitter_favorite_count
-        network
         location
     }
   }`
@@ -112,6 +108,15 @@ export default function MediaModal({ messageid }) {
                 </section>
             );
         }
+    }
+    else {
+        modalBody = (
+            <section className="modal-card-body">
+                <section>
+                    <TwitterTweetEmbed key={messageid} tweetId={messageid} placeholder="Loading Tweet..."/>
+                </section>
+            </section>
+        );
     }
 
      var modalClassname = "modal is-hidden"
