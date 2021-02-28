@@ -42,11 +42,6 @@ export default function MediaModal({ messageid }) {
     if (loading) return <div className="button is-loading"></div>;
     if (error) return <p>`Error!: ${error}`</p>;  
 
-    //var mediaData = data.shared_links[0]
-    var retweetLink = "https://twitter.com/intent/retweet?tweet_id=" + messageid;
-    var replyToLink = "https://twitter.com/intent/tweet?in_reply_to=" + messageid;
-    var likeLink = "https://twitter.com/intent/like?tweet_id=" + messageid;
-
     var mediaLinkButton = undefined;
     var mediaImage = undefined; 
 
