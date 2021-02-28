@@ -2,7 +2,7 @@ import React from 'react'
 import DynamicMap from '../src/components/map';
 import Navbar from '../src/components/navbar'
 import ClientMediaList from '../src/components/mediaList'
-import MediaModal from '../src/components/MediaModal'
+import MapMediaModal from '../src/components/MapMediaModal'
 import { useQuery, gql, useReactiveVar } from '@apollo/client';
 import { activeMessageIdVar, showMobileMapMode } from '../src/appstate/cache'
 import MapController from '../src/components/MapController'
@@ -43,7 +43,7 @@ function MainIndex() {
   // There is an active message, and we're on desktop; 
   if (activeMessages.length > 0 && showMobileMap == false) {
     // Create modal to display image/media
-    mediaModal = <MediaModal messageid={activeMessages[0]}></MediaModal>;
+    mediaModal = <MapMediaModal messageid={activeMessages[0]}></MapMediaModal>;
     mediaModalColumn = (
       <div className="is-centered is-vcentered">
         {mediaModal}

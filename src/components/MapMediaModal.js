@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery, gql, useReactiveVar } from '@apollo/client';
-import { activeMessageIdVar, showMobileMedia } from '../appstate/cache'
+import { activeMessageIdVar, showMobileMapMode } from '../appstate/cache'
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 
 const MSG_BY_ID_QUERY = gql`
@@ -30,7 +30,7 @@ query($messageid: String) {
     }
   }`
 
-export default function MediaModal({ messageid }) {
+export default function MapMediaModal({ messageid }) {
     const { loading, error, data, refetch, networkStatus } = useQuery(
       MSG_BY_ID_QUERY,
       {
@@ -61,7 +61,7 @@ export default function MediaModal({ messageid }) {
     var modalBody = undefined;
 
     var closeModalFunc = () => {
-        showMobileMedia(false);
+        showMobileMapMode(false);
         activeMessageIdVar(activeMessages.filter(item => item !== messageid));
     };
 
@@ -119,11 +119,16 @@ export default function MediaModal({ messageid }) {
       modalClassname = "modal;"
     }
 
+    var timeStamp = message.time;
+    var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
+
     return (
         <div className={modalClassname}>
             <div className="modal-background"></div>
             <div className="modal-card ml-0">
                 <header className="modal-card-head">
+
+                    {/* <p className="modal-card-title">Modal title</p> */}
                     <figure className="media-left">
                         <p className="image is-48x48">
                             <img className="is-rounded" src={message.https_contributor_profile_pic} alt="Placeholder image" />
@@ -132,6 +137,9 @@ export default function MediaModal({ messageid }) {
                     <div className="media-content">
                         <p><strong>{message.contributor_name}</strong></p>
                         <p><small>@{message.contributor_screen_name}</small></p>
+                    </div>
+                    <div className="media-content is-hidden-desktop" onClick={() => showMobileMapMode(true)}>
+                        <div className="button is-link"><i className="fas fa-globe" color="blue"></i></div>
                     </div>
                     <button className="delete is-large" aria-label="close" onClick={() => closeModalFunc()}></button>
                 </header>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery, gql, useReactiveVar } from '@apollo/client';
-import { activeMessageIdVar, showMobileMapMode } from '../appstate/cache'
+import { activeMessageIdVar, showMobileMapMode, showMobileMedia } from '../appstate/cache'
 
 const MSG_BY_ID_QUERY = gql`
 query($messageid: String) {
@@ -54,6 +54,7 @@ export default function MapModalHeader({ messageid }) {
     
     var closeModalFunc = () => {
         showMobileMapMode(false);
+        showMobileMedia(false);
         activeMessageIdVar(activeMessages.filter(item => item !== messageid));
     };
 
@@ -84,8 +85,8 @@ export default function MapModalHeader({ messageid }) {
         }
     }
 
-     var modalClassname = "modal is-hidden"
-     if(activeMessages.includes(messageid)){
+    var modalClassname = "modal is-hidden"
+    if(activeMessages.includes(messageid)){
       modalClassname = "modal;"
     }
 
