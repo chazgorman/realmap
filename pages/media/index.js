@@ -20,13 +20,13 @@ function MediaIndex() {
   // React hook from Apollo is used to fetch data: useQuery
   const { loading, error, data } = useQuery(allMsgsQuery);
 
-  // Loading/error indicators
-  if (loading) return <div className="button is-loading"></div>;
-  if (error) return <p>Error</p>;
-
   // Apollo reactive variables used to get current state;
   const activeMessages = useReactiveVar(activeMessageIdVar); // Is there a message selected?
   const showMobileMediaStatus = useReactiveVar(showMobileMedia)    // Is active view a map and on a mobile device?
+
+  // Loading/error indicators
+  if (loading) return <div className="button is-loading"></div>;
+  if (error) return <p>Error</p>;
 
   // Variables to hold conditional react components and style
   let mediaModal = undefined;
