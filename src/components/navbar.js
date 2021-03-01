@@ -25,7 +25,7 @@ export default function Navbar() {
     var geoTaggedLinkClass = "navbar-item";
     var mediaLinkClass = "navbar-item";
 
-    if (router.pathname == "/media") {
+    if (router !== null && router.pathname == "/media") {
         mediaLinkClass = mediaLinkClass + " is-active";
     }
     else {
