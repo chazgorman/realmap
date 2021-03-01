@@ -58,9 +58,6 @@ class EsriMap extends React.Component {
     const activeMessages = activeMessageIdVar();
 
     if(activeMessages !== undefined && activeMessages.length > 0){
-      var activeMsg = undefined;
-
-  
       if(this.props.points !== undefined && this.props.points.messages != undefined){
         const findByMsgId = (element) => element.message_id == activeMessages[0];
 
