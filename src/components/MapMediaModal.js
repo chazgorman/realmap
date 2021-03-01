@@ -36,7 +36,7 @@ export default function MapMediaModal({ messageid }) {
       {
         variables: { messageid },
         notifyOnNetworkStatusChange: true
-        // pollInterval: 500
+        // pollInterval: 5000
       }
     );
 
@@ -125,7 +125,7 @@ export default function MapMediaModal({ messageid }) {
     return (
         <div className={modalClassname}>
             <div className="modal-background"></div>
-            <div className="modal-card">
+            <div className="modal-card ml-0">
                 <header className="modal-card-head">
 
                     {/* <p className="modal-card-title">Modal title</p> */}
