@@ -1,5 +1,6 @@
 import React from 'react'
 import Navbar from '../../src/components/navbar'
+import TabMenu from '../../src/components/TabMenu'
 import ClientMediaList from '../../src/components/mediaList'
 import MediaModal from '../../src/components/MediaModal'
 import { useQuery, gql, useReactiveVar } from '@apollo/client';
@@ -34,6 +35,7 @@ function MediaIndex() {
   let mapModalColumn = undefined;
   let mediaListStyle = { height: '100vh', overflow: 'auto' };
   let navbar = <Navbar />;
+  let tabMenu = <TabMenu />;
   let mapClassName = "column is-half is-hidden-mobile";
   let mapStyle = { width: '100%', height: "100%" };
   let headerStyle = { width: '100%', height: "20%", display: 'none' };
@@ -42,11 +44,11 @@ function MediaIndex() {
   if (activeMessages.length > 0 && showMobileMediaStatus == false) {
     // Create modal to display image/media
     mediaModal = <MediaModal messageid={activeMessages[0]}></MediaModal>;
-    mediaModalColumn = (
-      <div className="is-centered is-vcentered">
-        {mediaModal}
-      </div>
-    );
+    // mediaModalColumn = (
+    //   <div className="is-centered is-vcentered">
+    //     {mediaModal}
+    //   </div>
+    // );
     mediaListStyle = { height: '100vh', overflow: 'auto', display: 'none' };
   }
   // Mobile map mode implies that there is an active message; set up modal to display map
@@ -66,10 +68,11 @@ function MediaIndex() {
     // When in mobile map mode, elements in the first column are undefined or hidden, so 2nd column takes up full display.
     <div>
       {navbar}
-      <div className="columns is-gapless is-desktop" style={{ width: '100%', height: '100%', paddingTop: '1.0rem' }}>
-        <div className="column" style={{ height: '100vh', padding: '0' }}>
-          {mediaModalColumn}
-          <div style={mediaListStyle}>
+      <div className="columns is-centered is-gapless is-desktop" style={{ width: '100%', height: '100%', paddingTop: '1.0rem' }}>
+        <div className="column is-centered" style={{ height: '100vh', padding: '0' }}>
+          {tabMenu}
+          {mediaModal}
+          <div className="is-box" style={mediaListStyle}>
             <ClientMediaList mapMarkers={data.messages} />
           </div>);
         </div>

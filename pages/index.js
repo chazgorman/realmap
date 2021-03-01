@@ -1,6 +1,7 @@
 import React from 'react'
 import DynamicMap from '../src/components/map';
 import Navbar from '../src/components/navbar'
+import TabMenu from '../src/components/TabMenu'
 import ClientMediaList from '../src/components/mediaList'
 import MapMediaModal from '../src/components/MapMediaModal'
 import { useQuery, gql, useReactiveVar } from '@apollo/client';
@@ -36,6 +37,8 @@ function MainIndex() {
   let mapModalColumn = undefined;
   let mediaListStyle = { height: '100vh', overflow: 'auto' };
   let navbar = <Navbar />;
+  let tabMenu = <TabMenu />;
+
   let mapClassName = "column is-two-thirds is-hidden-mobile";
   let mapStyle = { width: '100%', height: "100%" };
   let headerStyle = { width: '100%', height: "20%", display: 'none' };
@@ -72,6 +75,7 @@ function MainIndex() {
         <div className="column" style={{ height: '100vh', padding: '0' }}>
           {/* {searchInput}
             {topicChooser} */}
+          {tabMenu}
           {mediaModalColumn}
           <div style={mediaListStyle}>
             <ClientMediaList mapMarkers={data.messages} />
