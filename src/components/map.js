@@ -45,7 +45,7 @@ class EsriMap extends React.Component {
         return map;
 
       }).then(map => {        
-
+        thisMap.zoomTo();
       })
       .catch(err => {
         // handle any errors
