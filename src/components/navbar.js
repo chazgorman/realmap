@@ -61,7 +61,7 @@ export default function Navbar() {
                             <Link href="/media">
                                 <a className={mediaLinkClass}>
                                     <span className="icon"><i className="fas fa-image" /></span>
-                                    <span>All Posts - Teams, Riders, News, Results</span>
+                                    <span>All Posts: Teams, Races, News</span>
                                 </a>
                             </Link>
                         </div>

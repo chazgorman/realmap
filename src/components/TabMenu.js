@@ -1,12 +1,19 @@
-import gql from 'graphql-tag'
+import { useReactiveVar } from '@apollo/client';
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { activeMessageIdVar, showMobileMedia } from '../appstate/cache'
 
 export default function TabMenu() {
     const router = useRouter()
+    const activeMessages = useReactiveVar(activeMessageIdVar); // Is there a message selected?
 
+    var componentClassName = "tabs is-small is-hidden-desktop is-toggle is-centered is-fullwidth";
     var geoTaggedLinkClass = "navbar-item is-link is-light";
     var mediaLinkClass = "navbar-item is-link is-light";
+
+    if(activeMessages.length > 0){
+        componentClassName = componentClassName + " is-hidden";
+    }
 
     if(router.pathname == "/media"){
         mediaLinkClass = mediaLinkClass + " is-active";
@@ -16,7 +23,7 @@ export default function TabMenu() {
     }
 
     return (
-        <div className="tabs is-hidden-desktop is-toggle is-centered is-fullwidth">
+        <div className={componentClassName}>
             <ul>
                 <Link href="/">
                     <a className={geoTaggedLinkClass}>
@@ -27,7 +34,7 @@ export default function TabMenu() {
                 <Link href="/media">
                     <a className={mediaLinkClass}>
                         <span className="icon"><i className="fas fa-image" /></span>
-                        <span>All Posts - Teams, Riders, News, Results</span>
+                        <span>All Posts: Teams, Races, News</span>
                     </a>
                 </Link>
             </ul>
