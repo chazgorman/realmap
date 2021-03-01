@@ -36,26 +36,16 @@ function MediaIndex() {
   let mediaListStyle = { height: '100vh', overflow: 'auto' };
   let navbar = <Navbar />;
   let tabMenu = <TabMenu />;
-  let mapClassName = "column is-half is-hidden-mobile";
-  let mapStyle = { width: '100%', height: "100%" };
-  let headerStyle = { width: '100%', height: "20%", display: 'none' };
 
   // There is an active message, and we're on desktop; 
   if (activeMessages.length > 0 && showMobileMediaStatus == false) {
     // Create modal to display image/media
     mediaModal = <MediaModal messageid={activeMessages[0]}></MediaModal>;
-    // mediaModalColumn = (
-    //   <div className="is-centered is-vcentered">
-    //     {mediaModal}
-    //   </div>
-    // );
     mediaListStyle = { height: '100vh', overflow: 'auto', display: 'none' };
   }
   // Mobile map mode implies that there is an active message; set up modal to display map
   else if (showMobileMediaStatus) {
-    mapClassName = "modal column"
-    mapStyle = { width: '100%', height: "100%" };
-    headerStyle = { width: '100%' };
+
     mediaListStyle = { height: '100vh', overflow: 'auto', display: 'none' };
     mapModalColumn = <MediaModalHeader messageid={activeMessages[0]}></MediaModalHeader>
     mediaModalColumn = undefined;
@@ -69,7 +59,7 @@ function MediaIndex() {
     <div>
       {navbar}
       <div className="columns is-centered is-gapless is-desktop" style={{ width: '100%', height: '100%', paddingTop: '1.0rem' }}>
-        <div className="column is-centered" style={{ height: '100vh', padding: '0' }}>
+        <div className="column is-centered" >
           {tabMenu}
           {mediaModal}
           <div className="is-box" style={mediaListStyle}>

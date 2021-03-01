@@ -125,7 +125,7 @@ export default function MapMediaModal({ messageid }) {
     return (
         <div className={modalClassname}>
             <div className="modal-background"></div>
-            <div className="modal-card ml-0">
+            <div className="modal-card">
                 <header className="modal-card-head">
 
                     {/* <p className="modal-card-title">Modal title</p> */}
