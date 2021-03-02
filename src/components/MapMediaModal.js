@@ -42,6 +42,12 @@ export default function MapMediaModal({ messageid }) {
 
     const activeMessages = useReactiveVar(activeMessageIdVar);
   
+    // In case Media Modal has been requested from a map 'click', set the message ID and refetch data.
+    if(data === undefined){
+        messageid = activeMessages[0];
+        refetch();
+    }
+
     if (networkStatus === 4) return <p>Refetching!</p>;
     if (loading) return <div className="button is-loading"></div>;
     if (error) return <p>`Error!: ${error}`</p>;  
@@ -119,8 +125,8 @@ export default function MapMediaModal({ messageid }) {
       modalClassname = "modal;"
     }
 
-    var timeStamp = message.time;
-    var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
+    // var timeStamp = message.time;
+    // var dateString = new Date(timeStamp.replace(' ', 'T')).toDateString();
 
     return (
         <div className={modalClassname}>
