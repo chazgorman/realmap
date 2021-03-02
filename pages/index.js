@@ -1,5 +1,6 @@
 import React from 'react'
-import DynamicMap from '../src/components/map';
+import DynamicMap3D from '../src/components/MapView3D';
+import DynamicMap2D from '../src/components/MapView2D';
 import Navbar from '../src/components/navbar'
 import TabMenu from '../src/components/TabMenu'
 import ClientMediaList from '../src/components/mediaList'
@@ -65,6 +66,11 @@ function MainIndex() {
     navbar = <div></div>;
   }
 
+  var map2D = (<div id="map2d" style={mapStyle}>
+    <DynamicMap2D points={data}></DynamicMap2D>
+    <MapController map={this}></MapController>
+  </div>);
+
   return (
     // As per Bulma.io docs, 'columns' are only activated on tablet devices and above;
     // Mobile devices will have columns stacked vertically.
@@ -85,10 +91,7 @@ function MainIndex() {
           <div id="mobileMapHeader" style={headerStyle}>
             {mapModalColumn}
           </div>
-          <div id="map" style={mapStyle}>
-            <DynamicMap points={data}></DynamicMap>
-            <MapController map={this}></MapController>
-          </div>
+          {map2D}
         </div>
       </div>
     </div>

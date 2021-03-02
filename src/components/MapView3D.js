@@ -6,7 +6,7 @@ import GraphqlLyr from './GraphqlFeatureLayer'
 import { gql } from '@apollo/client';
 import { activeMessageIdVar, activeMap } from '../appstate/cache'
 
-class EsriMap extends React.Component {
+class MapView3D extends React.Component {
   constructor(props) {
     super(props);
     this.zoomTo = this.zoomTo.bind(this);
@@ -15,7 +15,7 @@ class EsriMap extends React.Component {
     var thisMap = this;
 
     // first, we use Dojo's loader to require the map class
-    loadModules(['esri/Map','esri/views/SceneView', 'esri/widgets/BasemapToggle', 'esri/widgets/Popup'])
+    loadModules(['esri/Map', 'esri/views/SceneView', 'esri/widgets/BasemapToggle', 'esri/widgets/Popup'])
       .then(([Map, SceneView, BasemapToggle]) => {
 
         var map = new Map({
@@ -24,7 +24,7 @@ class EsriMap extends React.Component {
         });
 
         var view = new SceneView({
-          container: "map",  // Reference to the DOM node that will contain the view
+          container: "map3d",  // Reference to the DOM node that will contain the view
           map: map,  // References the map object created in step 3
         });
 
@@ -40,7 +40,8 @@ class EsriMap extends React.Component {
 
         thisMap.map = view;
 
-        activeMap(thisMap);
+        var activeMaps = activeMap();
+        activeMap([...activeMaps, thisMap]);
 
         return map;
 
@@ -67,8 +68,8 @@ class EsriMap extends React.Component {
         if(message !== undefined && message.location !== undefined){
             var options = {
               center: message.location.coordinates,
-              zoom: 12,
-              tilt: 45        
+              zoom: 11,
+              tilt: 12        
             };
             this.map.goTo(options);
         }
@@ -86,8 +87,8 @@ class EsriMap extends React.Component {
   }
 }
 
-EsriMap.propTypes = {
+MapView3D.propTypes = {
   datapoints: PropTypes.object
 };
 
-export default EsriMap;
+export default MapView3D;

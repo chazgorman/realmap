@@ -6,7 +6,7 @@ export const showMobileMapMode = makeVar(false);
 
 export const showMobileMedia = makeVar(false);
 
-export const activeMap = makeVar({});
+export const activeMap = makeVar([]);
 
 
 
