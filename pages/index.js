@@ -6,10 +6,11 @@ import TabMenu from '../src/components/TabMenu'
 import ClientMediaList from '../src/components/mediaList'
 import MapMediaModal from '../src/components/MapMediaModal'
 import { useQuery, gql, useReactiveVar } from '@apollo/client';
-import { activeMessageIdVar, showMobileMapMode, showFilterModalVar } from '../src/appstate/cache'
+import { activeMessageIdVar, showMobileMapMode, showFilterModalVar, selectedTopicsVar } from '../src/appstate/cache'
 import MapController from '../src/components/MapController'
 import MapModalHeader from '../src/components/MapModalHeader'
 import HashtagModal from '../src/components/HashtagModal'
+import { MSGS_BY_HASHTAGS } from '../src/appstate/GqlQueries'
 
 export const allMsgsQuery = gql`
 {
@@ -23,7 +24,19 @@ export const allMsgsQuery = gql`
 
 function MainIndex() {
   // React hook from Apollo is used to fetch data: useQuery
-  const { loading, error, data } = useQuery(allMsgsQuery);
+  //const { loading, error, data } = useQuery(allMsgsQuery);
+
+  var tagList = useReactiveVar(selectedTopicsVar);
+  console.log(tagList);
+
+  const { loading, error, data, refetch, networkStatus } = useQuery(
+    MSGS_BY_HASHTAGS,
+    {
+      variables: { tags: tagList },
+      notifyOnNetworkStatusChange: true
+      //pollInterval: 5000
+    }
+  );
 
   // Apollo reactive variables used to get current state;
   const activeMessages = useReactiveVar(activeMessageIdVar); // Is there a message selected?
@@ -33,6 +46,17 @@ function MainIndex() {
   // Loading/error indicators
   if (loading) return <div className="button is-loading"></div>;
   if (error) return <p>Error</p>;
+
+  var tagMsgIds = data.tags.map(tag => {return tag.message_id});
+
+  console.log(tagMsgIds);
+
+  console.log(data.messages.length);
+
+  var dataMsgs = data.messages;
+  const currentMsgs = dataMsgs.filter(msg => tagMsgIds.includes(msg.message_id));
+
+  console.log(currentMsgs.length);
 
   // Variables to hold conditional react components and style
   let mediaModal = undefined;

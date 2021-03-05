@@ -19,12 +19,17 @@ const ALL_HASHTAGS_LAST7DAYS = gql`
 }
 `
 
-const MSGS_BY_HASHTAGS = gql`
-query($tags: [String]){
-    tophashtags: hashtags_last_7_days(where: {tag: {_in: $tags}}) {
+export const MSGS_BY_HASHTAGS = gql`
+query($tags: [String!]){
+    tags: hashtags_last_14_days(where: {tag: {_in: $tags}}) {
         tag
         message_id
         territory
+    }
+    messages: geomessages_last_14_days(limit: 100) {
+        contributor_name
+        message_id
+        location
     }
 }
 `
