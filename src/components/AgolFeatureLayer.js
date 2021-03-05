@@ -13,9 +13,6 @@ class AgolFeatureLayer {
   }
   loadLayer() {
     let thisLayer = this;
-    const options = {
-      url: 'https://js.arcgis.com/3.23/',
-    };
     loadModules(['esri/layers/FeatureLayer'])
       .then(([FeatureLayer]) => {
 

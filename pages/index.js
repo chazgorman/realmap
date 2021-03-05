@@ -6,9 +6,10 @@ import TabMenu from '../src/components/TabMenu'
 import ClientMediaList from '../src/components/mediaList'
 import MapMediaModal from '../src/components/MapMediaModal'
 import { useQuery, gql, useReactiveVar } from '@apollo/client';
-import { activeMessageIdVar, showMobileMapMode } from '../src/appstate/cache'
+import { activeMessageIdVar, showMobileMapMode, showFilterModalVar } from '../src/appstate/cache'
 import MapController from '../src/components/MapController'
 import MapModalHeader from '../src/components/MapModalHeader'
+import HashtagModal from '../src/components/HashtagModal'
 
 export const allMsgsQuery = gql`
 {
@@ -27,6 +28,7 @@ function MainIndex() {
   // Apollo reactive variables used to get current state;
   const activeMessages = useReactiveVar(activeMessageIdVar); // Is there a message selected?
   const showMobileMap = useReactiveVar(showMobileMapMode)    // Is active view a map and on a mobile device?
+  const showFilterModal = useReactiveVar(showFilterModalVar);
 
   // Loading/error indicators
   if (loading) return <div className="button is-loading"></div>;
@@ -66,6 +68,17 @@ function MainIndex() {
     navbar = <div></div>;
   }
 
+  var filterModal = undefined;
+  var filterModalColumn = undefined;
+  if(showFilterModal){
+    filterModal = <HashtagModal></HashtagModal>;
+    filterModalColumn = (
+      <div className="is-centered is-vcentered">
+        {filterModal}
+      </div>
+    );
+  }
+
   var map2D = (<div id="map2d" style={mapStyle}>
     <DynamicMap2D points={data}></DynamicMap2D>
     <MapController map={this}></MapController>
@@ -83,6 +96,7 @@ function MainIndex() {
             {topicChooser} */}
           {tabMenu}
           {mediaModalColumn}
+          {filterModalColumn}
           <div style={mediaListStyle}>
             <ClientMediaList mapMarkers={data.messages} />
           </div>);

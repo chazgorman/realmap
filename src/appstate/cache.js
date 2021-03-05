@@ -8,5 +8,9 @@ export const showMobileMedia = makeVar(false);
 
 export const activeMap = makeVar([]);
 
+export const selectedTopicsVar = makeVar([]);
+
+export const showFilterModalVar = makeVar(false);
+
 
 

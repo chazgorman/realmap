@@ -1,7 +1,9 @@
-import gql from 'graphql-tag'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react';
 import { useRouter } from 'next/router'
+import { useQuery, gql, useReactiveVar } from '@apollo/client';
+import { showFilterModalVar } from '../appstate/cache';
+import HashtagModal from './HashtagModal';
 
 // export const allAppQuery = gql`
 //   query allPosts($first: Int!, $skip: Int!) {
@@ -19,8 +21,12 @@ import { useRouter } from 'next/router'
 //     first: 10
 // }
 
+
+
 export default function Navbar() {
     const router = useRouter()
+
+    const showFilterModal = useReactiveVar(showFilterModalVar); // Is there a message selected?
 
     var geoTaggedLinkClass = "navbar-item";
     var mediaLinkClass = "navbar-item";
@@ -66,6 +72,20 @@ export default function Navbar() {
                             </Link>
                         </div>
                     </div>
+                    <div className="navbar-item">
+                        <div className="field is-grouped">
+                            <p className="control">
+                                <a className="button is-mobile" onClick={() => showFilterModalVar(!showFilterModal)}>
+                                    <span className="icon">
+                                        <i className="fas fa-search"></i>
+                                    </span>
+                                    <span>
+                                        Filter
+                                    </span>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
                 <div className="navbar-end">
                     <div className="navbar-item has-dropdown is-hoverable">
@@ -90,7 +110,7 @@ export default function Navbar() {
                                     </span>
                                     <span>
                                         Share
-                            </span>
+                                    </span>
                                 </a>
                             </p>
                         </div>
