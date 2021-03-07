@@ -1,7 +1,7 @@
 import { useReactiveVar } from '@apollo/client';
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { activeMessageIdVar, showMobileMedia } from '../appstate/cache'
+import { activeMessageIdVar } from '../appstate/cache'
 
 export default function TabMenu() {
     const router = useRouter()
@@ -34,7 +34,7 @@ export default function TabMenu() {
                 <Link href="/media">
                     <a className={mediaLinkClass}>
                         <span className="icon"><i className="fas fa-image" /></span>
-                        <span>All Posts: Teams, Races, News</span>
+                        <span>All Posts</span>
                     </a>
                 </Link>
             </ul>

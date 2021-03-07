@@ -72,11 +72,11 @@ class MapView2D extends React.Component {
     const activeMessages = activeMessageIdVar();
 
     if(activeMessages !== undefined && activeMessages.length > 0){
-      if(this.props.points !== undefined && this.props.points.messages != undefined){
+      if(this.props.points !== undefined){
         const findByMsgId = (element) => element.message_id == activeMessages[0];
 
-        var msgIdIndex = this.props.points.messages.findIndex(findByMsgId);
-        var message = this.props.points.messages[msgIdIndex];
+        var msgIdIndex = this.props.points.findIndex(findByMsgId);
+        var message = this.props.points[msgIdIndex];
         
         if(message !== undefined && message.location !== undefined){
             var options = {

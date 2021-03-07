@@ -19,14 +19,55 @@ const ALL_HASHTAGS_LAST7DAYS = gql`
 }
 `
 
-export const MSGS_BY_HASHTAGS = gql`
-query($tags: [String!]){
-    tags: hashtags_last_14_days(where: {tag: {_in: $tags}}) {
-        tag
+export const GEOMSGS_BY_HASHTAGS_LAST_14_DAYS = gql`
+query($tags: _text!){
+    messages: geomsgs_by_hashtag_last_14_days(args: {tags: $tags}) {
+        contributor_name
         message_id
-        territory
+        location
     }
-    messages: geomessages_last_14_days(limit: 100) {
+}
+`
+
+export const GEOMSGS_LAST_14_DAYS = gql`
+query($msglimit: Int!){
+    messages: geomessages_last_14_days(limit: $msglimit) {
+        contributor_name
+        message_id
+        location
+    }
+}
+`
+
+
+// export const GEOMSGS_BY_HASHTAGS = gql`
+// query($tags: [String!], $msglimit: Int!){
+//     tags: hashtags_last_14_days(where: {tag: {_in: $tags}}) {
+//         tag
+//         message_id
+//         territory
+//     }
+//     messages: geomessages_last_14_days(limit: $msglimit) {
+//         contributor_name
+//         message_id
+//         location
+//     }
+// }
+// `
+
+export const MSGS_BY_HASHTAGS_LAST_14_DAYS = gql`
+query($tags: _text!){
+    messages: msgs_by_hashtag_last_14_days(args: {tags: $tags}) {
+        contributor_name
+        message_id
+        location
+    }
+}
+`
+
+export const MSGS_LAST_14_DAYS = gql`
+query($msglimit: Int!){
+    messages: messages_last_14_days(limit: $msglimit) {
         contributor_name
         message_id
         location

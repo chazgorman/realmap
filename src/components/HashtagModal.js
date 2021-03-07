@@ -60,7 +60,7 @@ export default function HashtagModal() {
                     </div>
                 </section>
                 <footer className="modal-card-foot">
-                    <button className="button is-success">Save changes</button>
+                    <button className="button is-success" aria-label="close" onClick={() => showFilterModalVar(!showFilterModal)}>Close</button>
                     <button className="button" onClick={() => selectedTopicsVar([])}>Clear All</button>
                 </footer>
             </div>

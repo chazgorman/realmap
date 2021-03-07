@@ -1,27 +1,7 @@
 import Link from 'next/link'
-import React, { useState } from 'react';
 import { useRouter } from 'next/router'
-import { useQuery, gql, useReactiveVar } from '@apollo/client';
+import { useReactiveVar } from '@apollo/client';
 import { showFilterModalVar } from '../appstate/cache';
-import HashtagModal from './HashtagModal';
-
-// export const allAppQuery = gql`
-//   query allPosts($first: Int!, $skip: Int!) {
-//     allApps(first: $first, skip: $skip) {
-//       id
-//       name
-//     }
-//     _allAppsMeta {
-//       count
-//     }
-//   }
-// `
-// export const allAppsQueryVars = {
-//     skip: 0,
-//     first: 10
-// }
-
-
 
 export default function Navbar() {
     const router = useRouter()
@@ -67,7 +47,7 @@ export default function Navbar() {
                             <Link href="/media">
                                 <a className={mediaLinkClass}>
                                     <span className="icon"><i className="fas fa-image" /></span>
-                                    <span>All Posts: Teams, Races, News</span>
+                                    <span>All Posts</span>
                                 </a>
                             </Link>
                         </div>

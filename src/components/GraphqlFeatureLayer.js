@@ -6,7 +6,7 @@ export const messagesQueryVars = {
   skip: 0,
   first: 10
 }
-export default async function GraphqlFeatureLayer(data){
+export default async function GraphqlFeatureLayer(messages){
   const [
     GraphicsLayer, 
     Point, 
@@ -30,7 +30,7 @@ export default async function GraphqlFeatureLayer(data){
   
   var sr = new SpatialReference(4326);
 
-  var graphics = data.messages.map(m => {
+  var graphics = messages.map(m => {
     var p = new Point(m.location.coordinates[0], m.location.coordinates[1], sr);
     var graphicProps = {
       attributes: m,
