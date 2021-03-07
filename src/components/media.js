@@ -13,7 +13,7 @@ query($messageid: String) {
         location
         preview
     }
-    messages: messages_last_14_days(where: {message_id: {_eq: $messageid}}) {
+    messages: messages(where: {message_id: {_eq: $messageid}}) {
         harvest_id
         contributor_screen_name
         contributor_name

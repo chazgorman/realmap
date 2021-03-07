@@ -3,31 +3,49 @@ import Navbar from '../../src/components/navbar'
 import TabMenu from '../../src/components/TabMenu'
 import ClientMediaList from '../../src/components/mediaList'
 import MediaModal from '../../src/components/MediaModal'
-import { useQuery, gql, useReactiveVar } from '@apollo/client';
-import { activeMessageIdVar, showMobileMedia } from '../../src/appstate/cache'
+import { useQuery, useReactiveVar } from '@apollo/client';
+import { activeMessageIdVar, showMobileMedia, selectedTopicsVar, showFilterModalVar } from '../../src/appstate/cache'
 import MediaModalHeader from '../../src/components/MediaModalHeader'
-
-export const allMsgsQuery = gql`
-{
-      messages: messages_last_14_days(limit: 100) {
-        contributor_name
-        message_id
-        location
-    }
-}
-`
+import HashtagModal from '../../src/components/HashtagModal'
+import { MSGS_BY_HASHTAGS_LAST_14_DAYS, MSGS_LAST_14_DAYS } from '../../src/appstate/GqlQueries'
 
 function MediaIndex() {
-  // React hook from Apollo is used to fetch data: useQuery
-  const { loading, error, data } = useQuery(allMsgsQuery);
+  var tagList = useReactiveVar(selectedTopicsVar);
+  var msgLimit = tagList.length === 0 ? 100 : 1000;
+  var tagsArg = "{" + tagList.join() + "}";
+
+  var skipHashtagQuery = tagList.length === 0;
+  var skipAllMsgQuery = !skipHashtagQuery;
+
+  const hashtagQuery = useQuery(
+    MSGS_BY_HASHTAGS_LAST_14_DAYS,
+    {
+      variables: { tags: tagsArg },
+      notifyOnNetworkStatusChange: true,
+      skip: skipHashtagQuery
+      //pollInterval: 5000
+    }
+  );
+  const allMsgQuery = useQuery(
+    MSGS_LAST_14_DAYS,
+    {
+      variables: { msglimit: msgLimit },
+      notifyOnNetworkStatusChange: true,
+      skip: skipAllMsgQuery
+      //pollInterval: 5000
+    }
+  );
 
   // Apollo reactive variables used to get current state;
   const activeMessages = useReactiveVar(activeMessageIdVar); // Is there a message selected?
   const showMobileMediaStatus = useReactiveVar(showMobileMedia)    // Is active view a map and on a mobile device?
+  const showFilterModal = useReactiveVar(showFilterModalVar);
 
   // Loading/error indicators
-  if (loading) return <div className="button is-loading"></div>;
-  if (error) return <p>Error</p>;
+  if (hashtagQuery.loading || allMsgQuery.loading) return <div className="button is-loading"></div>;
+  if (hashtagQuery.error || allMsgQuery.error) return <p>Error</p>;
+
+  var currentMsgs = hashtagQuery.data !== undefined ? hashtagQuery.data.messages : allMsgQuery.data.messages;
 
   // Variables to hold conditional react components and style
   let mediaModal = undefined;
@@ -52,6 +70,17 @@ function MediaIndex() {
     navbar = <div></div>;
   }
 
+  var filterModal = undefined;
+  var filterModalColumn = undefined;
+  if(showFilterModal){
+    filterModal = <HashtagModal></HashtagModal>;
+    filterModalColumn = (
+      <div className="is-centered is-vcentered">
+        {filterModal}
+      </div>
+    );
+  }
+
   return (
     // As per Bulma.io docs, 'columns' are only activated on tablet devices and above;
     // Mobile devices will have columns stacked vertically.
@@ -62,8 +91,9 @@ function MediaIndex() {
         <div className="column is-centered" >
           {tabMenu}
           {mediaModal}
+          {filterModalColumn}
           <div className="is-box" style={mediaListStyle}>
-            <ClientMediaList mapMarkers={data.messages} />
+            <ClientMediaList mapMarkers={currentMsgs} />
           </div>);
         </div>
       </div>

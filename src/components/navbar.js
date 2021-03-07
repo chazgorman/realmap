@@ -1,26 +1,12 @@
-import gql from 'graphql-tag'
 import Link from 'next/link'
-import React from 'react'
 import { useRouter } from 'next/router'
-
-// export const allAppQuery = gql`
-//   query allPosts($first: Int!, $skip: Int!) {
-//     allApps(first: $first, skip: $skip) {
-//       id
-//       name
-//     }
-//     _allAppsMeta {
-//       count
-//     }
-//   }
-// `
-// export const allAppsQueryVars = {
-//     skip: 0,
-//     first: 10
-// }
+import { useReactiveVar } from '@apollo/client';
+import { showFilterModalVar } from '../appstate/cache';
 
 export default function Navbar() {
     const router = useRouter()
+
+    const showFilterModal = useReactiveVar(showFilterModalVar); // Is there a message selected?
 
     var geoTaggedLinkClass = "navbar-item";
     var mediaLinkClass = "navbar-item";
@@ -61,9 +47,23 @@ export default function Navbar() {
                             <Link href="/media">
                                 <a className={mediaLinkClass}>
                                     <span className="icon"><i className="fas fa-image" /></span>
-                                    <span>All Posts: Teams, Races, News</span>
+                                    <span>All Posts</span>
                                 </a>
                             </Link>
+                        </div>
+                    </div>
+                    <div className="navbar-item">
+                        <div className="field is-grouped">
+                            <p className="control">
+                                <a className="button is-mobile" onClick={() => showFilterModalVar(!showFilterModal)}>
+                                    <span className="icon">
+                                        <i className="fas fa-search"></i>
+                                    </span>
+                                    <span>
+                                        Filter
+                                    </span>
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -90,7 +90,7 @@ export default function Navbar() {
                                     </span>
                                     <span>
                                         Share
-                            </span>
+                                    </span>
                                 </a>
                             </p>
                         </div>

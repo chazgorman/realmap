@@ -1,36 +1,55 @@
 import React from 'react'
-import DynamicMap3D from '../src/components/MapView3D';
 import DynamicMap2D from '../src/components/MapView2D';
 import Navbar from '../src/components/navbar'
 import TabMenu from '../src/components/TabMenu'
 import ClientMediaList from '../src/components/mediaList'
 import MapMediaModal from '../src/components/MapMediaModal'
-import { useQuery, gql, useReactiveVar } from '@apollo/client';
-import { activeMessageIdVar, showMobileMapMode } from '../src/appstate/cache'
+import { useQuery, useReactiveVar } from '@apollo/client';
+import { activeMessageIdVar, showMobileMapMode, showFilterModalVar, selectedTopicsVar } from '../src/appstate/cache'
 import MapController from '../src/components/MapController'
 import MapModalHeader from '../src/components/MapModalHeader'
-
-export const allMsgsQuery = gql`
-{
-      messages: geomessages_last_14_days(limit: 100) {
-        contributor_name
-        message_id
-        location
-    }
-}
-`
+import HashtagModal from '../src/components/HashtagModal'
+import { GEOMSGS_LAST_14_DAYS, GEOMSGS_BY_HASHTAGS_LAST_14_DAYS } from '../src/appstate/GqlQueries'
 
 function MainIndex() {
   // React hook from Apollo is used to fetch data: useQuery
-  const { loading, error, data } = useQuery(allMsgsQuery);
+
+  var tagList = useReactiveVar(selectedTopicsVar);
+  var msgLimit = tagList.length === 0 ? 100 : 1000;
+  var tagsArg = "{" + tagList.join() + "}";
+
+  var skipHashtagQuery = tagList.length === 0;
+  var skipAllMsgQuery = !skipHashtagQuery;
+
+  const hashtagQuery = useQuery(
+    GEOMSGS_BY_HASHTAGS_LAST_14_DAYS,
+    {
+      variables: { tags: tagsArg },
+      notifyOnNetworkStatusChange: true,
+      skip: skipHashtagQuery
+      //pollInterval: 5000
+    }
+  );
+  const allMsgQuery = useQuery(
+    GEOMSGS_LAST_14_DAYS,
+    {
+      variables: { msglimit: msgLimit },
+      notifyOnNetworkStatusChange: true,
+      skip: skipAllMsgQuery
+      //pollInterval: 5000
+    }
+  );
 
   // Apollo reactive variables used to get current state;
   const activeMessages = useReactiveVar(activeMessageIdVar); // Is there a message selected?
   const showMobileMap = useReactiveVar(showMobileMapMode)    // Is active view a map and on a mobile device?
+  const showFilterModal = useReactiveVar(showFilterModalVar);
 
   // Loading/error indicators
-  if (loading) return <div className="button is-loading"></div>;
-  if (error) return <p>Error</p>;
+  if (hashtagQuery.loading || allMsgQuery.loading) return <div className="button is-loading"></div>;
+  if (hashtagQuery.error || allMsgQuery.error) return <p>Error</p>;
+
+  var currentMsgs = hashtagQuery.data !== undefined ? hashtagQuery.data.messages : allMsgQuery.data.messages;
 
   // Variables to hold conditional react components and style
   let mediaModal = undefined;
@@ -66,8 +85,19 @@ function MainIndex() {
     navbar = <div></div>;
   }
 
+  var filterModal = undefined;
+  var filterModalColumn = undefined;
+  if(showFilterModal){
+    filterModal = <HashtagModal></HashtagModal>;
+    filterModalColumn = (
+      <div className="is-centered is-vcentered">
+        {filterModal}
+      </div>
+    );
+  }
+
   var map2D = (<div id="map2d" style={mapStyle}>
-    <DynamicMap2D points={data}></DynamicMap2D>
+    <DynamicMap2D points={currentMsgs}></DynamicMap2D>
     <MapController map={this}></MapController>
   </div>);
 
@@ -83,8 +113,9 @@ function MainIndex() {
             {topicChooser} */}
           {tabMenu}
           {mediaModalColumn}
+          {filterModalColumn}
           <div style={mediaListStyle}>
-            <ClientMediaList mapMarkers={data.messages} />
+            <ClientMediaList mapMarkers={currentMsgs} />
           </div>);
         </div>
         <div className={mapClassName}>
