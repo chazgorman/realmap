@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -H 0.0.0.0 -p ${PORT:-8080}",
     "now-build": "next build",
     "copy": "xcopy ./node_modules/@arcgis/core/assets ./public/assets"
   },
