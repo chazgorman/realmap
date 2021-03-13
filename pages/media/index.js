@@ -94,7 +94,7 @@ function MediaIndex() {
           {filterModalColumn}
           <div className="is-box" style={mediaListStyle}>
             <ClientMediaList mapMarkers={currentMsgs} />
-          </div>);
+          </div>
         </div>
       </div>
     </div>

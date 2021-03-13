@@ -16,9 +16,8 @@ export default function HashtagModal() {
     const selectedTopics = useReactiveVar(selectedTopicsVar);
     const { loading, error, data, refetch, networkStatus } = useQuery(TOP30_HASHTAGS_LAST7DAYS);
       
-    if (networkStatus === 4) return <p>Refetching!</p>;
-    if (loading) return <div className="button is-loading"></div>;
-    if (error) return <p>`Error!: ${error}`</p>; 
+    if (loading || networkStatus === 4) return <button className="button is-loading">Loading...</button>
+    if (error) return <p>`Error!: ${error}`</p>
 
     let i = 0;
     var selectedTags = selectedTopics.map(hashtag => {
