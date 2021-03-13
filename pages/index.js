@@ -116,7 +116,7 @@ function MainIndex() {
           {filterModalColumn}
           <div style={mediaListStyle}>
             <ClientMediaList mapMarkers={currentMsgs} />
-          </div>);
+          </div>
         </div>
         <div className={mapClassName}>
           <div id="mobileMapHeader" style={headerStyle}>
