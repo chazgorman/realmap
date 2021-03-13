@@ -75,11 +75,12 @@ export default function MediaModal({ messageid }) {
             modalBody = (
                 <section className="modal-card-body">
                     <section>
-                        <div>
-                            <p>{message.message}</p>
+                    <div className="image is-2by2">
+                            <a href={directLink} target="_blank" title="View on Instagram."><img src={mediaImage} alt="View on Instagram" /></a>
                         </div>
-                        <div className="image is-2by2">
-                            <a href={directLink} target="_blank" title="Click image to view on Instagram."><img src={mediaImage} alt="View on Instagram" /></a>
+                        <div>
+                            <p className="mt-1 has-text-info-dark">{message.message}</p>
+                            <a href={directLink} target="_blank"><p className="is-italic has-text-right has-text-link-dark">View on Instagram</p></a>
                         </div>
                     </section>
                 </section>
