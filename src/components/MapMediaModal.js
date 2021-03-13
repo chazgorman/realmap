@@ -96,7 +96,7 @@ export default function MapMediaModal({ messageid }) {
                         </div>
                         <div>
                             <p className="mt-1 has-text-info-dark">{message.message}</p>
-                            <a href={directLink} target="_blank"><p className="is-italic has-text-link-dark">View on Instagram</p></a>
+                            <a href={directLink} target="_blank"><p className="is-italic has-text-right has-text-link-dark">View on Instagram</p></a>
                         </div>
                     </section>
                 </section>
