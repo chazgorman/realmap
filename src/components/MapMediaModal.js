@@ -91,11 +91,11 @@ export default function MapMediaModal({ messageid }) {
             modalBody = (
                 <section className="modal-card-body">
                     <section>
-                        <div>
-                            <p>{message.message}</p>
-                        </div>
                         <div className="image is-2by2">
                             <a href={directLink} target="_blank" title="Click image to view on Instagram."><img src={mediaImage} alt="View on Instagram" /></a>
+                        </div>
+                        <div>
+                            <p className="mt-1 has-text-info-dark">{message.message}</p>
                         </div>
                     </section>
                 </section>
