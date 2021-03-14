@@ -96,7 +96,7 @@ export default function MediaModal({ messageid }) {
             mediaImage = sharedLinks[0].preview;
 
             modalBody = (
-                <section className="modal-card-body">
+                <section className="modal-card-body pt-1 pb-1 pr-3">
                     <section>
                         <TwitterTweetEmbed key={messageid} tweetId={messageid} placeholder="Loading Tweet..."/>
                     </section>
@@ -106,7 +106,7 @@ export default function MediaModal({ messageid }) {
     }
     else {
         modalBody = (
-            <section className="modal-card-body">
+            <section className="modal-card-body pt-2 pb-2">
                 <section>
                     <TwitterTweetEmbed key={messageid} tweetId={messageid} placeholder="Loading Tweet..."/>
                 </section>
@@ -122,7 +122,7 @@ export default function MediaModal({ messageid }) {
     return (
         <div className={modalClassname}>
             <div className="modal-background"></div>
-            <div className="modal-card ml-0">
+            <div className="modal-card">
                 <header className="modal-card-head pt-2 pb-2">
                     <figure className="media-left">
                         <p className="image is-48x48">

@@ -3,6 +3,7 @@ import Head from 'next/head'
 import React from 'react'
 import withApolloClient from '../src/lib/with-apollo-client'
 import { ApolloProvider } from '@apollo/client';
+import '../public/static/BulmaCustom.css'
 
 class MyApp extends App {
   render () {
