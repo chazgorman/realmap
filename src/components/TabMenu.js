@@ -17,7 +17,7 @@ export default function TabMenu() {
         componentClassName = componentClassName + " is-hidden";
     }
 
-    if (router.pathname == "/media") {
+    if (router !== null && router.pathname == "/media") {
         mediaLinkClass = mediaLinkClass + " is-active";
     }
     else {
