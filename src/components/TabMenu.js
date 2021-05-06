@@ -22,7 +22,7 @@ export default function TabMenu() {
         mediaLinkClass = mediaLinkClass + " is-active";
     }
     else if (router !== null && router.pathname == "/giro") {
-        mediaLinkClass = mediaLinkClass + " is-active";
+        giroLinkClass = giroLinkClass + " is-active";
     }
     else {
         geoTaggedLinkClass = geoTaggedLinkClass + " is-active";
