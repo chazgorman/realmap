@@ -9,24 +9,15 @@ query($messageid: String) {
         message_id
         url
         expanded_url
-        source
-        host
-        location
         preview
     }
     messages: messages_last_14_days(where: {message_id: {_eq: $messageid}}) {
-        harvest_id
         contributor_screen_name
         contributor_name
         https_contributor_profile_pic
         message
         message_id
         time
-        like_count
-        twitter_favorite_count
-        twitter_favorite_count
-        network
-        location
     }
   }`
 
@@ -59,7 +50,9 @@ export default function MapMediaModal({ messageid }) {
     var mediaLinkButton = undefined;
     var mediaImage = undefined; 
 
-    var sharedLinks = data.shared_links;
+    if(data != undefined){
+        var sharedLinks = data.shared_links;
+    }
     var message = null;
     var directLink = undefined;
     
@@ -70,12 +63,12 @@ export default function MapMediaModal({ messageid }) {
         activeMessageIdVar(activeMessages.filter(item => item !== messageid));
     };
 
-    if(data.messages != undefined && data.messages.length > 0){
+    if(data !== undefined && data.messages != undefined && data.messages.length > 0){
         message = data.messages[0]
     }
 
     
-    if (sharedLinks !== undefined && sharedLinks.length > 0) {
+    if (data !== undefined && sharedLinks !== undefined && sharedLinks.length > 0) {
         var mediaUrl = sharedLinks[0].expanded_url;
 
         if (mediaUrl.startsWith("https://www.instagram.com")) {
